@@ -1,5 +1,9 @@
 package io.bitpogo.pixalb.client
 
+import io.bitpogo.pixalb.client.error.PixabayClientError
+import io.bitpogo.pixalb.client.model.PixabayResponse
+import io.bitpogo.util.coroutine.result.ResultContract
+
 object ClientContract {
     fun interface ConnectivityManager {
         fun hasConnection(): Boolean
@@ -11,7 +15,12 @@ object ClientContract {
         fun error(exception: Throwable, message: String?)
     }
 
-    interface Client
+    interface Client {
+        suspend fun fetch(
+            query: String,
+            page: Int,
+        ): ResultContract<PixabayResponse, PixabayClientError>
+    }
 
     interface ClientFactory {
         fun getInstance(

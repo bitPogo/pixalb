@@ -50,6 +50,8 @@ kotlin {
                 implementation((Dependency.multiplatform.ktor.logger))
 
                 implementation(Dependency.multiplatform.serialization.common)
+
+                implementation(project(":coroutine-helper"))
             }
         }
         val commonTest by getting {
