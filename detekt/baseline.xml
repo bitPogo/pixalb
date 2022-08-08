@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>EmptyKtFile:settings.gradle.kts$.settings.gradle.kts</ID>
+    <ID>MagicNumber:Dangerfile.df.kts$1000</ID>
+    <ID>MagicNumber:Dangerfile.df.kts$20</ID>
+    <ID>MagicNumber:Dangerfile.df.kts$2000</ID>
+    <ID>MagicNumber:Dangerfile.df.kts$500</ID>
+    <ID>MagicNumber:settings.gradle.kts$30</ID>
+    <ID>MaxLineLength:Dangerfile.df.kts$val</ID>
+    <ID>MaxLineLength:Dependency.kt$Dependency.AntiBytes.Test.AndroidTest$const val annotations = "tech.antibytes.test-utils-kmp:test-utils-annotations-android:${Version.antibytes.test}"</ID>
+    <ID>MaxLineLength:Dependency.kt$Dependency.AntiBytes.Test.AndroidTest$const val coroutine = "tech.antibytes.test-utils-kmp:test-utils-coroutine-android:${Version.antibytes.test}"</ID>
+    <ID>MaxLineLength:Dependency.kt$Dependency.AntiBytes.Test.JsTest$const val annotations = "tech.antibytes.test-utils-kmp:test-utils-annotations-js:${Version.antibytes.test}"</ID>
+    <ID>MaxLineLength:Dependency.kt$Dependency.AntiBytes.Test.JvmTest$const val annotations = "tech.antibytes.test-utils-kmp:test-utils-annotations-jvm:${Version.antibytes.test}"</ID>
+    <ID>MaxLineLength:GradlePlugin.kt$GradlePlugin$const val runtimeConfig = "tech.antibytes.gradle-plugins:antibytes-runtime-configuration:${Version.gradle.antibytes}"</ID>
+    <ID>MaxLineLength:build.gradle.kts$config = files("$projectDir/detekt/config.yml")</ID>
+  </CurrentIssues>
+</SmellBaseline>
