@@ -1,0 +1,13 @@
+/*
+ * Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
+ *
+ * Use of this source code is governed by Apache v2.0
+ */
+
+package io.bitpogo.util.coroutine.wrapper
+
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+
+actual val testScope1: CoroutineScope = MainScope()
+actual val testScope2: CoroutineScope = MainScope()
