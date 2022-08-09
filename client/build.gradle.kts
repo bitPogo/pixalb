@@ -59,6 +59,7 @@ kotlin {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
                 implementation(Dependency.multiplatform.ktor.mock)
+
                 implementation(LocalDependency.antibytes.test.kmp.core)
                 implementation(LocalDependency.antibytes.test.kmp.fixture)
                 implementation(LocalDependency.antibytes.test.kmp.coroutine)
@@ -105,6 +106,15 @@ kotlin {
         }
     }
 }
+
+android {
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+}
+
 
 kmock {
     rootPackage = "io.bitpogo.pixalb.client"

@@ -1,0 +1,13 @@
+<!--
+  ~ Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
+  ~
+  ~ Use of this source code is governed by Apache v2.0
+  -->
+
+<manifest
+    package="io.bitpogo.util.coroutine"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+</manifest>
