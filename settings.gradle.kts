@@ -10,7 +10,8 @@ includeBuild("gradlePlugin/pixabay-album-dependency")
 
 include(
     ":example-android-application",
-    ":coroutine-helper"
+    ":coroutine-helper",
+    ":client"
 )
 
 buildCache {
