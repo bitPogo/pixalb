@@ -9,16 +9,16 @@ object ClientContract {
         fun hasConnection(): Boolean
     }
 
-    interface Logger {
+    interface Logger : io.ktor.client.plugins.logging.Logger {
         fun info(message: String)
         fun warn(message: String)
         fun error(exception: Throwable, message: String?)
     }
 
     interface Client {
-        suspend fun fetch(
+        suspend fun fetchImages(
             query: String,
-            page: Int,
+            page: UInt
         ): ResultContract<PixabayResponse, PixabayClientError>
     }
 
@@ -26,7 +26,11 @@ object ClientContract {
         fun getInstance(
             apiToken: String,
             logger: Logger,
-            connection: ConnectivityManager,
+            connection: ConnectivityManager
         ): Client
     }
+
+    internal val ENDPOINT = listOf("api/")
+    internal const val HOST = "pixabay.com"
+    internal const val ITEMS_PER_PAGE = "200"
 }

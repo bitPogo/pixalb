@@ -6,11 +6,11 @@
 
 package io.bitpogo.pixalb.client.serialization
 
+import kotlin.test.Test
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonBuilder
 import tech.antibytes.util.test.fulfils
 import tech.antibytes.util.test.mustBe
-import kotlin.test.Test
 
 class JsonConfiguratorSpec {
     @Test

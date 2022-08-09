@@ -10,6 +10,7 @@ import io.bitpogo.gradle.pixalb.dependency.Dependency as LocalDependency
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
@@ -42,10 +43,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
-                implementation(Dependency.multiplatform.koin.core)
-
                 implementation(Dependency.multiplatform.coroutines.common)
                 implementation(Dependency.multiplatform.ktor.common.client)
+                implementation(Dependency.multiplatform.ktor.common.contentNegotiation)
                 implementation(Dependency.multiplatform.ktor.common.json)
                 implementation((Dependency.multiplatform.ktor.logger))
 
@@ -55,6 +55,8 @@ kotlin {
             }
         }
         val commonTest by getting {
+            kotlin.srcDir("${buildDir.absolutePath.trimEnd('/')}/generated/antibytes/commonTest/kotlin")
+
             dependencies {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
@@ -64,6 +66,8 @@ kotlin {
                 implementation(LocalDependency.antibytes.test.kmp.fixture)
                 implementation(LocalDependency.antibytes.test.kmp.coroutine)
                 implementation(LocalDependency.antibytes.test.kmp.ktor)
+
+                implementation(LocalDependency.antibytes.test.kmp.kmock)
             }
         }
 
@@ -115,7 +119,6 @@ android {
     }
 }
 
-
 kmock {
     rootPackage = "io.bitpogo.pixalb.client"
     freezeOnDefault = false
@@ -128,10 +131,15 @@ tasks.withType(Test::class.java) {
     }
 }
 
+val apiKey: String = project.findProperty("gpr.pixabay.apikey").toString()
+
 val provideTestConfig: Task by tasks.creating(AntiBytesTestConfigurationTask::class) {
     packageName.set("io.bitpogo.pixalb.client.test.config")
     this.stringFields.set(
-        mapOf("projectDir" to projectDir.toPath().toAbsolutePath().toString()),
+        mapOf(
+            "projectDir" to projectDir.toPath().toAbsolutePath().toString(),
+            "apiKey" to apiKey,
+        )
     )
 }
 
