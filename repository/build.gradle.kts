@@ -53,10 +53,12 @@ kotlin {
                 implementation((Dependency.multiplatform.ktor.logger))
 
                 implementation(Dependency.multiplatform.serialization.common)
+                implementation(Dependency.multiplatform.dateTime)
 
                 implementation(LocalDependency.sqldelight.coroutines)
 
                 implementation(project(":coroutine-helper"))
+                implementation(project(":client"))
             }
         }
         val commonTest by getting {
