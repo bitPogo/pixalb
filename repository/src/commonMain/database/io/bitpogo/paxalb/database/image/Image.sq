@@ -1,7 +1,10 @@
+import kotlin.collections.List;
+import kotlinx.datetime.Instant;
+
 CREATE TABLE IF NOT EXISTS Images (
      id INTEGER NOT NULL UNIQUE PRIMARY KEY,
      user TEXT NOT NULL,
-     tags TEXT NOT NULL,
+     tags TEXT AS List<String> NOT NULL,
      downloads INTEGER NOT NULL,
      likes INTEGER NOT NULL,
      comments INTEGER NOT NULL,
@@ -13,7 +16,7 @@ CREATE TABLE IF NOT EXISTS Queries (
     keywords TEXT NOT NULL UNIQUE PRIMARY KEY,
     loadedPages INTEGER NOT NULL,
     totalPages INTEGER NOT NULL,
-    expiryDate INTEGER NOT NULL
+    expiryDate INTEGER AS Instant NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS ImageQueries (
