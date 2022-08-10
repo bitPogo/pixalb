@@ -16,9 +16,9 @@ data class PixabayItem(
     val id: Long,
     val user: String,
     val tags: String,
-    val downloads: ULong,
-    val likes: ULong,
-    val comments: ULong,
+    val downloads: UInt,
+    val likes: UInt,
+    val comments: UInt,
     @SerialName("previewURL")
     val preview: String,
     @SerialName("webformatURL")
