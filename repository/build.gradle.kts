@@ -4,11 +4,9 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-import tech.antibytes.gradle.configuration.runtime.AntiBytesTestConfigurationTask
 import tech.antibytes.gradle.dependency.Dependency
 import io.bitpogo.gradle.pixalb.dependency.Dependency as LocalDependency
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 
 plugins {
@@ -32,6 +30,27 @@ kotlin {
     android()
 
     jvm()
+
+    js(IR) {
+        compilations {
+            this.forEach {
+                it.compileKotlinTask.kotlinOptions.sourceMap = true
+                it.compileKotlinTask.kotlinOptions.metaInfo = true
+
+                if (it.name == "main") {
+                    it.compileKotlinTask.kotlinOptions.main = "call"
+                }
+            }
+        }
+
+        browser {
+            testTask {
+                useKarma {
+                    useChromeHeadlessNoSandbox()
+                }
+            }
+        }
+    }
 
     sourceSets {
         all {
@@ -70,6 +89,7 @@ kotlin {
                 implementation(Dependency.multiplatform.ktor.mock)
 
                 implementation(LocalDependency.antibytes.test.kmp.core)
+                implementation(LocalDependency.antibytes.test.kmp.annotations)
                 implementation(LocalDependency.antibytes.test.kmp.fixture)
                 implementation(LocalDependency.antibytes.test.kmp.coroutine)
                 implementation(LocalDependency.antibytes.test.kmp.ktor)
@@ -99,6 +119,9 @@ kotlin {
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
                 implementation(Dependency.android.test.robolectric)
+                implementation(Dependency.android.test.junit)
+                implementation(LocalDependency.sqldelight.android)
+                implementation(Dependency.android.test.ktx)
             }
         }
 
@@ -113,6 +136,7 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
+                implementation(LocalDependency.sqldelight.jvm)
             }
         }
     }
@@ -127,7 +151,7 @@ android {
 }
 
 kmock {
-    rootPackage = "io.bitpogo.pixalb.client"
+    rootPackage = "io.bitpogo.pixalb.store"
     freezeOnDefault = false
     allowInterfaces = true
 }
@@ -138,27 +162,9 @@ tasks.withType(Test::class.java) {
     }
 }
 
-val apiKey: String = project.findProperty("gpr.pixabay.apikey").toString()
-
-val provideTestConfig: Task by tasks.creating(AntiBytesTestConfigurationTask::class) {
-    packageName.set("io.bitpogo.pixalb.client.test.config")
-    this.stringFields.set(
-        mapOf(
-            "projectDir" to projectDir.toPath().toAbsolutePath().toString(),
-            "apiKey" to apiKey,
-        )
-    )
-}
-
-tasks.withType(KotlinCompile::class.java) {
-    if (this.name.contains("Test")) {
-        this.dependsOn(provideTestConfig)
-    }
-}
-
 sqldelight {
     database("PixabayDataBase") {
-        packageName = "io.bitpogo.paxalb.repository.database.images"
+        packageName = "io.bitpogo.pixalb.store.database"
         sourceFolders = listOf("database")
         verifyMigrations = true
     }
