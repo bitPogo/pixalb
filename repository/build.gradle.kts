@@ -21,6 +21,9 @@ plugins {
     id("tech.antibytes.gradle.coverage")
     id("tech.antibytes.kmock.kmock-gradle")
 
+    // SqlDelight
+    id("com.squareup.sqldelight")
+
     // Serialization
     id("org.jetbrains.kotlin.plugin.serialization")
 }
@@ -51,6 +54,8 @@ kotlin {
 
                 implementation(Dependency.multiplatform.serialization.common)
 
+                implementation(LocalDependency.sqldelight.coroutines)
+
                 implementation(project(":coroutine-helper"))
             }
         }
@@ -74,6 +79,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                implementation(Dependency.multiplatform.kotlin.android)
+                implementation(Dependency.multiplatform.coroutines.android)
                 implementation(Dependency.multiplatform.ktor.android.client)
             }
         }
@@ -90,15 +96,14 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
-                implementation(Dependency.android.test.ktx)
                 implementation(Dependency.android.test.robolectric)
-                implementation(Dependency.android.test.junit)
             }
         }
 
         val jvmMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.jdk8)
+                implementation(Dependency.multiplatform.coroutines.common)
                 implementation(Dependency.multiplatform.ktor.jvm.client)
             }
         }
@@ -146,5 +151,13 @@ val provideTestConfig: Task by tasks.creating(AntiBytesTestConfigurationTask::cl
 tasks.withType(KotlinCompile::class.java) {
     if (this.name.contains("Test")) {
         this.dependsOn(provideTestConfig)
+    }
+}
+
+sqldelight {
+    database("PixabayDataBase") {
+        packageName = "io.bitpogo.paxalb.repository.database.images"
+        sourceFolders = listOf("database")
+        verifyMigrations = true
     }
 }

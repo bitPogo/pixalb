@@ -99,7 +99,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.jdk8)
-                implementation(LocalDependency.sqldelight.jvm)
             }
         }
         val jvmTest by getting {
