@@ -1,0 +1,65 @@
+import kotlin.collections.List;
+import kotlinx.datetime.Instant;
+
+CREATE TABLE IF NOT EXISTS Images (
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     imageId INTEGER NOT NULL UNIQUE,
+     user TEXT NOT NULL,
+     tags TEXT AS List<String> NOT NULL,
+     downloads INTEGER AS Int NOT NULL,
+     likes INTEGER AS Int NOT NULL,
+     comments INTEGER AS Int NOT NULL,
+     previewUrl TEXT NOT NULL,
+     largeUrl TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Queries (
+    inquery TEXT NOT NULL UNIQUE PRIMARY KEY,
+    storedPages INTEGER AS Int NOT NULL,
+    totalPages INTEGER AS Int NOT NULL,
+    expiryDate INTEGER AS Instant NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ImageQueries (
+    inquery TEXT NOT NULL,
+    imageId INTEGER NOT NULL,
+    FOREIGN KEY (inquery) REFERENCES Queries(inquery),
+    FOREIGN KEY (imageId) REFERENCES Images(imageId),
+    CONSTRAINT imageQueryId PRIMARY KEY (imageId, inquery)
+);
+
+addImage:
+INSERT OR REPLACE INTO
+Images(imageId, user, tags, downloads, likes, comments, previewUrl, largeUrl)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+addQuery:
+INSERT OR REPLACE INTO
+Queries(inquery, storedPages, totalPages, expiryDate)
+VALUES (?, ?, ?, ?);
+
+addImageQuery:
+INSERT OR REPLACE INTO
+ImageQueries(inquery, imageId)
+VALUES (?, ?);
+
+updatePageIndex:
+UPDATE Queries
+SET storedPages = :pageIndex
+WHERE inquery = :query;
+
+fetchQueryInfo:
+SELECT inquery, storedPages, totalPages
+FROM Queries
+WHERE inquery = :query AND expiryDate >= :now;
+
+fetchImages:
+SELECT *
+FROM Images
+WHERE imageId IN (
+    SELECT ImageQueries.imageId
+    FROM ImageQueries
+    WHERE inquery = :query
+)
+ORDER BY id ASC
+LIMIT 50 OFFSET :offset;

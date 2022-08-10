@@ -7,7 +7,7 @@
 package io.bitpogo.pixalb.client.networking
 
 import io.bitpogo.pixalb.client.error.PixabayClientError
-import io.cryptopunks.client.api.fixture.StringAlphaGenerator
+import io.bitpogo.pixalb.client.fixture.StringAlphaGenerator
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond

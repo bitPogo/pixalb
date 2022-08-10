@@ -4,7 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package io.bitpogo.pixalb.client.fixture
+package io.bitpogo.pixalb.store.fixture
 
 import io.bitpogo.pixalb.client.model.PixabayItem
 import io.bitpogo.pixalb.client.model.PixabayResponse
@@ -24,7 +24,8 @@ fun PublicApi.Fixture.pixabayItemFixture(): PixabayItem {
     )
 }
 
-fun PublicApi.Fixture.pixabayResponseFixture(
+fun PublicApi.Fixture.pixabayItemsFixture(
+    total: Int? = null,
     size: Int? = null
 ): PixabayResponse {
     val items: MutableList<PixabayItem> = mutableListOf()
@@ -35,7 +36,7 @@ fun PublicApi.Fixture.pixabayResponseFixture(
     }
 
     return PixabayResponse(
-        total = fixture(PublicApi.Sign.POSITIVE),
+        total = total ?: fixture(PublicApi.Sign.POSITIVE),
         items = items
     )
 }

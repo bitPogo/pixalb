@@ -12,7 +12,7 @@ import io.bitpogo.pixalb.client.model.PixabayResponse
 import io.bitpogo.pixalb.client.networking.NetworkingContract
 import io.bitpogo.pixalb.client.networking.RequestBuilderFactoryMock
 import io.bitpogo.pixalb.client.networking.RequestBuilderMock
-import io.cryptopunks.client.api.fixture.StringAlphaGenerator
+import io.bitpogo.pixalb.client.fixture.StringAlphaGenerator
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.statement.HttpStatement
