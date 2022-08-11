@@ -8,7 +8,7 @@ package io.bitpogo.pixalb.album.transfer
 
 import io.bitpogo.pixalb.album.domain.RepositoryContract
 import io.bitpogo.pixalb.album.domain.error.PixabayError
-import io.bitpogo.pixalb.album.domain.model.DetailedViewItem
+import io.bitpogo.pixalb.album.domain.model.DetailViewItem
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
 import io.bitpogo.pixalb.album.fixture.StringAlphaGenerator
 import io.bitpogo.pixalb.album.fixture.pixabayItemsFixture
@@ -81,7 +81,7 @@ class RemoteRepositorySpec {
             tags = listOf(response.items.first().tags)
         )
         details.size mustBe 1
-        details.first() mustBe DetailedViewItem(
+        details.first() mustBe DetailViewItem(
             userName = response.items.first().user,
             imageUrl = response.items.first().large,
             tags = listOf(response.items.first().tags),
@@ -119,7 +119,7 @@ class RemoteRepositorySpec {
             tags = tags
         )
         details.size mustBe 1
-        details.first() mustBe DetailedViewItem(
+        details.first() mustBe DetailViewItem(
             userName = response.items.first().user,
             imageUrl = response.items.first().large,
             tags = tags,

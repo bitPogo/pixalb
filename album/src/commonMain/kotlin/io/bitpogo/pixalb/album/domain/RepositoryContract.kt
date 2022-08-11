@@ -7,7 +7,7 @@
 package io.bitpogo.pixalb.album.domain
 
 import io.bitpogo.pixalb.album.domain.error.PixabayError
-import io.bitpogo.pixalb.album.domain.model.DetailedViewItem
+import io.bitpogo.pixalb.album.domain.model.DetailViewItem
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
 import io.bitpogo.util.coroutine.result.ResultContract
 
@@ -15,7 +15,7 @@ internal object RepositoryContract {
     data class RemoteRepositoryResponse(
         val totalAmountOfItems: Int,
         val overview: List<OverviewItem>,
-        val detailedView: List<DetailedViewItem>,
+        val detailedView: List<DetailViewItem>,
         val imageIds: List<Long>
     )
 
@@ -32,7 +32,7 @@ internal object RepositoryContract {
             pageId: UShort
         ): ResultContract<List<OverviewItem>, PixabayError>
 
-        suspend fun fetchDetailedView(imageId: Long): ResultContract<DetailedViewItem, PixabayError>
+        suspend fun fetchDetailedView(imageId: Long): ResultContract<DetailViewItem, PixabayError>
 
         fun storeImages(
             query: String,
@@ -44,4 +44,5 @@ internal object RepositoryContract {
     const val REMOTE_ITEMS = 200
     const val LOCAL_ITEMS = 50
     const val ITEM_CAP = 500
+    const val ID_CAP = 10u
 }

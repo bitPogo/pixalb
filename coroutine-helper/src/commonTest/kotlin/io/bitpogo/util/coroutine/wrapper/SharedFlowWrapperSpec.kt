@@ -7,6 +7,7 @@
 package io.bitpogo.util.coroutine.wrapper
 
 import io.bitpogo.util.coroutine.result.ResultContract
+import io.bitpogo.util.coroutine.result.State
 import io.bitpogo.util.coroutine.result.Success
 import kotlin.js.JsName
 import kotlin.test.Test
@@ -33,7 +34,7 @@ class SharedFlowWrapperSpec {
     @Test
     @JsName("fn1")
     fun `It fulfils SharedFlowWrapper`() {
-        SharedFlowWrapper.getInstance<Any, RuntimeException>(
+        SharedFlowWrapper.getInstance<State>(
             MutableSharedFlow(),
             { GlobalScope }
         ) fulfils CoroutineWrapperContract.SharedFlowWrapper::class

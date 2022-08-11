@@ -14,11 +14,12 @@ import io.bitpogo.pixalb.album.database.FetchQueryInfo
 import io.bitpogo.pixalb.album.database.Image
 import io.bitpogo.pixalb.album.database.ImageQueries
 import io.bitpogo.pixalb.album.domain.RepositoryContract
+import io.bitpogo.pixalb.album.domain.RepositoryContract.ID_CAP
 import io.bitpogo.pixalb.album.domain.RepositoryContract.ITEM_CAP
 import io.bitpogo.pixalb.album.domain.RepositoryContract.LOCAL_ITEMS
 import io.bitpogo.pixalb.album.domain.RepositoryContract.REMOTE_ITEMS
 import io.bitpogo.pixalb.album.domain.error.PixabayError
-import io.bitpogo.pixalb.album.domain.model.DetailedViewItem
+import io.bitpogo.pixalb.album.domain.model.DetailViewItem
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
 import io.bitpogo.util.coroutine.result.Failure
 import io.bitpogo.util.coroutine.result.ResultContract
@@ -80,7 +81,7 @@ internal class LocalRepository(
         val offset = pageId.resolveOffset()
         return when {
             query == null -> Failure(PixabayError.MissingEntry())
-            query.totalPages < offset -> Failure(PixabayError.EntryCap())
+            pageId > ID_CAP -> Failure(PixabayError.EntryCap())
             query.storedPages < offset -> Failure(PixabayError.MissingPage())
             else -> resolveOverview(query, offset)
         }
@@ -101,8 +102,8 @@ internal class LocalRepository(
         )
     }
 
-    private fun Image.toDetailViewItem(): DetailedViewItem {
-        return DetailedViewItem(
+    private fun Image.toDetailViewItem(): DetailViewItem {
+        return DetailViewItem(
             imageUrl = largeUrl,
             userName = user,
             tags = tags,
@@ -112,13 +113,13 @@ internal class LocalRepository(
         )
     }
 
-    private fun toSuccessfulDetailViewItem(image: Image): ResultContract<DetailedViewItem, PixabayError> {
+    private fun toSuccessfulDetailViewItem(image: Image): ResultContract<DetailViewItem, PixabayError> {
         return Success(image.toDetailViewItem())
     }
 
     override suspend fun fetchDetailedView(
         imageId: Long
-    ): ResultContract<DetailedViewItem, PixabayError> = guardSqlAccess {
+    ): ResultContract<DetailViewItem, PixabayError> = guardSqlAccess {
         sqlService.fetchImage(imageId)
             .asFlow()
             .mapToOne()

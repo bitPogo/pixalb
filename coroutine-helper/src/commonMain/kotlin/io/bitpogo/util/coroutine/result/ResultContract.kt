@@ -6,7 +6,9 @@
 
 package io.bitpogo.util.coroutine.result
 
-sealed interface ResultContract<Success, Error : Throwable> {
+interface State
+
+sealed interface ResultContract<Success, Error : Throwable> : State {
     val value: Success?
     val error: Error?
 
