@@ -6,10 +6,13 @@
 
 package io.bitpogo.pixalb.album
 
+import io.bitpogo.pixalb.album.database.ImageQueries
 import io.bitpogo.pixalb.album.domain.error.PixabayError
 import io.bitpogo.pixalb.album.domain.model.DetailViewItem
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
+import io.bitpogo.pixalb.client.ClientContract
 import io.bitpogo.util.coroutine.result.State
+import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.SharedFlowWrapper
 
 object AlbumContract {
@@ -37,6 +40,15 @@ object AlbumContract {
         )
 
         fun fetchDetailedView(imageId: Long)
+    }
+
+    interface StoreFactory {
+        fun getInstance(
+            client: ClientContract.Client,
+            database: ImageQueries,
+            producerScope: CoroutineWrapperContract.CoroutineScopeDispatcher,
+            consumerScope: CoroutineWrapperContract.CoroutineScopeDispatcher
+        ): Store
     }
 
     internal enum class KoinIds {

@@ -660,7 +660,7 @@ class LocalRepositorySpec {
             )
 
             val query: String = fixture.fixture()
-            val total: Int = fixture.fixture()
+            val total: Int = fixture.fixture(400, 500)
             val now: Long = fixture.fixture(PublicApi.Sign.POSITIVE)
 
             val imageIds: List<Long> = fixture.listFixture(size = 2)
@@ -730,7 +730,7 @@ class LocalRepositorySpec {
             )
 
             val query: String = fixture.fixture()
-            val total: Int = fixture.fixture()
+            val total = 500
             val now: Long = fixture.fixture(PublicApi.Sign.POSITIVE)
 
             val imageIds: List<Long> = fixture.listFixture(size = 2)
@@ -789,5 +789,73 @@ class LocalRepositorySpec {
 
             queries._clearMock()
         }
+    }
+
+    @Test
+    fun `Given storeImage it just runs while just updating the Queries it does not exceed the actual total`() {
+        // Given
+        val transaction: TransactionWithReturnMock<Any?> = kmock(
+            templateType = TransactionWithReturn::class
+        )
+
+        val query: String = fixture.fixture()
+        val total: Int = fixture.fixture(200, 400)
+        val now: Long = fixture.fixture(PublicApi.Sign.POSITIVE)
+
+        val imageIds: List<Long> = fixture.listFixture(size = 2)
+        val image1 = fixture.imageFixture()
+        val image2 = fixture.imageFixture()
+        val detailViewItem1 = DetailViewItem(
+            imageUrl = image1.largeUrl,
+            userName = image1.user,
+            tags = image1.tags,
+            likes = image1.likes.toUInt(),
+            comments = image1.comments.toUInt(),
+            downloads = image1.downloads.toUInt()
+        )
+        val detailViewItem2 = DetailViewItem(
+            imageUrl = image2.largeUrl,
+            userName = image2.user,
+            tags = image2.tags,
+            likes = image2.likes.toUInt(),
+            comments = image2.comments.toUInt(),
+            downloads = image2.downloads.toUInt()
+        )
+        val overviewItem1 = OverviewItem(
+            thumbnail = image1.previewUrl,
+            userName = image1.user,
+            tags = image1.tags
+        )
+        val overviewItem2 = OverviewItem(
+            thumbnail = image2.previewUrl,
+            userName = image2.user,
+            tags = image2.tags
+        )
+
+        queries._transactionWithResult run { _, action ->
+            action(transaction)
+        }
+
+        val clock: ClockMock = kmock()
+
+        clock._now returns Instant.fromEpochMilliseconds(now)
+        // When
+        LocalRepository(queries, clock).storeImages(
+            query = query,
+            pageId = (9).toUShort(),
+            imageInfo = RepositoryContract.RemoteRepositoryResponse(
+                imageIds = imageIds,
+                overview = listOf(overviewItem1, overviewItem2),
+                detailedView = listOf(detailViewItem1, detailViewItem2),
+                totalAmountOfItems = total
+            )
+        )
+
+        // Then
+        verify(exactly = 1) {
+            queries._updatePageIndex.hasBeenStrictlyCalledWith(total, query)
+        }
+
+        queries._clearMock()
     }
 }

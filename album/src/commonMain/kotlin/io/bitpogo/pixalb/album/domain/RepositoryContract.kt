@@ -44,5 +44,4 @@ internal object RepositoryContract {
     const val REMOTE_ITEMS = 200
     const val LOCAL_ITEMS = 50
     const val ITEM_CAP = 500
-    const val ID_CAP = 10u
 }
