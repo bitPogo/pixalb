@@ -8,8 +8,8 @@ package io.bitpogo.pixalb.album.domain
 
 import io.bitpogo.pixalb.album.AlbumContract
 import io.bitpogo.pixalb.album.domain.error.PixabayError
-import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.SharedFlowWrapper
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.CoroutineScopeDispatcher
+import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.SharedFlowWrapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -33,10 +33,10 @@ class AlbumStore internal constructor(
         named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)
     )
 
-    override val detailview: SharedFlowWrapper<AlbumContract.DetailViewState> by koin.koin.inject(
+    override val detailview: SharedFlowWrapper<AlbumContract.DetailviewState> by koin.koin.inject(
         named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)
     )
-    private val detailviewPropagator: MutableStateFlow<AlbumContract.DetailViewState> by koin.koin.inject(
+    private val detailviewPropagator: MutableStateFlow<AlbumContract.DetailviewState> by koin.koin.inject(
         named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)
     )
 
@@ -93,7 +93,25 @@ class AlbumStore internal constructor(
         }
     }
 
+    private fun goIntoPendingDetailview() {
+        detailviewPropagator.update { AlbumContract.DetailviewState.Pending }
+    }
+
+    private suspend fun wrapDetailedView(imageId: Long): AlbumContract.DetailviewState {
+        val result = localRepository.fetchDetailedView(imageId)
+
+        return if (result.isError()) {
+            AlbumContract.DetailviewState.Error(result.error!!)
+        } else {
+            AlbumContract.DetailviewState.Accepted(result.unwrap())
+        }
+    }
+
     override fun fetchDetailedView(imageId: Long) {
-        TODO("Not yet implemented")
+        goIntoPendingDetailview()
+
+        executeEvent(detailviewPropagator) {
+            wrapDetailedView(imageId)
+        }
     }
 }

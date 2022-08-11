@@ -8,6 +8,7 @@ package io.bitpogo.pixalb.album.domain
 
 import io.bitpogo.pixalb.album.AlbumContract
 import io.bitpogo.pixalb.album.domain.error.PixabayError
+import io.bitpogo.pixalb.album.fixture.detailviewItemFixture
 import io.bitpogo.pixalb.album.fixture.detailviewItemsFixture
 import io.bitpogo.pixalb.album.fixture.overviewItemsFixture
 import io.bitpogo.pixalb.album.testScope1
@@ -18,6 +19,8 @@ import io.bitpogo.util.coroutine.result.Success
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.CoroutineScopeDispatcher
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.SharedFlowWrapper
 import io.bitpogo.util.coroutine.wrapper.SharedFlowWrapperMock
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,14 +38,12 @@ import tech.antibytes.kmock.verification.constraints.any
 import tech.antibytes.util.test.coroutine.runBlockingTestWithTimeout
 import tech.antibytes.util.test.fulfils
 import tech.antibytes.util.test.sameAs
-import kotlin.test.BeforeTest
-import kotlin.test.Test
 
 @MockCommon(
     RepositoryContract.RemoteRepository::class,
     RepositoryContract.LocalRepository::class,
     CoroutineScopeDispatcher::class,
-    SharedFlowWrapper::class,
+    SharedFlowWrapper::class
 )
 class AlbumStoreSpec {
     private val fixture = kotlinFixture()
@@ -363,4 +364,111 @@ class AlbumStoreSpec {
         }
     }
 
+    @Test
+    fun `Given fetchDetailedView is called with a imaggeId it delgates the call to the local repository and emits its errors`() {
+        // Given
+        val imageId: Long = fixture.fixture()
+
+        val expectedError = PixabayError.UnsuccessfulDatabaseAccess(RuntimeException())
+
+        val result = Channel<AlbumContract.DetailviewState>()
+        val detailviewFlow: MutableStateFlow<AlbumContract.DetailviewState> = MutableStateFlow(
+            AlbumContract.DetailviewState.Initial
+        )
+
+        val koin = koinApplication {
+            modules(
+                module {
+                    single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) { detailviewFlow }
+                    single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)) { overviewFlowWrapper }
+                    single<RepositoryContract.LocalRepository> { localRepository }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
+                }
+            )
+        }
+
+        detailviewFlow.onEach { state ->
+            result.send(state)
+        }.launchIn(testScope2)
+
+        localRepository._fetchDetailedView returns Failure(expectedError)
+
+        // When
+        val album = AlbumStore(koin)
+
+        // Then
+        runBlockingTestWithTimeout {
+            result.receive() sameAs AlbumContract.DetailviewState.Initial
+        }
+
+        // When
+        album.fetchDetailedView(imageId)
+
+        // Then
+        runBlockingTestWithTimeout {
+            result.receive() sameAs AlbumContract.DetailviewState.Pending
+
+            val error = result.receive()
+            error fulfils AlbumContract.DetailviewState.Error::class
+            (error as AlbumContract.DetailviewState.Error).value sameAs expectedError
+
+            assertProxy {
+                localRepository._fetchDetailedView.hasBeenStrictlyCalledWith(imageId)
+            }
+        }
+    }
+
+    @Test
+    fun `Given fetchDetailedView is called with a imaggeId it delgates the call to the local repository and emits its result`() {
+        // Given
+        val imageId: Long = fixture.fixture()
+
+        val detailview = fixture.detailviewItemFixture()
+
+        val result = Channel<AlbumContract.DetailviewState>()
+        val detailviewFlow: MutableStateFlow<AlbumContract.DetailviewState> = MutableStateFlow(
+            AlbumContract.DetailviewState.Initial
+        )
+
+        val koin = koinApplication {
+            modules(
+                module {
+                    single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) { detailviewFlow }
+                    single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)) { overviewFlowWrapper }
+                    single<RepositoryContract.LocalRepository> { localRepository }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
+                }
+            )
+        }
+
+        detailviewFlow.onEach { state ->
+            result.send(state)
+        }.launchIn(testScope2)
+
+        localRepository._fetchDetailedView returns Success(detailview)
+
+        // When
+        val album = AlbumStore(koin)
+
+        // Then
+        runBlockingTestWithTimeout {
+            result.receive() sameAs AlbumContract.DetailviewState.Initial
+        }
+
+        // When
+        album.fetchDetailedView(imageId)
+
+        // Then
+        runBlockingTestWithTimeout {
+            result.receive() sameAs AlbumContract.DetailviewState.Pending
+
+            val success = result.receive()
+            success fulfils AlbumContract.DetailviewState.Accepted::class
+            (success as AlbumContract.DetailviewState.Accepted).value sameAs detailview
+
+            assertProxy {
+                localRepository._fetchDetailedView.hasBeenStrictlyCalledWith(imageId)
+            }
+        }
+    }
 }

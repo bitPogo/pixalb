@@ -6,7 +6,6 @@
 
 package io.bitpogo.util.coroutine.wrapper
 
-import io.bitpogo.util.coroutine.result.ResultContract
 import io.bitpogo.util.coroutine.result.State
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

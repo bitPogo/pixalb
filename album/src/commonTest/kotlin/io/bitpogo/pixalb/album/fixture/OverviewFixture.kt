@@ -7,8 +7,6 @@
 package io.bitpogo.pixalb.album.fixture
 
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
-import io.bitpogo.pixalb.client.model.PixabayItem
-import io.bitpogo.pixalb.client.model.PixabayResponse
 import tech.antibytes.kfixture.PublicApi
 import tech.antibytes.kfixture.fixture
 import tech.antibytes.kfixture.listFixture
@@ -22,7 +20,7 @@ fun PublicApi.Fixture.overviewItemFixture(): OverviewItem {
 }
 
 fun PublicApi.Fixture.overviewItemsFixture(
-    size: Int? = null,
+    size: Int? = null
 ): List<OverviewItem> {
     val items: MutableList<OverviewItem> = mutableListOf()
     val amountOfItems: Int = size ?: fixture(1, 10)
