@@ -8,10 +8,7 @@ package io.bitpogo.pixalb.store.database
 
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
-import io.bitpogo.pixalb.store.database.Images
-import io.bitpogo.pixalb.store.database.Queries
 import kotlinx.serialization.json.Json
-import io.bitpogo.pixalb.store.database.PixabayDataBase
 
 actual class DatabaseDriver {
     private var driver: SqlDriver? = null
@@ -19,11 +16,11 @@ actual class DatabaseDriver {
         get() = PixabayDataBase(
             driver!!,
             ImagesAdapter = Images.Adapter(
-                ListAdapter(Json),
+                ListAdapter(Json)
             ),
             QueriesAdapter = Queries.Adapter(
-                InstantAdapter(),
-            ),
+                InstantAdapter()
+            )
         )
 
     actual fun open(schema: SqlDriver.Schema) {

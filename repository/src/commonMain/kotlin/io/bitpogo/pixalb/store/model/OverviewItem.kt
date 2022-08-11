@@ -4,7 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package io.bitpogo.pixalb.store.domain.model
+package io.bitpogo.pixalb.store.model
 
 data class OverviewItem(
     val thumbnail: String,

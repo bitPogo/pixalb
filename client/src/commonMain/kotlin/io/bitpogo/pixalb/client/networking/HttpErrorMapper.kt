@@ -13,7 +13,7 @@ import io.ktor.client.plugins.ResponseException
 internal class HttpErrorMapper : KtorPluginsContract.ErrorMapper {
     private fun wrapError(error: Throwable): Throwable {
         return if (error is ResponseException) {
-            PixabayClientError.RequestError(error.response.status)
+            PixabayClientError.RequestError(error.response.status.value)
         } else {
             error
         }

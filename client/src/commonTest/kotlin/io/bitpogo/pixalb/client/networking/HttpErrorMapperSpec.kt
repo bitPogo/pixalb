@@ -70,6 +70,6 @@ class HttpErrorMapperSpec {
             client.get("/somewhere").body()
         }
 
-        error.status mustBe HttpStatusCode.BadRequest
+        error.status mustBe HttpStatusCode.BadRequest.value
     }
 }

@@ -8,8 +8,8 @@ package io.bitpogo.pixalb.store.error
 
 sealed class PixabayRepositoryError(
     message: String? = null,
-    cause: Throwable? = null,
+    cause: Throwable? = null
 ) : RuntimeException(message, cause) {
     class NoConnection : PixabayRepositoryError()
-    class UnsuccessfulRequest : PixabayRepositoryError()
+    class UnsuccessfulRequest(cause: Throwable) : PixabayRepositoryError(cause = cause)
 }

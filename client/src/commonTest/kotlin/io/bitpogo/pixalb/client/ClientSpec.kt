@@ -7,12 +7,12 @@
 package io.bitpogo.pixalb.client
 
 import io.bitpogo.pixalb.client.error.PixabayClientError
+import io.bitpogo.pixalb.client.fixture.StringAlphaGenerator
 import io.bitpogo.pixalb.client.fixture.pixabayResponseFixture
 import io.bitpogo.pixalb.client.model.PixabayResponse
 import io.bitpogo.pixalb.client.networking.NetworkingContract
 import io.bitpogo.pixalb.client.networking.RequestBuilderFactoryMock
 import io.bitpogo.pixalb.client.networking.RequestBuilderMock
-import io.bitpogo.pixalb.client.fixture.StringAlphaGenerator
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.statement.HttpStatement
@@ -90,7 +90,7 @@ class ClientSpec {
         val query: String = fixture.fixture(ascii)
         val page: UInt = fixture.fixture()
         val expected: String = fixture.fixture()
-        val responseError = PixabayClientError.RequestError(HttpStatusCode.BadRequest)
+        val responseError = PixabayClientError.RequestError(400)
         val client = KtorMockClientFactory.createSimpleMockClient(
             response = expected,
             error = responseError,
