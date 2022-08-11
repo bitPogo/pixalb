@@ -4,22 +4,20 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package io.bitpogo.pixalb.store.transfer
+package io.bitpogo.pixalb.album.transfer
 
+import io.bitpogo.pixalb.album.domain.RepositoryContract
+import io.bitpogo.pixalb.album.domain.error.PixabayError
+import io.bitpogo.pixalb.album.domain.model.DetailedViewItem
+import io.bitpogo.pixalb.album.domain.model.OverviewItem
+import io.bitpogo.pixalb.album.fixture.StringAlphaGenerator
+import io.bitpogo.pixalb.album.fixture.pixabayItemsFixture
 import io.bitpogo.pixalb.client.ClientContract
 import io.bitpogo.pixalb.client.ClientMock
 import io.bitpogo.pixalb.client.error.PixabayClientError
-import io.bitpogo.pixalb.album.domain.RepositoryContract
-import io.bitpogo.pixalb.album.domain.error.PixabayError
-import io.bitpogo.pixalb.store.fixture.StringAlphaGenerator
-import io.bitpogo.pixalb.store.fixture.pixabayItemsFixture
 import io.bitpogo.pixalb.store.kmock
-import io.bitpogo.pixalb.album.domain.model.DetailedViewItem
-import io.bitpogo.pixalb.album.domain.model.OverviewItem
-import io.bitpogo.pixalb.album.transfer.RemoteRepository
 import io.bitpogo.util.coroutine.result.Failure
 import io.bitpogo.util.coroutine.result.Success
-import kotlin.math.ceil
 import kotlin.test.Test
 import tech.antibytes.kfixture.fixture
 import tech.antibytes.kfixture.kotlinFixture
@@ -44,6 +42,18 @@ class RemoteRepositorySpec {
         )
     }
     private val client: ClientMock = kmock()
+    private val paging = mapOf(
+        1.toUShort() to 1.toUShort(),
+        2.toUShort() to 1.toUShort(),
+        3.toUShort() to 1.toUShort(),
+        4.toUShort() to 1.toUShort(),
+        5.toUShort() to 2.toUShort(),
+        6.toUShort() to 2.toUShort(),
+        7.toUShort() to 2.toUShort(),
+        8.toUShort() to 2.toUShort(),
+        9.toUShort() to 3.toUShort(),
+        10.toUShort() to 3.toUShort()
+    )
 
     @Test
     fun `It fulfils RemoteRepository`() {
@@ -53,7 +63,7 @@ class RemoteRepositorySpec {
     @Test
     fun `Given fetch is called with a pageId and a query it delegates the query and returns its mapped result`() = runBlockingTestWithTimeout(2000) {
         // Given
-        val pageId: UInt = fixture.fixture(1u, 6u)
+        val pageId: UShort = fixture.fixture(1.toUShort(), 10.toUShort())
         val query: String = fixture.fixture()
         val response = fixture.pixabayItemsFixture(size = 1) { fixture.fixture(ascii) }
 
@@ -83,14 +93,14 @@ class RemoteRepositorySpec {
         imageIds.first() mustBe response.items.first().id
 
         assertProxy {
-            client._fetchImages.hasBeenStrictlyCalledWith(query, ceil(pageId.toDouble() / 2).toUInt())
+            client._fetchImages.hasBeenStrictlyCalledWith(query, paging[pageId])
         }
     }
 
     @Test
     fun `Given fetch is called with a pageId and a query it delegates the query and returns its mapped result with tags`() = runBlockingTestWithTimeout(2000) {
         // Given
-        val pageId: UInt = fixture.fixture(1u, 6u)
+        val pageId: UShort = fixture.fixture(1.toUShort(), 10.toUShort())
         val query: String = fixture.fixture()
         val tags: List<String> = fixture.listFixture(size = 3) { fixture.fixture(ascii) }
         val response = fixture.pixabayItemsFixture(size = 1) { tags.joinToString(", ") }
@@ -121,14 +131,14 @@ class RemoteRepositorySpec {
         imageIds.first() mustBe response.items.first().id
 
         assertProxy {
-            client._fetchImages.hasBeenStrictlyCalledWith(query, ceil(pageId.toDouble() / 2).toUInt())
+            client._fetchImages.hasBeenStrictlyCalledWith(query, paging[pageId])
         }
     }
 
     @Test
     fun `Given fetch is called with a pageId and a query it delegates the query and returns its mapped error`() = runBlockingTestWithTimeout(2000) {
         // Given
-        val pageId: UInt = fixture.fixture(1u, 6u)
+        val pageId: UShort = fixture.fixture(1.toUShort(), 10.toUShort())
         val query: String = fixture.fixture()
         val error = PixabayClientError.RequestError(400)
 
@@ -142,14 +152,14 @@ class RemoteRepositorySpec {
         result.cause mustBe error
 
         assertProxy {
-            client._fetchImages.hasBeenStrictlyCalledWith(query, ceil(pageId.toDouble() / 2).toUInt())
+            client._fetchImages.hasBeenStrictlyCalledWith(query, paging[pageId])
         }
     }
 
     @Test
     fun `Given fetch is called with a pageId and a query it delegates the query and returns its mapped no connection error`() = runBlockingTestWithTimeout(2000) {
         // Given
-        val pageId: UInt = fixture.fixture(1u, 6u)
+        val pageId: UShort = fixture.fixture(1.toUShort(), 10.toUShort())
         val query: String = fixture.fixture()
         val error = PixabayClientError.NoConnection()
 
@@ -162,7 +172,7 @@ class RemoteRepositorySpec {
         result fulfils PixabayError.NoConnection::class
 
         assertProxy {
-            client._fetchImages.hasBeenStrictlyCalledWith(query, ceil(pageId.toDouble() / 2).toUInt())
+            client._fetchImages.hasBeenStrictlyCalledWith(query, paging[pageId])
         }
     }
 }

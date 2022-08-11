@@ -69,7 +69,7 @@ class ClientSpec {
     fun `Given fetchImages is called with a query and a page Index it returns an Error if it has no Connection`() = runBlockingTestWithTimeout {
         // Given
         val query: String = fixture.fixture(ascii)
-        val page: UInt = fixture.fixture()
+        val page: UShort = fixture.fixture()
 
         connectivityManager._hasConnection returns false
 
@@ -88,7 +88,7 @@ class ClientSpec {
     fun `Given fetchImages is called with a query and a page Index it propagates Errors`() = runBlockingTestWithTimeout {
         // Given
         val query: String = fixture.fixture(ascii)
-        val page: UInt = fixture.fixture()
+        val page: UShort = fixture.fixture()
         val expected: String = fixture.fixture()
         val responseError = PixabayClientError.RequestError(400)
         val client = KtorMockClientFactory.createSimpleMockClient(
@@ -118,7 +118,7 @@ class ClientSpec {
         // Given
         val token: String = fixture.fixture()
         val query: String = fixture.fixture(ascii)
-        val page: UInt = fixture.fixture()
+        val page: UShort = fixture.fixture()
         val expected: PixabayResponse = fixture.pixabayResponseFixture(4)
         val client = KtorMockClientFactory.createObjectMockClient(listOf(expected)) { scope, _ ->
             return@createObjectMockClient scope.respond(

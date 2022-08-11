@@ -4,7 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package io.bitpogo.pixalb.store.fixture
+package io.bitpogo.pixalb.album.fixture
 
 import kotlin.random.Random
 import tech.antibytes.kfixture.PublicApi

@@ -4,15 +4,12 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package io.bitpogo.pixalb.store.database
+package io.bitpogo.pixalb.album.database
 
+import android.app.Application
+import androidx.test.core.app.ApplicationProvider
+import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
-import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
-import io.bitpogo.pixalb.album.database.Image
-import io.bitpogo.pixalb.album.database.InstantAdapter
-import io.bitpogo.pixalb.album.database.ListAdapter
-import io.bitpogo.pixalb.album.database.PixabayDataBase
-import io.bitpogo.pixalb.album.database.Query
 import kotlinx.serialization.json.Json
 
 actual class DatabaseDriver {
@@ -29,12 +26,15 @@ actual class DatabaseDriver {
         )
 
     actual fun open(schema: SqlDriver.Schema) {
-        driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
-        schema.create(driver!!)
+        val app = ApplicationProvider.getApplicationContext<Application>()
+        driver = AndroidSqliteDriver(schema, app, testDatabase)
     }
 
     actual fun close() {
         driver?.close()
         driver = null
+
+        val app = ApplicationProvider.getApplicationContext<Application>()
+        app.deleteDatabase(testDatabase)
     }
 }
