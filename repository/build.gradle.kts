@@ -66,12 +66,10 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.common)
                 implementation(Dependency.multiplatform.coroutines.common)
-                implementation(Dependency.multiplatform.ktor.common.client)
-                implementation(Dependency.multiplatform.ktor.common.contentNegotiation)
-                implementation(Dependency.multiplatform.ktor.common.json)
                 implementation((Dependency.multiplatform.ktor.logger))
 
                 implementation(Dependency.multiplatform.serialization.common)
+                implementation(Dependency.multiplatform.serialization.json)
                 implementation(Dependency.multiplatform.dateTime)
 
                 implementation(LocalDependency.sqldelight.coroutines)
@@ -86,13 +84,11 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.test.common)
                 implementation(Dependency.multiplatform.test.annotations)
-                implementation(Dependency.multiplatform.ktor.mock)
 
                 implementation(LocalDependency.antibytes.test.kmp.core)
                 implementation(LocalDependency.antibytes.test.kmp.annotations)
                 implementation(LocalDependency.antibytes.test.kmp.fixture)
                 implementation(LocalDependency.antibytes.test.kmp.coroutine)
-                implementation(LocalDependency.antibytes.test.kmp.ktor)
 
                 implementation(LocalDependency.antibytes.test.kmp.kmock)
             }
@@ -102,7 +98,6 @@ kotlin {
             dependencies {
                implementation(Dependency.multiplatform.kotlin.android)
                 implementation(Dependency.multiplatform.coroutines.android)
-                implementation(Dependency.multiplatform.ktor.android.client)
             }
         }
         val androidAndroidTestRelease by getting
@@ -129,7 +124,6 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.jdk8)
                 implementation(Dependency.multiplatform.coroutines.common)
-                implementation(Dependency.multiplatform.ktor.jvm.client)
             }
         }
         val jvmTest by getting {
