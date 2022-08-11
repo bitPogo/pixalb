@@ -84,7 +84,7 @@ class SchemaSpec {
         // Then
         queryInfo.totalPages mustBe pixabayItems.total
         queryInfo.storedPages mustBe pixabayItems.total
-        queryInfo.inquery mustBe query
+        queryInfo.inquiry mustBe query
 
         images.size mustBe pixabayItems.items.size
         images.forEachIndexed { idx, item ->
@@ -148,7 +148,7 @@ class SchemaSpec {
         // Then
         queryInfo.totalPages mustBe pixabayItems.total
         queryInfo.storedPages mustBe pixabayItems.total
-        queryInfo.inquery mustBe query
+        queryInfo.inquiry mustBe query
 
         images.size mustBe pixabayItems.items.size
         images.forEachIndexed { idx, item ->
@@ -211,7 +211,7 @@ class SchemaSpec {
         // Then
         queryInfo.totalPages mustBe pixabayItems.total
         queryInfo.storedPages mustBe pixabayItems.total
-        queryInfo.inquery mustBe query
+        queryInfo.inquiry mustBe query
 
         images.size mustBe 50
         images.forEachIndexed { idx, item ->
@@ -224,6 +224,61 @@ class SchemaSpec {
             item.likes.toUInt() mustBe pixabayItems.items[idx + offset].likes
             item.downloads.toUInt() mustBe pixabayItems.items[idx + offset].downloads
         }
+    }
+
+    @Test
+    fun `It adds Images and retrieves a single Image`() {
+        // Given
+        val imageIdx: Int = fixture.fixture(0, 2)
+        val pixabayItems = fixture.pixabayItemsFixture(total = 3, size = 3)
+        val query: String = fixture.fixture()
+        val now = Clock.System.now()
+        val systemTZ = TimeZone.currentSystemDefault()
+        val tomorrow = now.plus(1, DateTimeUnit.DAY, systemTZ)
+
+        // When
+        // Insert
+        val dbQueries: ImageQueries = db.dataBase.imageQueries
+
+        dbQueries.addQuery(
+            query,
+            pixabayItems.total,
+            pixabayItems.total,
+            tomorrow
+        )
+
+        pixabayItems.items.forEach { item ->
+            dbQueries.transaction {
+                dbQueries.addImage(
+                    imageId = item.id,
+                    user = item.user,
+                    tags = listOf(item.tags),
+                    downloads = item.downloads.toInt(),
+                    likes = item.likes.toInt(),
+                    comments = item.comments.toInt(),
+                    previewUrl = item.preview,
+                    largeUrl = item.large
+                )
+
+                dbQueries.addImageQuery(
+                    inquery = query,
+                    imageId = item.id
+                )
+            }
+        }
+
+        // Fetch
+        val imageId = pixabayItems.items[imageIdx].id
+        val image = dbQueries.fetchImage(imageId).executeAsOne()
+
+        // Then
+        image.imageId mustBe pixabayItems.items[imageIdx].id
+        image.user mustBe pixabayItems.items[imageIdx].user
+        image.previewUrl mustBe pixabayItems.items[imageIdx].preview
+        image.largeUrl mustBe pixabayItems.items[imageIdx].large
+        image.tags mustBe listOf(pixabayItems.items[imageIdx].tags)
+        image.likes.toUInt() mustBe pixabayItems.items[imageIdx].likes
+        image.downloads.toUInt() mustBe pixabayItems.items[imageIdx].downloads
     }
 
     @Test

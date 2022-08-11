@@ -59,7 +59,7 @@ class RemoteRepositorySpec {
         client._fetchImages returns Success(response)
 
         // When
-        val (total, overview, details) = RemoteRepository(client).fetch(query, pageId).unwrap()
+        val (total, overview, details, imageIds) = RemoteRepository(client).fetch(query, pageId).unwrap()
 
         // Then
         total mustBe response.total
@@ -78,6 +78,8 @@ class RemoteRepositorySpec {
             downloads = response.items.first().downloads,
             comments = response.items.first().comments
         )
+        imageIds.size mustBe 1
+        imageIds.first() mustBe response.items.first().id
 
         assertProxy {
             client._fetchImages.hasBeenStrictlyCalledWith(query, ceil(pageId.toDouble() / 2).toUInt())
@@ -95,7 +97,7 @@ class RemoteRepositorySpec {
         client._fetchImages returns Success(response)
 
         // When
-        val (total, overview, details) = RemoteRepository(client).fetch(query, pageId).unwrap()
+        val (total, overview, details, imageIds) = RemoteRepository(client).fetch(query, pageId).unwrap()
 
         // Then
         total mustBe response.total
@@ -114,6 +116,8 @@ class RemoteRepositorySpec {
             downloads = response.items.first().downloads,
             comments = response.items.first().comments
         )
+        imageIds.size mustBe 1
+        imageIds.first() mustBe response.items.first().id
 
         assertProxy {
             client._fetchImages.hasBeenStrictlyCalledWith(query, ceil(pageId.toDouble() / 2).toUInt())

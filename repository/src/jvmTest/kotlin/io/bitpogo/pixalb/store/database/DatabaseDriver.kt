@@ -15,10 +15,10 @@ actual class DatabaseDriver {
     actual val dataBase: PixabayDataBase
         get() = PixabayDataBase(
             driver!!,
-            ImagesAdapter = Images.Adapter(
+            ImageAdapter = Image.Adapter(
                 ListAdapter(Json)
             ),
-            QueriesAdapter = Queries.Adapter(
+            QueryAdapter = Query.Adapter(
                 InstantAdapter()
             )
         )
