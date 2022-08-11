@@ -7,7 +7,10 @@
 package io.bitpogo.pixalb.album.domain
 
 import io.bitpogo.pixalb.album.AlbumContract
+import io.bitpogo.pixalb.album.database.ImageQueries
+import io.bitpogo.pixalb.album.di.initKoin
 import io.bitpogo.pixalb.album.domain.error.PixabayError
+import io.bitpogo.pixalb.client.ClientContract
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.CoroutineScopeDispatcher
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.SharedFlowWrapper
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -112,6 +115,24 @@ class AlbumStore internal constructor(
 
         executeEvent(detailviewPropagator) {
             wrapDetailedView(imageId)
+        }
+    }
+
+    companion object : AlbumContract.StoreFactory {
+        override fun getInstance(
+            client: ClientContract.Client,
+            database: ImageQueries,
+            producerScope: CoroutineScopeDispatcher,
+            consumerScope: CoroutineScopeDispatcher
+        ): AlbumContract.Store {
+            return AlbumStore(
+                initKoin(
+                    client = client,
+                    database = database,
+                    consumerScope = consumerScope,
+                    producerScope = producerScope
+                )
+            )
         }
     }
 }

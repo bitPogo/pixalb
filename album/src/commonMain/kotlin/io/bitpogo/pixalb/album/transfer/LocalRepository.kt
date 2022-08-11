@@ -14,7 +14,6 @@ import io.bitpogo.pixalb.album.database.FetchQueryInfo
 import io.bitpogo.pixalb.album.database.Image
 import io.bitpogo.pixalb.album.database.ImageQueries
 import io.bitpogo.pixalb.album.domain.RepositoryContract
-import io.bitpogo.pixalb.album.domain.RepositoryContract.ID_CAP
 import io.bitpogo.pixalb.album.domain.RepositoryContract.ITEM_CAP
 import io.bitpogo.pixalb.album.domain.RepositoryContract.LOCAL_ITEMS
 import io.bitpogo.pixalb.album.domain.RepositoryContract.REMOTE_ITEMS
@@ -24,6 +23,7 @@ import io.bitpogo.pixalb.album.domain.model.OverviewItem
 import io.bitpogo.util.coroutine.result.Failure
 import io.bitpogo.util.coroutine.result.ResultContract
 import io.bitpogo.util.coroutine.result.Success
+import kotlin.math.min
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -81,7 +81,7 @@ internal class LocalRepository(
         val offset = pageId.resolveOffset()
         return when {
             query == null -> Failure(PixabayError.MissingEntry())
-            pageId > ID_CAP -> Failure(PixabayError.EntryCap())
+            query.totalPages < offset -> Failure(PixabayError.EntryCap())
             query.storedPages < offset -> Failure(PixabayError.MissingPage())
             else -> resolveOverview(query, offset)
         }
@@ -113,9 +113,9 @@ internal class LocalRepository(
         )
     }
 
-    private fun toSuccessfulDetailViewItem(image: Image): ResultContract<DetailViewItem, PixabayError> {
-        return Success(image.toDetailViewItem())
-    }
+    private fun toSuccessfulDetailViewItem(
+        image: Image
+    ): ResultContract<DetailViewItem, PixabayError> = Success(image.toDetailViewItem())
 
     override suspend fun fetchDetailedView(
         imageId: Long
@@ -179,7 +179,7 @@ internal class LocalRepository(
         if (useUpdate(pageId)) {
             sqlService.updatePageIndex(
                 query = query,
-                pageIndex = paging.getOrElse(pageId) { ITEM_CAP }
+                pageIndex = min(imageInfo.totalAmountOfItems, paging.getOrElse(pageId) { ITEM_CAP })
             )
         } else {
             sqlService.addQuery(
