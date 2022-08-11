@@ -23,7 +23,7 @@ import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 
 private fun resolveAlbumStoreParameterModule(
-    producerScope: CoroutineScopeDispatcher,
+    producerScope: CoroutineScopeDispatcher
 ): Module {
     return module {
         factory(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { producerScope }
@@ -33,7 +33,7 @@ private fun resolveAlbumStoreParameterModule(
 
 private fun resolveRepositories(
     client: ClientContract.Client,
-    database: ImageQueries,
+    database: ImageQueries
 ): Module {
     return module {
         single<RepositoryContract.RemoteRepository> { RemoteRepository(client) }
@@ -49,9 +49,9 @@ internal fun resolveAlbumStoreModule(
             MutableStateFlow(AlbumContract.OverviewState.Initial)
         }
 
-        single<MutableStateFlow<AlbumContract.DetailViewState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) {
+        single<MutableStateFlow<AlbumContract.DetailviewState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) {
             MutableStateFlow(
-                AlbumContract.DetailViewState.Initial
+                AlbumContract.DetailviewState.Initial
             )
         }
 
@@ -64,7 +64,7 @@ internal fun resolveAlbumStoreModule(
 
         single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)) {
             SharedFlowWrapperFactory.getInstance(
-                get<MutableStateFlow<AlbumContract.DetailViewState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)),
+                get<MutableStateFlow<AlbumContract.DetailviewState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)),
                 consumerScope
             )
         }

@@ -14,12 +14,12 @@ import io.bitpogo.pixalb.client.ClientContract
 import io.bitpogo.pixalb.store.kmock
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.CoroutineScopeDispatcher
+import kotlin.test.Test
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.core.qualifier.named
 import tech.antibytes.kmock.MockCommon
 import tech.antibytes.util.test.isNot
 import tech.antibytes.util.test.sameAs
-import kotlin.test.Test
 
 @MockCommon(
     ClientContract.Client::class,
@@ -34,7 +34,7 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            kmock(),
+            kmock()
         )
 
         // Then
@@ -48,7 +48,7 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            kmock(),
+            kmock()
         )
 
         // Then
@@ -62,7 +62,7 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            kmock(),
+            kmock()
         )
 
         // Then
@@ -78,7 +78,7 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            { testScope1 },
+            { testScope1 }
         )
 
         // Then
@@ -100,11 +100,11 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            kmock(),
+            kmock()
         )
 
         // Then
-        koin.koin.get<MutableStateFlow<AlbumContract.DetailViewState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) isNot null
+        koin.koin.get<MutableStateFlow<AlbumContract.DetailviewState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) isNot null
     }
 
     @Test
@@ -114,15 +114,15 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            { testScope1 },
+            { testScope1 }
         )
 
         // Then
-        val flow = koin.koin.get<MutableStateFlow<AlbumContract.DetailViewState>>(
+        val flow = koin.koin.get<MutableStateFlow<AlbumContract.DetailviewState>>(
             named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)
         )
 
-        val wrapper = koin.koin.get<CoroutineWrapperContract.SharedFlowWrapper<AlbumContract.DetailViewState>>(
+        val wrapper = koin.koin.get<CoroutineWrapperContract.SharedFlowWrapper<AlbumContract.DetailviewState>>(
             named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)
         )
 

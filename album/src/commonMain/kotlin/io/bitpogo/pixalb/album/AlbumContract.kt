@@ -20,16 +20,16 @@ object AlbumContract {
         class Error(val value: PixabayError) : OverviewState()
     }
 
-    sealed class DetailViewState : State {
-        object Initial : DetailViewState()
-        object Pending : DetailViewState()
-        class Accepted(val value: DetailViewItem) : DetailViewState()
-        class Error(val value: PixabayError) : DetailViewState()
+    sealed class DetailviewState : State {
+        object Initial : DetailviewState()
+        object Pending : DetailviewState()
+        class Accepted(val value: DetailViewItem) : DetailviewState()
+        class Error(val value: PixabayError) : DetailviewState()
     }
 
     interface Store {
         val overview: SharedFlowWrapper<OverviewState>
-        val detailview: SharedFlowWrapper<DetailViewState>
+        val detailview: SharedFlowWrapper<DetailviewState>
 
         fun fetchOverview(
             query: String,
