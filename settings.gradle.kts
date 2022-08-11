@@ -12,7 +12,7 @@ include(
     ":example-android-application",
     ":coroutine-helper",
     ":client",
-    ":repository"
+    ":album"
 )
 
 buildCache {
