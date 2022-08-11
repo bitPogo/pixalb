@@ -9,7 +9,7 @@ package io.bitpogo.pixalb.album.transfer
 import io.bitpogo.pixalb.album.domain.RepositoryContract
 import io.bitpogo.pixalb.album.domain.RepositoryContract.RemoteRepositoryResponse
 import io.bitpogo.pixalb.album.domain.error.PixabayError
-import io.bitpogo.pixalb.album.domain.model.DetailedViewItem
+import io.bitpogo.pixalb.album.domain.model.DetailViewItem
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
 import io.bitpogo.pixalb.client.ClientContract
 import io.bitpogo.pixalb.client.error.PixabayClientError
@@ -26,7 +26,7 @@ internal class RemoteRepository(
     ): RemoteRepositoryResponse {
         val imageIds: MutableList<Long> = mutableListOf()
         val overview: MutableList<OverviewItem> = mutableListOf()
-        val details: MutableList<DetailedViewItem> = mutableListOf()
+        val details: MutableList<DetailViewItem> = mutableListOf()
 
         response.items.forEach { item ->
             val tags = item.tags.split(", ")
@@ -40,7 +40,7 @@ internal class RemoteRepository(
             )
 
             details.add(
-                DetailedViewItem(
+                DetailViewItem(
                     userName = item.user,
                     imageUrl = item.large,
                     tags = tags,
@@ -74,8 +74,8 @@ internal class RemoteRepository(
     private fun resolvePageId(
         pageId: UShort
     ): UShort = when {
-        pageId >= 1.toUShort() && pageId <= 4.toUShort() -> 1u
-        pageId >= 5.toUShort() && pageId <= 8.toUShort() -> 2u
+        pageId <= 4.toUShort() -> 1u
+        pageId <= 8.toUShort() -> 2u
         else -> 3u
     }
 

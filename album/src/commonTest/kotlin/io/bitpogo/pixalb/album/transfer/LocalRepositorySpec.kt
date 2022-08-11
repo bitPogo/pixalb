@@ -15,7 +15,7 @@ import io.bitpogo.pixalb.album.database.ImageQueries
 import io.bitpogo.pixalb.album.database.ImageQueriesMock
 import io.bitpogo.pixalb.album.domain.RepositoryContract
 import io.bitpogo.pixalb.album.domain.error.PixabayError
-import io.bitpogo.pixalb.album.domain.model.DetailedViewItem
+import io.bitpogo.pixalb.album.domain.model.DetailViewItem
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
 import io.bitpogo.pixalb.album.mock.QueryStub
 import io.bitpogo.pixalb.album.mock.SqlCursorStub
@@ -294,7 +294,7 @@ class LocalRepositorySpec {
         )
 
         // Then
-        result.value mustBe DetailedViewItem(
+        result.value mustBe DetailViewItem(
             imageUrl = image.largeUrl,
             userName = image.user,
             tags = image.tags,
@@ -312,7 +312,7 @@ class LocalRepositorySpec {
         )
         val error = RuntimeException()
         val image = fixture.imageFixture()
-        val detailedViewItem = DetailedViewItem(
+        val detailViewItem = DetailViewItem(
             imageUrl = image.largeUrl,
             userName = image.user,
             tags = image.tags,
@@ -338,7 +338,7 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 imageIds = fixture.listFixture(),
                 overview = listOf(overviewItem),
-                detailedView = listOf(detailedViewItem),
+                detailedView = listOf(detailViewItem),
                 totalAmountOfItems = fixture.fixture()
             )
         )
@@ -356,7 +356,7 @@ class LocalRepositorySpec {
         )
         val error = RuntimeException()
         val image = fixture.imageFixture()
-        val detailedViewItem = DetailedViewItem(
+        val detailViewItem = DetailViewItem(
             imageUrl = image.largeUrl,
             userName = image.user,
             tags = image.tags,
@@ -382,7 +382,7 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 imageIds = fixture.listFixture(),
                 overview = listOf(overviewItem),
-                detailedView = listOf(detailedViewItem),
+                detailedView = listOf(detailViewItem),
                 totalAmountOfItems = fixture.fixture()
             )
         )
@@ -400,7 +400,7 @@ class LocalRepositorySpec {
         )
         val error = RuntimeException()
         val image = fixture.imageFixture()
-        val detailedViewItem = DetailedViewItem(
+        val detailViewItem = DetailViewItem(
             imageUrl = image.largeUrl,
             userName = image.user,
             tags = image.tags,
@@ -426,7 +426,7 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 imageIds = fixture.listFixture(),
                 overview = listOf(overviewItem),
-                detailedView = listOf(detailedViewItem),
+                detailedView = listOf(detailViewItem),
                 totalAmountOfItems = fixture.fixture()
             )
         )
@@ -444,7 +444,7 @@ class LocalRepositorySpec {
         )
         val error = RuntimeException()
         val image = fixture.imageFixture()
-        val detailedViewItem = DetailedViewItem(
+        val detailViewItem = DetailViewItem(
             imageUrl = image.largeUrl,
             userName = image.user,
             tags = image.tags,
@@ -470,7 +470,7 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 imageIds = fixture.listFixture(),
                 overview = listOf(overviewItem),
-                detailedView = listOf(detailedViewItem),
+                detailedView = listOf(detailViewItem),
                 totalAmountOfItems = fixture.fixture()
             )
         )
@@ -496,7 +496,7 @@ class LocalRepositorySpec {
         val imageIds: List<Long> = fixture.listFixture(size = 2)
         val image1 = fixture.imageFixture()
         val image2 = fixture.imageFixture()
-        val detailedViewItem1 = DetailedViewItem(
+        val detailViewItem1 = DetailViewItem(
             imageUrl = image1.largeUrl,
             userName = image1.user,
             tags = image1.tags,
@@ -504,7 +504,7 @@ class LocalRepositorySpec {
             comments = image1.comments.toUInt(),
             downloads = image1.downloads.toUInt()
         )
-        val detailedViewItem2 = DetailedViewItem(
+        val detailViewItem2 = DetailViewItem(
             imageUrl = image2.largeUrl,
             userName = image2.user,
             tags = image2.tags,
@@ -537,7 +537,7 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 imageIds = imageIds,
                 overview = listOf(overviewItem1, overviewItem2),
-                detailedView = listOf(detailedViewItem1, detailedViewItem2),
+                detailedView = listOf(detailViewItem1, detailViewItem2),
                 totalAmountOfItems = total
             )
         )
@@ -593,7 +593,7 @@ class LocalRepositorySpec {
             val imageIds: List<Long> = fixture.listFixture(size = 2)
             val image1 = fixture.imageFixture()
             val image2 = fixture.imageFixture()
-            val detailedViewItem1 = DetailedViewItem(
+            val detailViewItem1 = DetailViewItem(
                 imageUrl = image1.largeUrl,
                 userName = image1.user,
                 tags = image1.tags,
@@ -601,7 +601,7 @@ class LocalRepositorySpec {
                 comments = image1.comments.toUInt(),
                 downloads = image1.downloads.toUInt()
             )
-            val detailedViewItem2 = DetailedViewItem(
+            val detailViewItem2 = DetailViewItem(
                 imageUrl = image2.largeUrl,
                 userName = image2.user,
                 tags = image2.tags,
@@ -634,7 +634,7 @@ class LocalRepositorySpec {
                 imageInfo = RepositoryContract.RemoteRepositoryResponse(
                     imageIds = imageIds,
                     overview = listOf(overviewItem1, overviewItem2),
-                    detailedView = listOf(detailedViewItem1, detailedViewItem2),
+                    detailedView = listOf(detailViewItem1, detailViewItem2),
                     totalAmountOfItems = total
                 )
             )
@@ -666,7 +666,7 @@ class LocalRepositorySpec {
             val imageIds: List<Long> = fixture.listFixture(size = 2)
             val image1 = fixture.imageFixture()
             val image2 = fixture.imageFixture()
-            val detailedViewItem1 = DetailedViewItem(
+            val detailViewItem1 = DetailViewItem(
                 imageUrl = image1.largeUrl,
                 userName = image1.user,
                 tags = image1.tags,
@@ -674,7 +674,7 @@ class LocalRepositorySpec {
                 comments = image1.comments.toUInt(),
                 downloads = image1.downloads.toUInt()
             )
-            val detailedViewItem2 = DetailedViewItem(
+            val detailViewItem2 = DetailViewItem(
                 imageUrl = image2.largeUrl,
                 userName = image2.user,
                 tags = image2.tags,
@@ -707,7 +707,7 @@ class LocalRepositorySpec {
                 imageInfo = RepositoryContract.RemoteRepositoryResponse(
                     imageIds = imageIds,
                     overview = listOf(overviewItem1, overviewItem2),
-                    detailedView = listOf(detailedViewItem1, detailedViewItem2),
+                    detailedView = listOf(detailViewItem1, detailViewItem2),
                     totalAmountOfItems = total
                 )
             )
@@ -736,7 +736,7 @@ class LocalRepositorySpec {
             val imageIds: List<Long> = fixture.listFixture(size = 2)
             val image1 = fixture.imageFixture()
             val image2 = fixture.imageFixture()
-            val detailedViewItem1 = DetailedViewItem(
+            val detailViewItem1 = DetailViewItem(
                 imageUrl = image1.largeUrl,
                 userName = image1.user,
                 tags = image1.tags,
@@ -744,7 +744,7 @@ class LocalRepositorySpec {
                 comments = image1.comments.toUInt(),
                 downloads = image1.downloads.toUInt()
             )
-            val detailedViewItem2 = DetailedViewItem(
+            val detailViewItem2 = DetailViewItem(
                 imageUrl = image2.largeUrl,
                 userName = image2.user,
                 tags = image2.tags,
@@ -777,7 +777,7 @@ class LocalRepositorySpec {
                 imageInfo = RepositoryContract.RemoteRepositoryResponse(
                     imageIds = imageIds,
                     overview = listOf(overviewItem1, overviewItem2),
-                    detailedView = listOf(detailedViewItem1, detailedViewItem2),
+                    detailedView = listOf(detailViewItem1, detailViewItem2),
                     totalAmountOfItems = total
                 )
             )

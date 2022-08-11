@@ -7,6 +7,7 @@
 package io.bitpogo.util.coroutine.wrapper
 
 import io.bitpogo.util.coroutine.result.ResultContract
+import io.bitpogo.util.coroutine.result.State
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharedFlow
@@ -32,23 +33,23 @@ interface CoroutineWrapperContract {
         ): SuspendingFunctionWrapper<T>
     }
 
-    interface SharedFlowWrapper<Success, Error : Throwable> {
-        val wrappedFlow: SharedFlow<ResultContract<Success, Error>>
-        val replayCache: List<ResultContract<Success, Error>>
+    interface SharedFlowWrapper<T : State> {
+        val wrappedFlow: SharedFlow<T>
+        val replayCache: List<T>
 
         fun subscribe(
-            onEach: (item: ResultContract<Success, Error>) -> Unit
+            onEach: (item: T) -> Unit
         ): Job
 
         fun subscribeWithSuspendingFunction(
-            onEach: suspend (item: ResultContract<Success, Error>) -> Unit
+            onEach: suspend (item: T) -> Unit
         ): Job
     }
 
     interface SharedFlowWrapperFactory {
-        fun <Success, Error : Throwable> getInstance(
-            flow: SharedFlow<ResultContract<Success, Error>>,
+        fun <T : State> getInstance(
+            flow: SharedFlow<T>,
             dispatcher: CoroutineScopeDispatcher
-        ): SharedFlowWrapper<Success, Error>
+        ): SharedFlowWrapper<T>
     }
 }

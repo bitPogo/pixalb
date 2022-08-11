@@ -6,30 +6,30 @@
 
 package io.bitpogo.util.coroutine.wrapper
 
-import io.bitpogo.util.coroutine.result.ResultContract
+import io.bitpogo.util.coroutine.result.State
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class SharedFlowWrapper<Succ, Err : Throwable> private constructor(
-    private val flow: SharedFlow<ResultContract<Succ, Err>>,
+class SharedFlowWrapper<T : State> private constructor(
+    private val flow: SharedFlow<T>,
     private val scope: CoroutineScope
-) : CoroutineWrapperContract.SharedFlowWrapper<Succ, Err> {
+) : CoroutineWrapperContract.SharedFlowWrapper<T> {
 
-    override val wrappedFlow: SharedFlow<ResultContract<Succ, Err>>
+    override val wrappedFlow: SharedFlow<T>
         get() = flow
 
-    override val replayCache: List<ResultContract<Succ, Err>>
+    override val replayCache: List<T>
         get() = wrappedFlow.replayCache
 
     override fun subscribe(
-        onEach: (item: ResultContract<Succ, Err>) -> Unit
+        onEach: (item: T) -> Unit
     ): Job = subscribeWithSuspendingFunction(onEach)
 
     override fun subscribeWithSuspendingFunction(
-        onEach: suspend (item: ResultContract<Succ, Err>) -> Unit
+        onEach: suspend (item: T) -> Unit
     ): Job {
         return wrappedFlow
             .onEach(onEach)
@@ -37,10 +37,10 @@ class SharedFlowWrapper<Succ, Err : Throwable> private constructor(
     }
 
     companion object : CoroutineWrapperContract.SharedFlowWrapperFactory {
-        override fun <Success, Error : Throwable> getInstance(
-            flow: SharedFlow<ResultContract<Success, Error>>,
+        override fun <T : State> getInstance(
+            flow: SharedFlow<T>,
             dispatcher: CoroutineWrapperContract.CoroutineScopeDispatcher
-        ): CoroutineWrapperContract.SharedFlowWrapper<Success, Error> {
+        ): CoroutineWrapperContract.SharedFlowWrapper<T> {
             return SharedFlowWrapper(
                 flow,
                 dispatcher.dispatch()

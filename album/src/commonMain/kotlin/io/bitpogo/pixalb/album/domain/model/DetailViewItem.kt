@@ -6,7 +6,7 @@
 
 package io.bitpogo.pixalb.album.domain.model
 
-data class DetailedViewItem(
+data class DetailViewItem(
     val imageUrl: String,
     val userName: String,
     val tags: List<String>,

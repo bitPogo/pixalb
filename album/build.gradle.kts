@@ -47,8 +47,11 @@ kotlin {
                 implementation(Dependency.multiplatform.coroutines.common)
                 implementation((Dependency.multiplatform.ktor.logger))
 
+                implementation(Dependency.multiplatform.koin.core)
+
                 implementation(Dependency.multiplatform.serialization.common)
                 implementation(Dependency.multiplatform.serialization.json)
+
                 implementation(Dependency.multiplatform.dateTime)
 
                 implementation(LocalDependency.sqldelight.coroutines)
