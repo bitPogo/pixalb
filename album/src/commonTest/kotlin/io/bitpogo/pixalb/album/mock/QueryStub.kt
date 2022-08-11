@@ -4,7 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package io.bitpogo.pixalb.store.mock
+package io.bitpogo.pixalb.album.mock
 
 import com.squareup.sqldelight.Query
 import com.squareup.sqldelight.db.SqlCursor

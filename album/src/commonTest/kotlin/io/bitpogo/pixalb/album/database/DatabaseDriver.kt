@@ -4,10 +4,9 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package io.bitpogo.pixalb.store.database
+package io.bitpogo.pixalb.album.database
 
 import com.squareup.sqldelight.db.SqlDriver
-import io.bitpogo.pixalb.album.database.PixabayDataBase
 
 internal const val testDatabase = "test"
 

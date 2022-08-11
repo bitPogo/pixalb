@@ -4,11 +4,9 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package io.bitpogo.pixalb.store.database
+package io.bitpogo.pixalb.album.database
 
-import io.bitpogo.pixalb.album.database.ImageQueries
-import io.bitpogo.pixalb.album.database.PixabayDataBase
-import io.bitpogo.pixalb.store.fixture.pixabayItemsFixture
+import io.bitpogo.pixalb.album.fixture.pixabayItemsFixture
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

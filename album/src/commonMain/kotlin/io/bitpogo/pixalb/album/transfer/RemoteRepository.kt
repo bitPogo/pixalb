@@ -6,18 +6,17 @@
 
 package io.bitpogo.pixalb.album.transfer
 
-import io.bitpogo.pixalb.client.ClientContract
-import io.bitpogo.pixalb.client.error.PixabayClientError
-import io.bitpogo.pixalb.client.model.PixabayResponse
 import io.bitpogo.pixalb.album.domain.RepositoryContract
+import io.bitpogo.pixalb.album.domain.RepositoryContract.RemoteRepositoryResponse
 import io.bitpogo.pixalb.album.domain.error.PixabayError
 import io.bitpogo.pixalb.album.domain.model.DetailedViewItem
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
+import io.bitpogo.pixalb.client.ClientContract
+import io.bitpogo.pixalb.client.error.PixabayClientError
+import io.bitpogo.pixalb.client.model.PixabayResponse
 import io.bitpogo.util.coroutine.result.Failure
 import io.bitpogo.util.coroutine.result.ResultContract
 import io.bitpogo.util.coroutine.result.Success
-import io.bitpogo.pixalb.album.domain.RepositoryContract.RemoteRepositoryResponse
-import kotlin.math.ceil
 
 internal class RemoteRepository(
     private val client: ClientContract.Client
@@ -73,12 +72,16 @@ internal class RemoteRepository(
     }
 
     private fun resolvePageId(
-        pageId: UInt
-    ): UInt = ceil(pageId.toDouble() / 2).toUInt()
+        pageId: UShort
+    ): UShort = when {
+        pageId >= 1.toUShort() && pageId <= 4.toUShort() -> 1u
+        pageId >= 5.toUShort() && pageId <= 8.toUShort() -> 2u
+        else -> 3u
+    }
 
     override suspend fun fetch(
         query: String,
-        pageId: UInt
+        pageId: UShort
     ): ResultContract<RemoteRepositoryResponse, PixabayError> {
         val response = client.fetchImages(
             query = query,

@@ -31,27 +31,6 @@ kotlin {
 
     jvm()
 
-    js(IR) {
-        compilations {
-            this.forEach {
-                it.compileKotlinTask.kotlinOptions.sourceMap = true
-                it.compileKotlinTask.kotlinOptions.metaInfo = true
-
-                if (it.name == "main") {
-                    it.compileKotlinTask.kotlinOptions.main = "call"
-                }
-            }
-        }
-
-        browser {
-            testTask {
-                useKarma {
-                    useChromeHeadlessNoSandbox()
-                }
-            }
-        }
-    }
-
     sourceSets {
         all {
             languageSettings.apply {
@@ -158,7 +137,7 @@ tasks.withType(Test::class.java) {
 
 sqldelight {
     database("PixabayDataBase") {
-        packageName = "io.bitpogo.pixalb.store.database"
+        packageName = "io.bitpogo.pixalb.album.database"
         sourceFolders = listOf("database")
         verifyMigrations = true
     }
