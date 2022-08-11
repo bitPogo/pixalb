@@ -16,14 +16,16 @@ import io.bitpogo.pixalb.store.model.OverviewItem
 import io.bitpogo.util.coroutine.result.Failure
 import io.bitpogo.util.coroutine.result.ResultContract
 import io.bitpogo.util.coroutine.result.Success
+import io.bitpogo.pixalb.store.RepositoryContract.RemoteRepositoryResponse
 import kotlin.math.ceil
 
-class RemoteRepository(
+internal class RemoteRepository(
     private val client: ClientContract.Client
 ) : RepositoryContract.RemoteRepository {
     private fun mapItems(
         response: PixabayResponse
-    ): Triple<Int, List<OverviewItem>, List<DetailedViewItem>> {
+    ): RemoteRepositoryResponse {
+        val imageIds: MutableList<Long> = mutableListOf()
         val overview: MutableList<OverviewItem> = mutableListOf()
         val details: MutableList<DetailedViewItem> = mutableListOf()
 
@@ -48,14 +50,21 @@ class RemoteRepository(
                     comments = item.comments
                 )
             )
+
+            imageIds.add(item.id)
         }
 
-        return Triple(response.total, overview, details)
+        return RemoteRepositoryResponse(
+            totalAmountOfItems = response.total,
+            overview = overview,
+            detailedView = details,
+            imageIds = imageIds
+        )
     }
 
     private fun evaluateResponse(
         response: ResultContract<PixabayResponse, PixabayClientError>
-    ): ResultContract<Triple<Int, List<OverviewItem>, List<DetailedViewItem>>, PixabayRepositoryError> {
+    ): ResultContract<RemoteRepositoryResponse, PixabayRepositoryError> {
         return when (response.error) {
             is PixabayClientError.NoConnection -> Failure(PixabayRepositoryError.NoConnection())
             is PixabayClientError -> Failure(PixabayRepositoryError.UnsuccessfulRequest(response.error!!))
@@ -63,13 +72,17 @@ class RemoteRepository(
         }
     }
 
+    private fun resolvePageId(
+        pageId: UInt
+    ): UInt = ceil(pageId.toDouble() / 2).toUInt()
+
     override suspend fun fetch(
         query: String,
         pageId: UInt
-    ): ResultContract<Triple<Int, List<OverviewItem>, List<DetailedViewItem>>, PixabayRepositoryError> {
+    ): ResultContract<RemoteRepositoryResponse, PixabayRepositoryError> {
         val response = client.fetchImages(
             query = query,
-            page = ceil(pageId.toDouble() / 2).toUInt()
+            page = resolvePageId(pageId)
         )
 
         return evaluateResponse(response)

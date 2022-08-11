@@ -12,4 +12,8 @@ sealed class PixabayRepositoryError(
 ) : RuntimeException(message, cause) {
     class NoConnection : PixabayRepositoryError()
     class UnsuccessfulRequest(cause: Throwable) : PixabayRepositoryError(cause = cause)
+    class UnsuccessfulDatabaseAccess(cause: Throwable) : PixabayRepositoryError(cause = cause)
+    class MissingEntry : PixabayRepositoryError()
+    class MissingPage : PixabayRepositoryError()
+    class EntryCap : PixabayRepositoryError()
 }
