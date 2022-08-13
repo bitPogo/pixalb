@@ -3,11 +3,104 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>EmptyKtFile:settings.gradle.kts$.settings.gradle.kts</ID>
+    <ID>FunctionNaming:BorderLessIconButton.kt$BorderLessIconButton$@Composable fun BorderLessIconButton( icon: ImageVector, contentDescription: String, onClick: Function0&lt;Unit> )</ID>
+    <ID>FunctionNaming:BorderLessIconButtonPreview.kt$@Preview @Composable fun BorderLessIconButtonPreview()</ID>
+    <ID>FunctionNaming:DetailScreen.kt$DetailScreen$@Composable fun DetailScreen( viewModel: DetailContract.ViewModel = hiltViewModel&lt;DetailviewViewModel>(), navigator: DetailContract.Navigator )</ID>
+    <ID>FunctionNaming:DetailScreen.kt$DetailScreen$@Composable private fun RenderHeroImage(url: String)</ID>
+    <ID>FunctionNaming:DetailScreen.kt$DetailScreen$@Composable private fun RenderNavBar( navigator: DetailContract.Navigator )</ID>
+    <ID>FunctionNaming:DetailScreen.kt$DetailScreen$@Composable private fun RenderProperties(details: DetailViewItem)</ID>
+    <ID>FunctionNaming:DetailScreen.kt$DetailScreen$@Composable private fun RenderSteckBrief(details: DetailViewItem)</ID>
+    <ID>FunctionNaming:DetailScreen.kt$DetailScreen$@Composable private fun SelectContent(details: State&lt;DetailContract.State>)</ID>
+    <ID>FunctionNaming:HeroImage.kt$HeroImage$@Composable fun HeroImage( url: String )</ID>
+    <ID>FunctionNaming:HeroImagePreview.kt$@Preview @Composable fun HeroImagePreview()</ID>
+    <ID>FunctionNaming:IconMessage.kt$IconMessage$@Composable fun IconMessage( icon: Painter, message: String )</ID>
+    <ID>FunctionNaming:IconMessagePreview.kt$@Preview @Composable fun IconMessagePreview()</ID>
+    <ID>FunctionNaming:NoConnection.kt$NoConnection$@Composable fun NoConnection()</ID>
+    <ID>FunctionNaming:NoConnectionPreview.kt$@Preview @Composable fun NoConnectionPreview()</ID>
+    <ID>FunctionNaming:NoResult.kt$NoResult$@Composable fun NoResult()</ID>
+    <ID>FunctionNaming:NoResultPreview.kt$@Preview @Composable fun NoResultPreview()</ID>
+    <ID>FunctionNaming:OverviewDialog.kt$OverviewDialog$@Composable fun OverviewDialog( onDismiss: Function0&lt;Unit>, onAccept: Function0&lt;Unit> )</ID>
+    <ID>FunctionNaming:OverviewDialogPreview.kt$@Preview @Composable fun OverviewDialogPreview()</ID>
+    <ID>FunctionNaming:OverviewList.kt$OverviewList$@Composable fun OverviewList( items: List&lt;OverviewItem>, onClick: Function1&lt;Long, Unit>, loadNextItems: Function0&lt;Unit> )</ID>
+    <ID>FunctionNaming:OverviewList.kt$OverviewList$@Composable private fun OverviewListItem( item: OverviewItem, modifier: Modifier = Modifier, onClick: Function1&lt;Long, Unit> )</ID>
+    <ID>FunctionNaming:OverviewListPreview.kt$@Preview @Composable fun OverviewListPreview()</ID>
+    <ID>FunctionNaming:OverviewScreen.kt$OverviewScreen$@Composable private fun SelectContent( contentState: State, nextPage: Function0&lt;Unit>, onClick: Function1&lt;Long, Unit> )</ID>
+    <ID>FunctionNaming:OverviewScreen.kt$OverviewScreen$@Composable private fun SetOverviewDialog( selectImage: Function1&lt;Long, Unit>, goTo: MutableState&lt;Long?>, navigator: OverviewContract.Navigator )</ID>
+    <ID>FunctionNaming:OverviewScreen.kt$OverviewScreen$@Composable private fun TopBar( query: String, onSearch: Function0&lt;Unit>, onValueChange: Function1&lt;String, Unit> )</ID>
+    <ID>FunctionNaming:OverviewScreen.kt$OverviewScreen$@SuppressLint("UnusedMaterialScaffoldPaddingParameter") @Composable fun OverviewScreen( overviewViewModel: OverviewContract.ViewModel = hiltViewModel&lt;OverviewViewModel>(), navigator: OverviewContract.Navigator )</ID>
+    <ID>FunctionNaming:OverviewScreenPreview.kt$@Preview @Composable fun OverviewScreenWithItemsPreview()</ID>
+    <ID>FunctionNaming:OverviewScreenPreview.kt$@Preview @Composable fun OverviewScreenWithNoConnectionPreview()</ID>
+    <ID>FunctionNaming:OverviewScreenPreview.kt$@Preview @Composable fun OverviewScreenWithNoResultPreview()</ID>
+    <ID>FunctionNaming:PropertyDescriptor.kt$PropertyDescriptor$@Composable fun PropertyDescriptor( fieldName: String, value: String )</ID>
+    <ID>FunctionNaming:PropertyDescriptorPreview.kt$@Preview @Composable fun PropertyDescriptorPreview()</ID>
+    <ID>FunctionNaming:Routing.kt$Routing$@Composable fun Routing( start: String = AppContract.Routes.OVERVIEW.name )</ID>
+    <ID>FunctionNaming:SearchBar.kt$SearchBar$@Composable fun SearchBar( value: String, onValueChange: (String) -> Unit, onSearch: () -> Unit )</ID>
+    <ID>FunctionNaming:SearchBarPreview.kt$@Preview @Composable fun SearchBarPreview()</ID>
+    <ID>FunctionNaming:SearchBarPreview.kt$@Preview @Composable fun SearchBarPreviewWithPlaceholder()</ID>
+    <ID>FunctionNaming:SimpleDialog.kt$SimpleDialog$@Composable fun SimpleDialog( onDismissRequest: Function0&lt;Unit>, content: @Composable Function0&lt;Unit> )</ID>
+    <ID>FunctionNaming:SimpleDialogPreview.kt$@Composable @Preview fun SimpleDialogPreview()</ID>
+    <ID>FunctionNaming:SingleLineOutlineEditableText.kt$SingleLineUnderlineEditableText$@Composable fun SingleLineUnderlineEditableText( label: String, value: String, onChange: Function1&lt;String, Unit>, blockComponent: BlockComponent = BlockComponent.PRIMARY_PROGRESSIVE, @SuppressLint("ModifierParameter") modifier: Modifier = Modifier, keyboardOptions: KeyboardOptions = KeyboardOptions.Default )</ID>
+    <ID>FunctionNaming:SingleLineOutlineEditableTextPreview.kt$@Preview @Composable fun DefaultSingleLineOutlineEditableTextWithError()</ID>
+    <ID>FunctionNaming:SingleLineOutlineEditableTextPreview.kt$@Preview @Composable fun SingleLineOutlineEditableTextWithoutError()</ID>
+    <ID>FunctionNaming:SingleLineUnderlineEditableText.kt$SingleLineOutlineEditableText$@Composable fun SingleLineOutlineEditableText( label: String, value: String, onChange: Function1&lt;String, Unit>, blockComponent: BlockComponent = BlockComponent.PRIMARY_PROGRESSIVE, keyboardOptions: KeyboardOptions = KeyboardOptions.Default )</ID>
+    <ID>FunctionNaming:SingleLineUnderlineEditableTextPreview.kt$@Preview @Composable fun DefaultSingleLineUnderlineEditableTextWithError()</ID>
+    <ID>FunctionNaming:SingleLineUnderlineEditableTextPreview.kt$@Preview @Composable fun SingleLineUnderlineEditableTextWithoutError()</ID>
+    <ID>FunctionNaming:Tag.kt$Tag$@Composable fun Tag(value: String)</ID>
+    <ID>FunctionNaming:TagPreview.kt$@Preview @Composable fun TagPreview()</ID>
+    <ID>FunctionNaming:Theme.kt$@Composable fun PixabayAlbumTheme( content: @Composable () -> Unit )</ID>
+    <ID>FunctionNaming:Thumbnail.kt$Thumbnail$@Composable fun Thumbnail( url: String, contentDescription: String?, modifier: Modifier )</ID>
+    <ID>FunctionNaming:ThumbnailPreview.kt$@Preview @Composable fun ThumbnailErrorPreview()</ID>
+    <ID>FunctionNaming:ThumbnailPreview.kt$@Preview @Composable fun ThumbnailPreview()</ID>
+    <ID>FunctionNaming:TopSearchBar.kt$TopSearchBar$@OptIn(ExperimentalComposeUiApi::class) @Composable fun TopSearchBar( value: String, onValueChange: (String) -> Unit, placeholder: String? = null, leadingIcon: (@Composable () -> Unit)? = null, trailingIcon: (@Composable () -> Unit)? = null, actions: (@Composable () -> Unit)? = null, backgroundColour: Color? = null, textFieldColours: TextFieldColors? = null, textFieldModifier: Modifier.() -> Modifier = { this }, textFieldShape: Shape? = null )</ID>
+    <ID>FunctionNaming:TopSearchBarPreview.kt$@Preview @Composable fun PlainTopSearchBar()</ID>
+    <ID>FunctionNaming:TopSearchBarPreview.kt$@Preview @Composable fun TopSearchBarWithBackgroundColor()</ID>
+    <ID>FunctionNaming:TopSearchBarPreview.kt$@Preview @Composable fun TopSearchBarWithIconsAndPlaceholder()</ID>
+    <ID>FunctionNaming:TopSearchBarPreview.kt$@Preview @Composable fun TopSearchBarWithTextFieldColorAndModifier()</ID>
+    <ID>FunctionNaming:UserIndicator.kt$UserIndicator$@Composable fun UserIndicator(value: String)</ID>
+    <ID>LongParameterList:TopSearchBar.kt$TopSearchBar$( value: String, onValueChange: (String) -> Unit, placeholder: String? = null, leadingIcon: (@Composable () -> Unit)? = null, trailingIcon: (@Composable () -> Unit)? = null, actions: (@Composable () -> Unit)? = null, backgroundColour: Color? = null, textFieldColours: TextFieldColors? = null, textFieldModifier: Modifier.() -> Modifier = { this }, textFieldShape: Shape? = null )</ID>
+    <ID>MagicNumber:Color.kt$0xFF000000</ID>
+    <ID>MagicNumber:Color.kt$0xFF00AF89</ID>
+    <ID>MagicNumber:Color.kt$0xFF03DAC5</ID>
+    <ID>MagicNumber:Color.kt$0xFF14866D</ID>
+    <ID>MagicNumber:Color.kt$0xFF1C6665</ID>
+    <ID>MagicNumber:Color.kt$0xFF202122</ID>
+    <ID>MagicNumber:Color.kt$0xFF2A4B8D</ID>
+    <ID>MagicNumber:Color.kt$0xFF3366CC</ID>
+    <ID>MagicNumber:Color.kt$0xFF36C36C</ID>
+    <ID>MagicNumber:Color.kt$0xFF3700B3</ID>
+    <ID>MagicNumber:Color.kt$0xFF404244</ID>
+    <ID>MagicNumber:Color.kt$0xFF447FF5</ID>
+    <ID>MagicNumber:Color.kt$0xFF54595D</ID>
+    <ID>MagicNumber:Color.kt$0xFF6200EE</ID>
+    <ID>MagicNumber:Color.kt$0xFF6B4BA1</ID>
+    <ID>MagicNumber:Color.kt$0xFF72777D</ID>
+    <ID>MagicNumber:Color.kt$0xFFA2A9B1</ID>
+    <ID>MagicNumber:Color.kt$0xFFA55858</ID>
+    <ID>MagicNumber:Color.kt$0xFFB32424</ID>
+    <ID>MagicNumber:Color.kt$0xFFBB86FC</ID>
+    <ID>MagicNumber:Color.kt$0xFFC8CCD1</ID>
+    <ID>MagicNumber:Color.kt$0xFFD33D33</ID>
+    <ID>MagicNumber:Color.kt$0xFFD5FDF4</ID>
+    <ID>MagicNumber:Color.kt$0xFFDFDFDF</ID>
+    <ID>MagicNumber:Color.kt$0xFFE6EFEF</ID>
+    <ID>MagicNumber:Color.kt$0xFFEAECF0</ID>
+    <ID>MagicNumber:Color.kt$0xFFEAF3FF</ID>
+    <ID>MagicNumber:Color.kt$0xFFF8F9Fa</ID>
+    <ID>MagicNumber:Color.kt$0xFFFEE7E6</ID>
+    <ID>MagicNumber:Color.kt$0xFFFF4242</ID>
+    <ID>MagicNumber:Color.kt$0xFFFFFFFF</ID>
     <ID>MagicNumber:Dangerfile.df.kts$1000</ID>
     <ID>MagicNumber:Dangerfile.df.kts$20</ID>
     <ID>MagicNumber:Dangerfile.df.kts$2000</ID>
     <ID>MagicNumber:Dangerfile.df.kts$500</ID>
+    <ID>MagicNumber:DetailScreen.kt$DetailScreen$0.85f</ID>
+    <ID>MagicNumber:OverviewScreenPreview.kt$&lt;no name provided>$23</ID>
+    <ID>MagicNumber:Thumbnail.kt$Thumbnail$100</ID>
+    <ID>MagicNumber:TopSearchBar.kt$TopSearchBar$0.85F</ID>
     <ID>MagicNumber:settings.gradle.kts$30</ID>
+    <ID>MatchingDeclarationName:SingleLineOutlineEditableText.kt$SingleLineUnderlineEditableText</ID>
+    <ID>MatchingDeclarationName:SingleLineUnderlineEditableText.kt$SingleLineOutlineEditableText</ID>
+    <ID>MaxLineLength:AbumStoreKoin.kt$get&lt;MutableStateFlow&lt;AlbumContract.DetailviewStoreState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN))</ID>
     <ID>MaxLineLength:Dangerfile.df.kts$val</ID>
     <ID>MaxLineLength:Dependency.kt$Dependency.AntiBytes.Test.AndroidTest$const val annotations = "tech.antibytes.test-utils-kmp:test-utils-annotations-android:${Version.antibytes.test}"</ID>
     <ID>MaxLineLength:Dependency.kt$Dependency.AntiBytes.Test.AndroidTest$const val coroutine = "tech.antibytes.test-utils-kmp:test-utils-coroutine-android:${Version.antibytes.test}"</ID>
@@ -16,19 +109,41 @@
     <ID>MaxLineLength:GradlePlugin.kt$GradlePlugin$const val runtimeConfig = "tech.antibytes.gradle-plugins:antibytes-runtime-configuration:${Version.gradle.antibytes}"</ID>
     <ID>MaxLineLength:KtorPluginsContract.kt$KtorPluginsContract$ResponseValidatorConfigurator : PluginConfigurator</ID>
     <ID>MaxLineLength:KtorPluginsContract.kt$KtorPluginsContract$SerializerConfigurator : PluginConfigurator</ID>
+    <ID>MaxLineLength:OverviewListPreview.kt$thumbnail = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9ymHYb2GFhrk67z9C--HLdnNSk366hEvBVdytb53SzBgQsfWi6apev5iMXJP0qyHfMs4&amp;usqp=CAU"</ID>
     <ID>MaxLineLength:build.gradle.kts$config = files("$projectDir/detekt/config.yml")</ID>
+    <ID>MemberNameEqualsClassName:BorderLessIconButton.kt$BorderLessIconButton$@Composable fun BorderLessIconButton( icon: ImageVector, contentDescription: String, onClick: Function0&lt;Unit> )</ID>
+    <ID>MemberNameEqualsClassName:DetailScreen.kt$DetailScreen$@Composable fun DetailScreen( viewModel: DetailContract.ViewModel = hiltViewModel&lt;DetailviewViewModel>(), navigator: DetailContract.Navigator )</ID>
+    <ID>MemberNameEqualsClassName:HeroImage.kt$HeroImage$@Composable fun HeroImage( url: String )</ID>
+    <ID>MemberNameEqualsClassName:IconMessage.kt$IconMessage$@Composable fun IconMessage( icon: Painter, message: String )</ID>
+    <ID>MemberNameEqualsClassName:NoConnection.kt$NoConnection$@Composable fun NoConnection()</ID>
+    <ID>MemberNameEqualsClassName:NoResult.kt$NoResult$@Composable fun NoResult()</ID>
+    <ID>MemberNameEqualsClassName:OverviewDialog.kt$OverviewDialog$@Composable fun OverviewDialog( onDismiss: Function0&lt;Unit>, onAccept: Function0&lt;Unit> )</ID>
+    <ID>MemberNameEqualsClassName:OverviewList.kt$OverviewList$@Composable fun OverviewList( items: List&lt;OverviewItem>, onClick: Function1&lt;Long, Unit>, loadNextItems: Function0&lt;Unit> )</ID>
+    <ID>MemberNameEqualsClassName:OverviewScreen.kt$OverviewScreen$@SuppressLint("UnusedMaterialScaffoldPaddingParameter") @Composable fun OverviewScreen( overviewViewModel: OverviewContract.ViewModel = hiltViewModel&lt;OverviewViewModel>(), navigator: OverviewContract.Navigator )</ID>
+    <ID>MemberNameEqualsClassName:PropertyDescriptor.kt$PropertyDescriptor$@Composable fun PropertyDescriptor( fieldName: String, value: String )</ID>
+    <ID>MemberNameEqualsClassName:Routing.kt$Routing$@Composable fun Routing( start: String = AppContract.Routes.OVERVIEW.name )</ID>
+    <ID>MemberNameEqualsClassName:SearchBar.kt$SearchBar$@Composable fun SearchBar( value: String, onValueChange: (String) -> Unit, onSearch: () -> Unit )</ID>
+    <ID>MemberNameEqualsClassName:SimpleDialog.kt$SimpleDialog$@Composable fun SimpleDialog( onDismissRequest: Function0&lt;Unit>, content: @Composable Function0&lt;Unit> )</ID>
+    <ID>MemberNameEqualsClassName:SingleLineOutlineEditableText.kt$SingleLineUnderlineEditableText$@Composable fun SingleLineUnderlineEditableText( label: String, value: String, onChange: Function1&lt;String, Unit>, blockComponent: BlockComponent = BlockComponent.PRIMARY_PROGRESSIVE, @SuppressLint("ModifierParameter") modifier: Modifier = Modifier, keyboardOptions: KeyboardOptions = KeyboardOptions.Default )</ID>
+    <ID>MemberNameEqualsClassName:SingleLineUnderlineEditableText.kt$SingleLineOutlineEditableText$@Composable fun SingleLineOutlineEditableText( label: String, value: String, onChange: Function1&lt;String, Unit>, blockComponent: BlockComponent = BlockComponent.PRIMARY_PROGRESSIVE, keyboardOptions: KeyboardOptions = KeyboardOptions.Default )</ID>
+    <ID>MemberNameEqualsClassName:Tag.kt$Tag$@Composable fun Tag(value: String)</ID>
+    <ID>MemberNameEqualsClassName:Thumbnail.kt$Thumbnail$@Composable fun Thumbnail( url: String, contentDescription: String?, modifier: Modifier )</ID>
+    <ID>MemberNameEqualsClassName:TopSearchBar.kt$TopSearchBar$@OptIn(ExperimentalComposeUiApi::class) @Composable fun TopSearchBar( value: String, onValueChange: (String) -> Unit, placeholder: String? = null, leadingIcon: (@Composable () -> Unit)? = null, trailingIcon: (@Composable () -> Unit)? = null, actions: (@Composable () -> Unit)? = null, backgroundColour: Color? = null, textFieldColours: TextFieldColors? = null, textFieldModifier: Modifier.() -> Modifier = { this }, textFieldShape: Shape? = null )</ID>
+    <ID>MemberNameEqualsClassName:UserIndicator.kt$UserIndicator$@Composable fun UserIndicator(value: String)</ID>
     <ID>SwallowedException:Receive.kt$exception: NoTransformationFoundException</ID>
     <ID>TooGenericExceptionCaught:LocalRepository.kt$LocalRepository$e: Throwable</ID>
     <ID>TooGenericExceptionCaught:SuspendingFunctionWrapper.kt$SuspendingFunctionWrapper$error: Throwable</ID>
     <ID>TooManyFunctions:LocalRepository.kt$LocalRepository : LocalRepository</ID>
+    <ID>TooManyFunctions:OverviewViewModel.kt$OverviewViewModel : ViewModelViewModel</ID>
     <ID>TooManyFunctions:RequestBuilder.kt$RequestBuilder : RequestBuilder</ID>
+    <ID>UnusedPrivateMember:Routing.kt$Routing$start: String = AppContract.Routes.OVERVIEW.name</ID>
     <ID>UnusedPrivateMember:build.gradle.kts$val androidMain by getting { dependencies { implementation(Dependency.multiplatform.kotlin.android) implementation(Dependency.multiplatform.coroutines.android) implementation(LocalDependency.sqldelight.android) } }</ID>
     <ID>UnusedPrivateMember:build.gradle.kts$val androidMain by getting { dependencies { implementation(Dependency.multiplatform.kotlin.android) implementation(Dependency.multiplatform.coroutines.android) } }</ID>
     <ID>UnusedPrivateMember:build.gradle.kts$val androidMain by getting { dependencies { implementation(Dependency.multiplatform.kotlin.android) implementation(Dependency.multiplatform.ktor.android.client) } }</ID>
     <ID>UnusedPrivateMember:build.gradle.kts$val androidTest by getting { dependsOn(androidAndroidTestRelease) dependsOn(androidTestFixtures) dependsOn(androidTestFixturesDebug) dependsOn(androidTestFixturesRelease) dependencies { implementation(Dependency.multiplatform.test.jvm) implementation(Dependency.multiplatform.test.junit) implementation(Dependency.android.test.ktx) implementation(Dependency.android.test.robolectric) implementation(Dependency.android.test.junit) } }</ID>
     <ID>UnusedPrivateMember:build.gradle.kts$val androidTest by getting { dependsOn(androidAndroidTestRelease) dependsOn(androidTestFixtures) dependsOn(androidTestFixturesDebug) dependsOn(androidTestFixturesRelease) dependencies { implementation(Dependency.multiplatform.test.jvm) implementation(Dependency.multiplatform.test.junit) implementation(Dependency.android.test.robolectric) implementation(Dependency.android.test.junit) implementation(LocalDependency.sqldelight.android) implementation(Dependency.android.test.ktx) } }</ID>
     <ID>UnusedPrivateMember:build.gradle.kts$val androidTest by getting { dependsOn(androidTestFixtures) dependsOn(androidTestFixturesDebug) dependsOn(androidTestFixturesRelease) dependsOn(androidAndroidTestRelease) dependencies { implementation(Dependency.multiplatform.test.jvm) implementation(Dependency.multiplatform.test.junit) implementation(Dependency.android.test.ktx) implementation(Dependency.android.test.robolectric) implementation(Dependency.android.test.junit) } }</ID>
-    <ID>UnusedPrivateMember:build.gradle.kts$val commonMain by getting { dependencies { implementation(Dependency.multiplatform.kotlin.common) implementation(Dependency.multiplatform.coroutines.common) implementation((Dependency.multiplatform.ktor.logger)) implementation(Dependency.multiplatform.serialization.common) implementation(Dependency.multiplatform.serialization.json) implementation(Dependency.multiplatform.dateTime) implementation(LocalDependency.sqldelight.coroutines) implementation(project(":coroutine-helper")) implementation(project(":client")) } }</ID>
+    <ID>UnusedPrivateMember:build.gradle.kts$val commonMain by getting { dependencies { implementation(Dependency.multiplatform.kotlin.common) implementation(Dependency.multiplatform.coroutines.common) implementation((Dependency.multiplatform.ktor.logger)) implementation(Dependency.multiplatform.koin.core) implementation(Dependency.multiplatform.serialization.common) implementation(Dependency.multiplatform.serialization.json) implementation(Dependency.multiplatform.dateTime) implementation(LocalDependency.sqldelight.coroutines) implementation(project(":coroutine-helper")) implementation(project(":client")) } }</ID>
     <ID>UnusedPrivateMember:build.gradle.kts$val commonMain by getting { dependencies { implementation(Dependency.multiplatform.kotlin.common) implementation(Dependency.multiplatform.coroutines.common) implementation(Dependency.multiplatform.ktor.common.client) implementation(Dependency.multiplatform.ktor.common.contentNegotiation) implementation(Dependency.multiplatform.ktor.common.json) implementation((Dependency.multiplatform.ktor.logger)) implementation(Dependency.multiplatform.serialization.common) implementation(project(":coroutine-helper")) } }</ID>
     <ID>UnusedPrivateMember:build.gradle.kts$val commonMain by getting { dependencies { implementation(Dependency.multiplatform.kotlin.common) implementation(Dependency.multiplatform.coroutines.common) } }</ID>
     <ID>UnusedPrivateMember:build.gradle.kts$val commonTest by getting { kotlin.srcDir("${buildDir.absolutePath.trimEnd('/')}/generated/antibytes/commonTest/kotlin") dependencies { implementation(Dependency.multiplatform.test.common) implementation(Dependency.multiplatform.test.annotations) implementation(Dependency.multiplatform.ktor.mock) implementation(LocalDependency.antibytes.test.kmp.core) implementation(LocalDependency.antibytes.test.kmp.fixture) implementation(LocalDependency.antibytes.test.kmp.coroutine) implementation(LocalDependency.antibytes.test.kmp.ktor) implementation(LocalDependency.antibytes.test.kmp.kmock) } }</ID>

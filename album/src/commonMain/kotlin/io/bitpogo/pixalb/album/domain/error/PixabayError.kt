@@ -10,10 +10,10 @@ sealed class PixabayError(
     message: String? = null,
     cause: Throwable? = null
 ) : RuntimeException(message, cause) {
-    class NoConnection : PixabayError()
+    object NoConnection : PixabayError()
     class UnsuccessfulRequest(cause: Throwable) : PixabayError(cause = cause)
     class UnsuccessfulDatabaseAccess(cause: Throwable) : PixabayError(cause = cause)
-    class MissingEntry : PixabayError()
-    class MissingPage : PixabayError()
-    class EntryCap : PixabayError()
+    object MissingEntry : PixabayError()
+    object MissingPage : PixabayError()
+    object EntryCap : PixabayError()
 }

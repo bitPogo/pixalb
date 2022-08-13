@@ -45,26 +45,26 @@ internal fun resolveAlbumStoreModule(
     consumerScope: CoroutineScopeDispatcher
 ): Module {
     return module {
-        single<MutableStateFlow<AlbumContract.OverviewState>>(named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)) {
-            MutableStateFlow(AlbumContract.OverviewState.Initial)
+        single<MutableStateFlow<AlbumContract.OverviewStoreState>>(named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)) {
+            MutableStateFlow(AlbumContract.OverviewStoreState.Initial)
         }
 
-        single<MutableStateFlow<AlbumContract.DetailviewState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) {
+        single<MutableStateFlow<AlbumContract.DetailviewStoreState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) {
             MutableStateFlow(
-                AlbumContract.DetailviewState.Initial
+                AlbumContract.DetailviewStoreState.Initial
             )
         }
 
         single(named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)) {
             SharedFlowWrapperFactory.getInstance(
-                get<MutableStateFlow<AlbumContract.OverviewState>>(named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)),
+                get<MutableStateFlow<AlbumContract.OverviewStoreState>>(named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)),
                 consumerScope
             )
         }
 
         single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)) {
             SharedFlowWrapperFactory.getInstance(
-                get<MutableStateFlow<AlbumContract.DetailviewState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)),
+                get<MutableStateFlow<AlbumContract.DetailviewStoreState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)),
                 consumerScope
             )
         }

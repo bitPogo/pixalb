@@ -24,7 +24,6 @@ internal class RemoteRepository(
     private fun mapItems(
         response: PixabayResponse
     ): RemoteRepositoryResponse {
-        val imageIds: MutableList<Long> = mutableListOf()
         val overview: MutableList<OverviewItem> = mutableListOf()
         val details: MutableList<DetailViewItem> = mutableListOf()
 
@@ -33,6 +32,7 @@ internal class RemoteRepository(
 
             overview.add(
                 OverviewItem(
+                    id = item.id,
                     userName = item.user,
                     tags = tags,
                     thumbnail = item.preview
@@ -49,15 +49,12 @@ internal class RemoteRepository(
                     comments = item.comments
                 )
             )
-
-            imageIds.add(item.id)
         }
 
         return RemoteRepositoryResponse(
             totalAmountOfItems = response.total,
             overview = overview,
-            detailedView = details,
-            imageIds = imageIds
+            detailedView = details
         )
     }
 
@@ -65,7 +62,7 @@ internal class RemoteRepository(
         response: ResultContract<PixabayResponse, PixabayClientError>
     ): ResultContract<RemoteRepositoryResponse, PixabayError> {
         return when (response.error) {
-            is PixabayClientError.NoConnection -> Failure(PixabayError.NoConnection())
+            is PixabayClientError.NoConnection -> Failure(PixabayError.NoConnection)
             is PixabayClientError -> Failure(PixabayError.UnsuccessfulRequest(response.error!!))
             else -> Success(mapItems(response.unwrap()))
         }

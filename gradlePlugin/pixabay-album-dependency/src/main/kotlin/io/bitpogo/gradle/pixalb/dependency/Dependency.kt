@@ -95,4 +95,11 @@ object Dependency {
     object AndroidX {
         const val annotation = "androidx.annotation:annotation:${Version.androidx.annotation}"
     }
+
+    val coil = Coil
+
+    object Coil {
+        const val core = "io.coil-kt:coil:${Version.coil}"
+        const val compose = "io.coil-kt:coil-compose:${Version.coil}"
+    }
 }

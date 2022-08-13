@@ -17,9 +17,9 @@ import io.bitpogo.pixalb.album.domain.RepositoryContract
 import io.bitpogo.pixalb.album.domain.error.PixabayError
 import io.bitpogo.pixalb.album.domain.model.DetailViewItem
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
+import io.bitpogo.pixalb.album.kmock
 import io.bitpogo.pixalb.album.mock.QueryStub
 import io.bitpogo.pixalb.album.mock.SqlCursorStub
-import io.bitpogo.pixalb.store.kmock
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlinx.datetime.Clock
@@ -240,6 +240,7 @@ class LocalRepositorySpec {
         // Then
         result.unwrap() mustBe listOf(
             OverviewItem(
+                id = overviewItem.imageId,
                 thumbnail = overviewItem.previewUrl,
                 userName = overviewItem.user,
                 tags = overviewItem.tags
@@ -253,7 +254,7 @@ class LocalRepositorySpec {
             )
             queries._fetchImagesWithStringLong.hasBeenStrictlyCalledWith(
                 inquiry,
-                ((pageId.toLong() - 1) * 50).toLong()
+                (pageId.toLong() - 1) * 50
             )
         }
     }
@@ -321,6 +322,7 @@ class LocalRepositorySpec {
             downloads = image.downloads.toUInt()
         )
         val overviewItem = OverviewItem(
+            id = image.imageId,
             thumbnail = image.previewUrl,
             userName = image.user,
             tags = image.tags
@@ -336,7 +338,6 @@ class LocalRepositorySpec {
             query = fixture.fixture(),
             pageId = fixture.fixture(1.toUShort(), 4.toUShort()),
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
-                imageIds = fixture.listFixture(),
                 overview = listOf(overviewItem),
                 detailedView = listOf(detailViewItem),
                 totalAmountOfItems = fixture.fixture()
@@ -365,6 +366,7 @@ class LocalRepositorySpec {
             downloads = image.downloads.toUInt()
         )
         val overviewItem = OverviewItem(
+            id = image.imageId,
             thumbnail = image.previewUrl,
             userName = image.user,
             tags = image.tags
@@ -380,7 +382,6 @@ class LocalRepositorySpec {
             query = fixture.fixture(),
             pageId = fixture.fixture(5.toUShort(), 10.toUShort()),
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
-                imageIds = fixture.listFixture(),
                 overview = listOf(overviewItem),
                 detailedView = listOf(detailViewItem),
                 totalAmountOfItems = fixture.fixture()
@@ -409,6 +410,7 @@ class LocalRepositorySpec {
             downloads = image.downloads.toUInt()
         )
         val overviewItem = OverviewItem(
+            id = image.imageId,
             thumbnail = image.previewUrl,
             userName = image.user,
             tags = image.tags
@@ -424,7 +426,6 @@ class LocalRepositorySpec {
             query = fixture.fixture(),
             pageId = fixture.fixture(1.toUShort(), 4.toUShort()),
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
-                imageIds = fixture.listFixture(),
                 overview = listOf(overviewItem),
                 detailedView = listOf(detailViewItem),
                 totalAmountOfItems = fixture.fixture()
@@ -453,6 +454,7 @@ class LocalRepositorySpec {
             downloads = image.downloads.toUInt()
         )
         val overviewItem = OverviewItem(
+            id = image.imageId,
             thumbnail = image.previewUrl,
             userName = image.user,
             tags = image.tags
@@ -468,7 +470,6 @@ class LocalRepositorySpec {
             query = fixture.fixture(),
             pageId = fixture.fixture(1.toUShort(), 4.toUShort()),
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
-                imageIds = fixture.listFixture(),
                 overview = listOf(overviewItem),
                 detailedView = listOf(detailViewItem),
                 totalAmountOfItems = fixture.fixture()
@@ -493,7 +494,6 @@ class LocalRepositorySpec {
         val now: Long = fixture.fixture(PublicApi.Sign.POSITIVE)
         val tomorrow = now + 86400000
 
-        val imageIds: List<Long> = fixture.listFixture(size = 2)
         val image1 = fixture.imageFixture()
         val image2 = fixture.imageFixture()
         val detailViewItem1 = DetailViewItem(
@@ -513,11 +513,13 @@ class LocalRepositorySpec {
             downloads = image2.downloads.toUInt()
         )
         val overviewItem1 = OverviewItem(
+            id = image1.imageId,
             thumbnail = image1.previewUrl,
             userName = image1.user,
             tags = image1.tags
         )
         val overviewItem2 = OverviewItem(
+            id = image2.imageId,
             thumbnail = image2.previewUrl,
             userName = image2.user,
             tags = image2.tags
@@ -535,7 +537,6 @@ class LocalRepositorySpec {
             query = query,
             pageId = pageId,
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
-                imageIds = imageIds,
                 overview = listOf(overviewItem1, overviewItem2),
                 detailedView = listOf(detailViewItem1, detailViewItem2),
                 totalAmountOfItems = total
@@ -551,9 +552,9 @@ class LocalRepositorySpec {
                 total,
                 Instant.fromEpochMilliseconds(tomorrow)
             )
-            queries._addImageQuery.hasBeenStrictlyCalledWith(query, imageIds.first())
+            queries._addImageQuery.hasBeenStrictlyCalledWith(query, image1.imageId)
             queries._addImage.hasBeenStrictlyCalledWith(
-                imageIds.first(), // imageId
+                image1.imageId, // imageId
                 image1.user, // user
                 image1.tags, // tags
                 image1.downloads, // downloads
@@ -563,9 +564,9 @@ class LocalRepositorySpec {
                 image1.largeUrl // large
             )
 
-            queries._addImageQuery.hasBeenStrictlyCalledWith(query, imageIds.last())
+            queries._addImageQuery.hasBeenStrictlyCalledWith(query, image2.imageId)
             queries._addImage.hasBeenStrictlyCalledWith(
-                imageIds.last(),
+                image2.imageId, // imageId
                 image2.user, // user
                 image2.tags, // tags
                 image2.downloads, // downloads
@@ -590,7 +591,6 @@ class LocalRepositorySpec {
             val now: Long = fixture.fixture(PublicApi.Sign.POSITIVE)
             val tomorrow = now + 86400000
 
-            val imageIds: List<Long> = fixture.listFixture(size = 2)
             val image1 = fixture.imageFixture()
             val image2 = fixture.imageFixture()
             val detailViewItem1 = DetailViewItem(
@@ -610,11 +610,13 @@ class LocalRepositorySpec {
                 downloads = image2.downloads.toUInt()
             )
             val overviewItem1 = OverviewItem(
+                id = image1.imageId,
                 thumbnail = image1.previewUrl,
                 userName = image1.user,
                 tags = image1.tags
             )
             val overviewItem2 = OverviewItem(
+                id = image2.imageId,
                 thumbnail = image2.previewUrl,
                 userName = image2.user,
                 tags = image2.tags
@@ -632,7 +634,6 @@ class LocalRepositorySpec {
                 query = query,
                 pageId = (pageId).toUShort(),
                 imageInfo = RepositoryContract.RemoteRepositoryResponse(
-                    imageIds = imageIds,
                     overview = listOf(overviewItem1, overviewItem2),
                     detailedView = listOf(detailViewItem1, detailViewItem2),
                     totalAmountOfItems = total
@@ -663,7 +664,6 @@ class LocalRepositorySpec {
             val total: Int = fixture.fixture(400, 500)
             val now: Long = fixture.fixture(PublicApi.Sign.POSITIVE)
 
-            val imageIds: List<Long> = fixture.listFixture(size = 2)
             val image1 = fixture.imageFixture()
             val image2 = fixture.imageFixture()
             val detailViewItem1 = DetailViewItem(
@@ -683,11 +683,13 @@ class LocalRepositorySpec {
                 downloads = image2.downloads.toUInt()
             )
             val overviewItem1 = OverviewItem(
+                id = image1.imageId,
                 thumbnail = image1.previewUrl,
                 userName = image1.user,
                 tags = image1.tags
             )
             val overviewItem2 = OverviewItem(
+                id = image2.imageId,
                 thumbnail = image2.previewUrl,
                 userName = image2.user,
                 tags = image2.tags
@@ -705,7 +707,6 @@ class LocalRepositorySpec {
                 query = query,
                 pageId = (pageId + 5).toUShort(),
                 imageInfo = RepositoryContract.RemoteRepositoryResponse(
-                    imageIds = imageIds,
                     overview = listOf(overviewItem1, overviewItem2),
                     detailedView = listOf(detailViewItem1, detailViewItem2),
                     totalAmountOfItems = total
@@ -733,7 +734,6 @@ class LocalRepositorySpec {
             val total = 500
             val now: Long = fixture.fixture(PublicApi.Sign.POSITIVE)
 
-            val imageIds: List<Long> = fixture.listFixture(size = 2)
             val image1 = fixture.imageFixture()
             val image2 = fixture.imageFixture()
             val detailViewItem1 = DetailViewItem(
@@ -753,11 +753,13 @@ class LocalRepositorySpec {
                 downloads = image2.downloads.toUInt()
             )
             val overviewItem1 = OverviewItem(
+                id = image1.imageId,
                 thumbnail = image1.previewUrl,
                 userName = image1.user,
                 tags = image1.tags
             )
             val overviewItem2 = OverviewItem(
+                id = image2.imageId,
                 thumbnail = image2.previewUrl,
                 userName = image2.user,
                 tags = image2.tags
@@ -775,7 +777,6 @@ class LocalRepositorySpec {
                 query = query,
                 pageId = (pageId + 9).toUShort(),
                 imageInfo = RepositoryContract.RemoteRepositoryResponse(
-                    imageIds = imageIds,
                     overview = listOf(overviewItem1, overviewItem2),
                     detailedView = listOf(detailViewItem1, detailViewItem2),
                     totalAmountOfItems = total
@@ -802,7 +803,6 @@ class LocalRepositorySpec {
         val total: Int = fixture.fixture(200, 400)
         val now: Long = fixture.fixture(PublicApi.Sign.POSITIVE)
 
-        val imageIds: List<Long> = fixture.listFixture(size = 2)
         val image1 = fixture.imageFixture()
         val image2 = fixture.imageFixture()
         val detailViewItem1 = DetailViewItem(
@@ -822,11 +822,13 @@ class LocalRepositorySpec {
             downloads = image2.downloads.toUInt()
         )
         val overviewItem1 = OverviewItem(
+            id = image1.imageId,
             thumbnail = image1.previewUrl,
             userName = image1.user,
             tags = image1.tags
         )
         val overviewItem2 = OverviewItem(
+            id = image2.imageId,
             thumbnail = image2.previewUrl,
             userName = image2.user,
             tags = image2.tags
@@ -844,7 +846,6 @@ class LocalRepositorySpec {
             query = query,
             pageId = (9).toUShort(),
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
-                imageIds = imageIds,
                 overview = listOf(overviewItem1, overviewItem2),
                 detailedView = listOf(detailViewItem1, detailViewItem2),
                 totalAmountOfItems = total

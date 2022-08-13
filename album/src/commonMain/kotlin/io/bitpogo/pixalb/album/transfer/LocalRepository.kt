@@ -52,6 +52,7 @@ internal class LocalRepository(
     private fun toOverview(images: List<Image>): ResultContract<List<OverviewItem>, PixabayError> {
         val overview = images.map { image ->
             OverviewItem(
+                id = image.imageId,
                 thumbnail = image.previewUrl,
                 userName = image.user,
                 tags = image.tags
@@ -79,10 +80,11 @@ internal class LocalRepository(
         query: FetchQueryInfo?
     ): ResultContract<List<OverviewItem>, PixabayError> {
         val offset = pageId.resolveOffset()
+
         return when {
-            query == null -> Failure(PixabayError.MissingEntry())
-            query.totalPages < offset -> Failure(PixabayError.EntryCap())
-            query.storedPages < offset -> Failure(PixabayError.MissingPage())
+            query == null -> Failure(PixabayError.MissingEntry)
+            query.totalPages < offset -> Failure(PixabayError.EntryCap)
+            query.storedPages < offset -> Failure(PixabayError.MissingPage)
             else -> resolveOverview(query, offset)
         }
     }
@@ -151,17 +153,16 @@ internal class LocalRepository(
         query: String,
         imageInfo: RepositoryContract.RemoteRepositoryResponse
     ) {
-        imageInfo.imageIds.forEachIndexed { idx, id ->
+        imageInfo.overview.forEachIndexed { idx, overview ->
             val image = imageInfo.detailedView[idx]
-            val preview = imageInfo.overview[idx].thumbnail
 
-            sqlService.addImageQuery(query, id)
+            sqlService.addImageQuery(query, overview.id)
             sqlService.addImage(
-                imageId = id,
+                imageId = overview.id,
                 user = image.userName,
                 tags = image.tags,
                 largeUrl = image.imageUrl,
-                previewUrl = preview,
+                previewUrl = overview.thumbnail,
                 comments = image.comments.toInt(),
                 likes = image.likes.toInt(),
                 downloads = image.downloads.toInt()

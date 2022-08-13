@@ -12,12 +12,12 @@ import io.bitpogo.pixalb.album.database.PixabayDataBase
 import io.bitpogo.pixalb.album.domain.AlbumStore
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
 import io.bitpogo.pixalb.album.fixture.pixabayItemsFixture
+import io.bitpogo.pixalb.album.kmock
 import io.bitpogo.pixalb.album.testScope1
 import io.bitpogo.pixalb.album.testScope2
 import io.bitpogo.pixalb.client.ClientContract
 import io.bitpogo.pixalb.client.ClientMock
 import io.bitpogo.pixalb.client.error.PixabayClientError
-import io.bitpogo.pixalb.store.kmock
 import io.bitpogo.util.coroutine.result.Failure
 import io.bitpogo.util.coroutine.result.Success
 import kotlin.test.AfterTest
@@ -56,13 +56,14 @@ class IntegrationTest {
     fun `It fetches, stores and resolves an overview`() {
         // Given
         val client: ClientMock = kmock()
-        val result = Channel<AlbumContract.OverviewState>()
+        val result = Channel<AlbumContract.OverviewStoreState>()
         val query: String = fixture.fixture()
         val pageId: UShort = fixture.fixture(1.toUShort(), 4.toUShort())
 
         val clientResponse = fixture.pixabayItemsFixture { "tag" }
         val overview = clientResponse.items.map { item ->
             OverviewItem(
+                id = item.id,
                 thumbnail = item.preview,
                 userName = item.user,
                 tags = item.tags.split(", ")
@@ -84,7 +85,7 @@ class IntegrationTest {
 
         // Then
         runBlockingTestWithTimeout {
-            result.receive() mustBe AlbumContract.OverviewState.Initial
+            result.receive() mustBe AlbumContract.OverviewStoreState.Initial
         }
 
         // When
@@ -92,9 +93,9 @@ class IntegrationTest {
 
         // Then
         runBlockingTestWithTimeout {
-            result.receive() mustBe AlbumContract.OverviewState.Pending
+            result.receive() mustBe AlbumContract.OverviewStoreState.Pending
 
-            (result.receive() as AlbumContract.OverviewState.Accepted).value mustBe overview
+            (result.receive() as AlbumContract.OverviewStoreState.Accepted).value mustBe overview
         }
     }
 
@@ -103,13 +104,14 @@ class IntegrationTest {
         // Given
         var firstCall = true
         val client: ClientMock = kmock()
-        val result = Channel<AlbumContract.OverviewState>()
+        val result = Channel<AlbumContract.OverviewStoreState>()
         val query: String = fixture.fixture()
         val pageId: UShort = fixture.fixture(1.toUShort(), 4.toUShort())
 
         val clientResponse = fixture.pixabayItemsFixture { "tag" }
         val overview = clientResponse.items.map { item ->
             OverviewItem(
+                id = item.id,
                 thumbnail = item.preview,
                 userName = item.user,
                 tags = item.tags.split(", ")
@@ -138,7 +140,7 @@ class IntegrationTest {
 
         // Then
         runBlockingTestWithTimeout {
-            result.receive() mustBe AlbumContract.OverviewState.Initial
+            result.receive() mustBe AlbumContract.OverviewStoreState.Initial
         }
 
         // When
@@ -146,9 +148,9 @@ class IntegrationTest {
 
         // Then
         runBlockingTestWithTimeout {
-            result.receive() mustBe AlbumContract.OverviewState.Pending
+            result.receive() mustBe AlbumContract.OverviewStoreState.Pending
 
-            (result.receive() as AlbumContract.OverviewState.Accepted).value mustBe overview
+            (result.receive() as AlbumContract.OverviewStoreState.Accepted).value mustBe overview
         }
 
         // When
@@ -156,9 +158,9 @@ class IntegrationTest {
 
         // Then
         runBlockingTestWithTimeout {
-            result.receive() mustBe AlbumContract.OverviewState.Pending
+            result.receive() mustBe AlbumContract.OverviewStoreState.Pending
 
-            (result.receive() as AlbumContract.OverviewState.Accepted).value mustBe overview
+            (result.receive() as AlbumContract.OverviewStoreState.Accepted).value mustBe overview
         }
     }
 }

@@ -30,28 +30,6 @@ kotlin {
 
     jvm()
 
-    /*
-    js(IR) {
-        compilations {
-            this.forEach {
-                it.compileKotlinTask.kotlinOptions.sourceMap = true
-                it.compileKotlinTask.kotlinOptions.metaInfo = true
-
-                if (it.name == "main") {
-                    it.compileKotlinTask.kotlinOptions.main = "call"
-                }
-            }
-        }
-
-        browser {
-            testTask {
-                useKarma {
-                    useChromeHeadlessNoSandbox()
-                }
-            }
-        }
-    }*/
-
     sourceSets {
         all {
             languageSettings.apply {

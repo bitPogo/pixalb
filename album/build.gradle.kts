@@ -8,7 +8,6 @@ import tech.antibytes.gradle.dependency.Dependency
 import io.bitpogo.gradle.pixalb.dependency.Dependency as LocalDependency
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 
-
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
@@ -47,7 +46,7 @@ kotlin {
                 implementation(Dependency.multiplatform.coroutines.common)
                 implementation((Dependency.multiplatform.ktor.logger))
 
-                implementation(Dependency.multiplatform.koin.core)
+                implementation(Dependency.multiplatform.koin.core.replace("3.2.0", "3.1.6"))
 
                 implementation(Dependency.multiplatform.serialization.common)
                 implementation(Dependency.multiplatform.serialization.json)
@@ -127,7 +126,7 @@ android {
 }
 
 kmock {
-    rootPackage = "io.bitpogo.pixalb.store"
+    rootPackage = "io.bitpogo.pixalb.album"
     freezeOnDefault = false
     allowInterfaces = true
 }

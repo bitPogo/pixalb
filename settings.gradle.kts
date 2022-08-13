@@ -9,10 +9,10 @@ pluginManagement {
 includeBuild("gradlePlugin/pixabay-album-dependency")
 
 include(
-    ":example-android-application",
     ":coroutine-helper",
     ":client",
-    ":album"
+    ":album",
+    ":app-android"
 )
 
 buildCache {
@@ -24,3 +24,4 @@ buildCache {
 }
 
 rootProject.name = "pixabay-album"
+include(":app")

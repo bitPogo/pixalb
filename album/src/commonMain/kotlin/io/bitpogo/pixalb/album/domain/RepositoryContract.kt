@@ -15,8 +15,7 @@ internal object RepositoryContract {
     data class RemoteRepositoryResponse(
         val totalAmountOfItems: Int,
         val overview: List<OverviewItem>,
-        val detailedView: List<DetailViewItem>,
-        val imageIds: List<Long>
+        val detailedView: List<DetailViewItem>
     )
 
     interface RemoteRepository {

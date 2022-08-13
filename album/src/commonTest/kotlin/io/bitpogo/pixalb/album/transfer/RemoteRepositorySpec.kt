@@ -12,10 +12,10 @@ import io.bitpogo.pixalb.album.domain.model.DetailViewItem
 import io.bitpogo.pixalb.album.domain.model.OverviewItem
 import io.bitpogo.pixalb.album.fixture.StringAlphaGenerator
 import io.bitpogo.pixalb.album.fixture.pixabayItemsFixture
+import io.bitpogo.pixalb.album.kmock
 import io.bitpogo.pixalb.client.ClientContract
 import io.bitpogo.pixalb.client.ClientMock
 import io.bitpogo.pixalb.client.error.PixabayClientError
-import io.bitpogo.pixalb.store.kmock
 import io.bitpogo.util.coroutine.result.Failure
 import io.bitpogo.util.coroutine.result.Success
 import kotlin.test.Test
@@ -70,12 +70,13 @@ class RemoteRepositorySpec {
         client._fetchImages returns Success(response)
 
         // When
-        val (total, overview, details, imageIds) = RemoteRepository(client).fetch(query, pageId).unwrap()
+        val (total, overview, details) = RemoteRepository(client).fetch(query, pageId).unwrap()
 
         // Then
         total mustBe response.total
         overview.size mustBe 1
         overview.first() mustBe OverviewItem(
+            id = response.items.first().id,
             userName = response.items.first().user,
             thumbnail = response.items.first().preview,
             tags = listOf(response.items.first().tags)
@@ -89,8 +90,6 @@ class RemoteRepositorySpec {
             downloads = response.items.first().downloads,
             comments = response.items.first().comments
         )
-        imageIds.size mustBe 1
-        imageIds.first() mustBe response.items.first().id
 
         assertProxy {
             client._fetchImages.hasBeenStrictlyCalledWith(query, paging[pageId])
@@ -108,12 +107,13 @@ class RemoteRepositorySpec {
         client._fetchImages returns Success(response)
 
         // When
-        val (total, overview, details, imageIds) = RemoteRepository(client).fetch(query, pageId).unwrap()
+        val (total, overview, details) = RemoteRepository(client).fetch(query, pageId).unwrap()
 
         // Then
         total mustBe response.total
         overview.size mustBe 1
         overview.first() mustBe OverviewItem(
+            id = response.items.first().id,
             userName = response.items.first().user,
             thumbnail = response.items.first().preview,
             tags = tags
@@ -127,8 +127,6 @@ class RemoteRepositorySpec {
             downloads = response.items.first().downloads,
             comments = response.items.first().comments
         )
-        imageIds.size mustBe 1
-        imageIds.first() mustBe response.items.first().id
 
         assertProxy {
             client._fetchImages.hasBeenStrictlyCalledWith(query, paging[pageId])
@@ -173,6 +171,45 @@ class RemoteRepositorySpec {
 
         assertProxy {
             client._fetchImages.hasBeenStrictlyCalledWith(query, paging[pageId])
+        }
+    }
+
+    @Test
+    fun `Given fetch is called with a pageId and a query it delegates the query while mapping the pageId`() = runBlockingTestWithTimeout(2000) {
+        // Given
+        (1..10).forEach { pageId ->
+            val query: String = fixture.fixture()
+            val response = fixture.pixabayItemsFixture(size = 1) { fixture.fixture(ascii) }
+
+            client._fetchImages returns Success(response)
+
+            // When
+            val (total, overview, details) = RemoteRepository(client).fetch(query, pageId.toUShort()).unwrap()
+
+            // Then
+            total mustBe response.total
+            overview.size mustBe 1
+            overview.first() mustBe OverviewItem(
+                id = response.items.first().id,
+                userName = response.items.first().user,
+                thumbnail = response.items.first().preview,
+                tags = listOf(response.items.first().tags)
+            )
+            details.size mustBe 1
+            details.first() mustBe DetailViewItem(
+                userName = response.items.first().user,
+                imageUrl = response.items.first().large,
+                tags = listOf(response.items.first().tags),
+                likes = response.items.first().likes,
+                downloads = response.items.first().downloads,
+                comments = response.items.first().comments
+            )
+
+            assertProxy {
+                client._fetchImages.hasBeenStrictlyCalledWith(query, paging[pageId.toUShort()])
+            }
+
+            client._clearMock()
         }
     }
 }

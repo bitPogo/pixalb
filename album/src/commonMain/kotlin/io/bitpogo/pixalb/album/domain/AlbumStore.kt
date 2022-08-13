@@ -29,17 +29,17 @@ class AlbumStore internal constructor(
     private val localRepository: RepositoryContract.LocalRepository by koin.koin.inject()
     private val remoteRepository: RepositoryContract.RemoteRepository by koin.koin.inject()
 
-    override val overview: SharedFlowWrapper<AlbumContract.OverviewState> by koin.koin.inject(
+    override val overview: SharedFlowWrapper<AlbumContract.OverviewStoreState> by koin.koin.inject(
         named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)
     )
-    private val overviewPropagator: MutableStateFlow<AlbumContract.OverviewState> by koin.koin.inject(
+    private val overviewPropagator: MutableStateFlow<AlbumContract.OverviewStoreState> by koin.koin.inject(
         named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)
     )
 
-    override val detailview: SharedFlowWrapper<AlbumContract.DetailviewState> by koin.koin.inject(
+    override val detailview: SharedFlowWrapper<AlbumContract.DetailviewStoreState> by koin.koin.inject(
         named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)
     )
-    private val detailviewPropagator: MutableStateFlow<AlbumContract.DetailviewState> by koin.koin.inject(
+    private val detailviewPropagator: MutableStateFlow<AlbumContract.DetailviewStoreState> by koin.koin.inject(
         named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)
     )
 
@@ -53,38 +53,44 @@ class AlbumStore internal constructor(
     }
 
     private fun goIntoPendingOverview() {
-        overviewPropagator.update { AlbumContract.OverviewState.Pending }
+        overviewPropagator.update { AlbumContract.OverviewStoreState.Pending }
     }
 
     private suspend fun loadAndStoreMissingEntries(
         query: String,
         pageId: UShort
-    ): AlbumContract.OverviewState {
+    ): AlbumContract.OverviewStoreState {
         val imageInfo = remoteRepository.fetch(query, pageId)
 
-        if (imageInfo.isError()) {
-            return AlbumContract.OverviewState.Error(imageInfo.error!!)
+        return if (imageInfo.isError()) {
+            AlbumContract.OverviewStoreState.Error(imageInfo.error!!)
+        } else {
+            localRepository.storeImages(
+                query = query,
+                pageId = pageId,
+                imageInfo = imageInfo.unwrap()
+            )
+
+            AlbumContract.OverviewStoreState.Accepted(imageInfo.unwrap().overview)
         }
-
-        localRepository.storeImages(
-            query = query,
-            pageId = pageId,
-            imageInfo = imageInfo.unwrap()
-        )
-
-        return AlbumContract.OverviewState.Accepted(imageInfo.unwrap().overview)
     }
 
     private suspend fun resolveOverview(
         query: String,
         pageId: UShort
-    ): AlbumContract.OverviewState {
+    ): AlbumContract.OverviewStoreState {
         val storedOverview = localRepository.fetchOverview(query, pageId)
 
         return when (storedOverview.error) {
-            null -> AlbumContract.OverviewState.Accepted(storedOverview.unwrap())
-            is PixabayError.MissingEntry -> loadAndStoreMissingEntries(query, pageId)
-            else -> AlbumContract.OverviewState.Error(storedOverview.error!!)
+            null -> {
+                AlbumContract.OverviewStoreState.Accepted(storedOverview.unwrap())
+            }
+            is PixabayError.MissingEntry, is PixabayError.MissingPage -> {
+                loadAndStoreMissingEntries(query, pageId)
+            }
+            else -> {
+                AlbumContract.OverviewStoreState.Error(storedOverview.error!!)
+            }
         }
     }
 
@@ -97,20 +103,20 @@ class AlbumStore internal constructor(
     }
 
     private fun goIntoPendingDetailview() {
-        detailviewPropagator.update { AlbumContract.DetailviewState.Pending }
+        detailviewPropagator.update { AlbumContract.DetailviewStoreState.Pending }
     }
 
-    private suspend fun wrapDetailedView(imageId: Long): AlbumContract.DetailviewState {
+    private suspend fun wrapDetailedView(imageId: Long): AlbumContract.DetailviewStoreState {
         val result = localRepository.fetchDetailedView(imageId)
 
         return if (result.isError()) {
-            AlbumContract.DetailviewState.Error(result.error!!)
+            AlbumContract.DetailviewStoreState.Error(result.error!!)
         } else {
-            AlbumContract.DetailviewState.Accepted(result.unwrap())
+            AlbumContract.DetailviewStoreState.Accepted(result.unwrap())
         }
     }
 
-    override fun fetchDetailedView(imageId: Long) {
+    override fun fetchDetailView(imageId: Long) {
         goIntoPendingDetailview()
 
         executeEvent(detailviewPropagator) {

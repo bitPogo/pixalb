@@ -8,8 +8,8 @@ package io.bitpogo.pixalb.album.domain
 
 import io.bitpogo.pixalb.album.AlbumContract
 import io.bitpogo.pixalb.album.database.PixabayDataBase
+import io.bitpogo.pixalb.album.kmock
 import io.bitpogo.pixalb.client.ClientContract
-import io.bitpogo.pixalb.store.kmock
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract
 import kotlin.test.Test
 import tech.antibytes.kmock.MockCommon

@@ -16,30 +16,30 @@ import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.SharedFlowWrapper
 
 object AlbumContract {
-    sealed class OverviewState : State {
-        object Initial : OverviewState()
-        object Pending : OverviewState()
-        class Accepted(val value: List<OverviewItem>) : OverviewState()
-        class Error(val value: PixabayError) : OverviewState()
+    sealed class OverviewStoreState : State {
+        object Initial : OverviewStoreState()
+        object Pending : OverviewStoreState()
+        class Accepted(val value: List<OverviewItem>) : OverviewStoreState()
+        class Error(val value: PixabayError) : OverviewStoreState()
     }
 
-    sealed class DetailviewState : State {
-        object Initial : DetailviewState()
-        object Pending : DetailviewState()
-        class Accepted(val value: DetailViewItem) : DetailviewState()
-        class Error(val value: PixabayError) : DetailviewState()
+    sealed class DetailviewStoreState : State {
+        object Initial : DetailviewStoreState()
+        object Pending : DetailviewStoreState()
+        class Accepted(val value: DetailViewItem) : DetailviewStoreState()
+        class Error(val value: PixabayError) : DetailviewStoreState()
     }
 
     interface Store {
-        val overview: SharedFlowWrapper<OverviewState>
-        val detailview: SharedFlowWrapper<DetailviewState>
+        val overview: SharedFlowWrapper<OverviewStoreState>
+        val detailview: SharedFlowWrapper<DetailviewStoreState>
 
         fun fetchOverview(
             query: String,
             pageId: UShort
         )
 
-        fun fetchDetailedView(imageId: Long)
+        fun fetchDetailView(imageId: Long)
     }
 
     interface StoreFactory {

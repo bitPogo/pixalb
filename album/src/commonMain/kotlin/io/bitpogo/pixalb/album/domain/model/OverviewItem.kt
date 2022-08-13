@@ -7,6 +7,7 @@
 package io.bitpogo.pixalb.album.domain.model
 
 data class OverviewItem(
+    val id: Long,
     val thumbnail: String,
     val userName: String,
     val tags: List<String>

@@ -13,6 +13,7 @@ import tech.antibytes.kfixture.listFixture
 
 fun PublicApi.Fixture.overviewItemFixture(): OverviewItem {
     return OverviewItem(
+        id = fixture(),
         thumbnail = fixture(),
         userName = fixture(),
         tags = listFixture()
