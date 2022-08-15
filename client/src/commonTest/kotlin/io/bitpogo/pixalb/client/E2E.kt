@@ -7,6 +7,7 @@
 package io.bitpogo.pixalb.client
 
 import io.bitpogo.pixalb.client.test.config.TestConfig
+import kotlin.js.JsName
 import kotlin.test.Ignore
 import kotlin.test.Test
 import tech.antibytes.util.test.coroutine.runBlockingTestWithTimeout
@@ -15,6 +16,7 @@ import tech.antibytes.util.test.isNot
 class E2E {
     @Test
     @Ignore
+    @JsName("fn0")
     fun `It fetches Images`() = runBlockingTestWithTimeout(5000) {
         // Given
         val client = PixabayClient.getInstance(

@@ -11,6 +11,7 @@ import io.bitpogo.pixalb.album.database.PixabayDataBase
 import io.bitpogo.pixalb.album.kmock
 import io.bitpogo.pixalb.client.ClientContract
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract
+import kotlin.js.JsName
 import kotlin.test.Test
 import tech.antibytes.kmock.MockCommon
 import tech.antibytes.util.test.fulfils
@@ -22,11 +23,13 @@ import tech.antibytes.util.test.fulfils
 )
 class AlbumStoreFactorySpec {
     @Test
+    @JsName("fn1")
     fun `It fulfils AlbumStoreFactory`() {
         AlbumStore fulfils AlbumContract.StoreFactory::class
     }
 
     @Test
+    @JsName("fn2")
     fun `Given getInstance is called it returns a Store`() {
         // When
         val store = AlbumStore.getInstance(kmock(), kmock(), kmock(), kmock())

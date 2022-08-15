@@ -20,8 +20,7 @@ import io.bitpogo.pixalb.client.ClientMock
 import io.bitpogo.pixalb.client.error.PixabayClientError
 import io.bitpogo.util.coroutine.result.Failure
 import io.bitpogo.util.coroutine.result.Success
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
+import kotlin.js.JsName
 import kotlin.test.Test
 import kotlinx.coroutines.channels.Channel
 import tech.antibytes.kfixture.fixture
@@ -30,6 +29,7 @@ import tech.antibytes.kmock.MockCommon
 import tech.antibytes.util.test.annotations.RobolectricConfig
 import tech.antibytes.util.test.annotations.RobolectricTestRunner
 import tech.antibytes.util.test.annotations.RunWithRobolectricTestRunner
+import tech.antibytes.util.test.coroutine.AsyncTestReturnValue
 import tech.antibytes.util.test.coroutine.runBlockingTestWithTimeout
 import tech.antibytes.util.test.mustBe
 
@@ -42,18 +42,9 @@ class IntegrationTest {
     private val fixture = kotlinFixture()
     private val db = DatabaseDriver()
 
-    @BeforeTest
-    fun setUp() {
-        db.open(PixabayDataBase.Schema)
-    }
-
-    @AfterTest
-    fun tearDown() {
-        db.close()
-    }
-
     @Test
-    fun `It fetches, stores and resolves an overview`() {
+    @JsName("fn1")
+    fun `It fetches, stores and resolves an overview`(): AsyncTestReturnValue {
         // Given
         val client: ClientMock = kmock()
         val result = Channel<AlbumContract.OverviewStoreState>()
@@ -72,35 +63,40 @@ class IntegrationTest {
 
         client._fetchImages returns Success(clientResponse)
         // When
-        val store = AlbumStore.getInstance(
-            client,
-            db.dataBase.imageQueries,
-            { testScope2 },
-            { testScope1 }
-        )
-
-        store.overview.subscribeWithSuspendingFunction { state ->
-            result.send(state)
+        runBlockingTestWithTimeout {
+            db.open(PixabayDataBase.Schema)
         }
 
-        // Then
-        runBlockingTestWithTimeout {
+        return runBlockingTestWithTimeout {
+            val store = AlbumStore.getInstance(
+                client,
+                db.dataBase.imageQueries,
+                { testScope2 },
+                { testScope1 }
+            )
+
+            store.overview.subscribeWithSuspendingFunction { state ->
+                result.send(state)
+            }
+
+            // Then
             result.receive() mustBe AlbumContract.OverviewStoreState.Initial
-        }
 
-        // When
-        store.fetchOverview(query, pageId)
+            // When
+            store.fetchOverview(query, pageId)
 
-        // Then
-        runBlockingTestWithTimeout {
+            // Then
             result.receive() mustBe AlbumContract.OverviewStoreState.Pending
 
             (result.receive() as AlbumContract.OverviewStoreState.Accepted).value mustBe overview
+
+            db.close()
         }
     }
 
     @Test
-    fun `It fetches an overview only once`() {
+    @JsName("fn2")
+    fun `It fetches an overview only once`(): AsyncTestReturnValue {
         // Given
         var firstCall = true
         val client: ClientMock = kmock()
@@ -126,41 +122,50 @@ class IntegrationTest {
                 Failure(PixabayClientError.RequestError(23))
             }
         }
-        // When
-        val store = AlbumStore.getInstance(
-            client,
-            db.dataBase.imageQueries,
-            { testScope2 },
-            { testScope1 }
-        )
 
-        store.overview.subscribeWithSuspendingFunction { state ->
-            result.send(state)
+        // When
+        runBlockingTestWithTimeout {
+            db.open(PixabayDataBase.Schema)
         }
 
-        // Then
-        runBlockingTestWithTimeout {
+        return runBlockingTestWithTimeout {
+            val store = AlbumStore.getInstance(
+                client,
+                db.dataBase.imageQueries,
+                { testScope2 },
+                { testScope1 }
+            )
+
+            store.overview.subscribeWithSuspendingFunction { state ->
+                result.send(state)
+            }
+
+            // Then
             result.receive() mustBe AlbumContract.OverviewStoreState.Initial
-        }
 
-        // When
-        store.fetchOverview(query, pageId)
+            // When
+            store.fetchOverview(query, pageId)
 
-        // Then
-        runBlockingTestWithTimeout {
+            // Then
             result.receive() mustBe AlbumContract.OverviewStoreState.Pending
 
-            (result.receive() as AlbumContract.OverviewStoreState.Accepted).value mustBe overview
-        }
+            var items = (result.receive() as AlbumContract.OverviewStoreState.Accepted).value
+            items.forEachIndexed { idx, overviewItem ->
+                overviewItem mustBe overview[idx]
+            }
 
-        // When
-        store.fetchOverview(query, pageId)
+            // When
+            store.fetchOverview(query, pageId)
 
-        // Then
-        runBlockingTestWithTimeout {
+            // Then
             result.receive() mustBe AlbumContract.OverviewStoreState.Pending
 
-            (result.receive() as AlbumContract.OverviewStoreState.Accepted).value mustBe overview
+            items = (result.receive() as AlbumContract.OverviewStoreState.Accepted).value
+            items.forEachIndexed { idx, overviewItem ->
+                overviewItem.thumbnail mustBe overview[idx].thumbnail
+            }
+
+            db.close()
         }
     }
 }

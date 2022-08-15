@@ -4,6 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
+import io.mockk.MockKGateway.Companion.implementation
 import tech.antibytes.gradle.dependency.Dependency
 import io.bitpogo.gradle.pixalb.dependency.Dependency as LocalDependency
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
@@ -29,6 +30,27 @@ kotlin {
     android()
 
     jvm()
+
+    js(IR) {
+        compilations {
+            this.forEach {
+                it.compileKotlinTask.kotlinOptions.sourceMap = true
+                it.compileKotlinTask.kotlinOptions.metaInfo = true
+
+                if (it.name == "main") {
+                    it.compileKotlinTask.kotlinOptions.main = "call"
+                }
+            }
+        }
+
+        browser {
+            testTask {
+                useMocha {
+                    timeout = "5s"
+                }
+            }
+        }
+    }
 
     sourceSets {
         all {
@@ -112,6 +134,22 @@ kotlin {
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
                 implementation(LocalDependency.sqldelight.jvm)
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation(LocalDependency.sqldelight.js)
+                implementation(Dependency.multiplatform.kotlin.js)
+                implementation(Dependency.js.nodejs)
+                implementation(devNpm("copy-webpack-plugin", "11.0.0"))
+                implementation(npm("sql.js", "1.7.0"))
+            }
+        }
+
+        val jsTest by getting {
+            dependencies {
+                implementation(Dependency.multiplatform.test.js)
             }
         }
     }

@@ -13,7 +13,7 @@ internal const val testDatabase = "test"
 expect class DatabaseDriver constructor() {
     val dataBase: PixabayDataBase
 
-    fun open(schema: SqlDriver.Schema)
+    suspend fun open(schema: SqlDriver.Schema)
 
     fun close()
 }
