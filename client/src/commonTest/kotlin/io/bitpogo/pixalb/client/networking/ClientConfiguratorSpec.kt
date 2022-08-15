@@ -45,6 +45,46 @@ class ClientConfiguratorSpec {
     }
 
     @Test
+    @JsName("fn1a")
+    fun `Given configure is called with a ClientConfigurator and null it does nothing`() = runBlockingTestInContext(GlobalScope.coroutineContext) {
+        // Given
+        val plugin: HttpClientPluginMock<Any, Any> = kmock(
+            templateType = HttpClientPlugin::class,
+            relaxUnitFun = true
+        )
+        val config: Any = fixture.fixture()
+
+        plugin._key returns AttributeKey(fixture.fixture())
+        plugin._prepare run { configAction ->
+            config.apply(configAction)
+        }
+
+        val pluginConfigurator: PluginConfiguratorMock<Any, Any?> = kmock(
+            relaxUnitFun = true,
+            templateType = NetworkingContract.PluginConfigurator::class
+        )
+
+        // When
+        HttpClient(MockEngine) {
+            ClientConfigurator.configure(
+                this,
+                null
+            )
+
+            engine {
+                addHandler {
+                    respond(fixture.fixture<String>())
+                }
+            }
+        }
+
+        // Then
+        assertProxy {
+            pluginConfigurator._configure.hasNoFurtherInvocations()
+        }
+    }
+
+    @Test
     @JsName("fn1")
     fun `Given configure is called with a ClientConfigurator and a Set of Plugin it installs a given Plugin`() = runBlockingTestInContext(GlobalScope.coroutineContext) {
         // Given

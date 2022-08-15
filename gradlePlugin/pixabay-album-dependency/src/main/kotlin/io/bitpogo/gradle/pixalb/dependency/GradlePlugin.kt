@@ -17,4 +17,5 @@ object GradlePlugin {
     const val kmock = "tech.antibytes.kmock:kmock-gradle:${Version.antibytes.kmock}"
     const val sqldelight = "com.squareup.sqldelight:gradle-plugin:${Version.sqldelight}"
     const val hilt = "com.google.dagger:hilt-android-gradle-plugin:${Version.google.hilt}"
+    const val paparazzi = "app.cash.paparazzi:paparazzi-gradle-plugin:${Version.paparazzi}"
 }

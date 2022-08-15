@@ -29,7 +29,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.Logging
 import kotlinx.serialization.json.Json
 
-internal class PixabayClient internal constructor(
+class PixabayClient internal constructor(
     private val token: String,
     private val requestBuilder: NetworkingContract.RequestBuilderFactory,
     private val connectivityManager: ClientContract.ConnectivityManager
@@ -46,7 +46,7 @@ internal class PixabayClient internal constructor(
 
     private suspend fun fetchImagesFromApi(
         query: String,
-        page: UInt
+        page: UShort
     ): PixabayResponse {
         return requestBuilder
             .create()
@@ -64,7 +64,7 @@ internal class PixabayClient internal constructor(
 
     override suspend fun fetchImages(
         query: String,
-        page: UInt
+        page: UShort
     ): ResultContract<PixabayResponse, PixabayClientError> = guardTransaction {
         try {
             Success(fetchImagesFromApi(query, page))

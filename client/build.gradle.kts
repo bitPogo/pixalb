@@ -74,7 +74,6 @@ kotlin {
         val androidMain by getting {
             dependencies {
                implementation(Dependency.multiplatform.kotlin.android)
-                implementation(Dependency.multiplatform.coroutines.android)
                 implementation(Dependency.multiplatform.ktor.android.client)
             }
         }
@@ -91,14 +90,15 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
+                implementation(Dependency.android.test.ktx)
                 implementation(Dependency.android.test.robolectric)
+                implementation(Dependency.android.test.junit)
             }
         }
 
         val jvmMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.jdk8)
-                implementation(Dependency.multiplatform.coroutines.common)
                 implementation(Dependency.multiplatform.ktor.jvm.client)
             }
         }

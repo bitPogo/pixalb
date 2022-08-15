@@ -4,7 +4,7 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package io.cryptopunks.client.api.fixture
+package io.bitpogo.pixalb.client.fixture
 
 import kotlin.random.Random
 import tech.antibytes.kfixture.PublicApi

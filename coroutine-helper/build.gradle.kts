@@ -72,7 +72,7 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-               implementation(Dependency.multiplatform.kotlin.android)
+                implementation(Dependency.multiplatform.kotlin.android)
                 implementation(Dependency.multiplatform.coroutines.android)
                 implementation(LocalDependency.sqldelight.android)
             }
@@ -99,7 +99,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(Dependency.multiplatform.kotlin.jdk8)
-                implementation(LocalDependency.sqldelight.jvm)
             }
         }
         val jvmTest by getting {

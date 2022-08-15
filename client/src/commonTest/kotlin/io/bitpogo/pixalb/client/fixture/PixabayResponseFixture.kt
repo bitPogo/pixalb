@@ -30,8 +30,6 @@ fun PublicApi.Fixture.pixabayResponseFixture(
     val items: MutableList<PixabayItem> = mutableListOf()
     val amountOfItems: Int = size ?: fixture(1, 10)
 
-    println(pixabayItemFixture())
-
     repeat(amountOfItems) {
         items.add(pixabayItemFixture())
     }

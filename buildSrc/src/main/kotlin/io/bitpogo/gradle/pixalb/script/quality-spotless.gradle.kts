@@ -9,7 +9,13 @@ plugins {
 spotless {
     kotlin {
         target("**/*.kt")
-        targetExclude("buildSrc/build/", "**/buildSrc/build/", "**/external/")
+        targetExclude(
+            "buildSrc/build/",
+            "**/buildSrc/build/",
+            "**/external/",
+            "**/generated/",
+            "**/build/kspCaches/"
+        )
         ktlint(Version.gradle.ktLint).editorConfigOverride(
             mapOf(
                 "disabled_rules" to "no-wildcard-imports",
