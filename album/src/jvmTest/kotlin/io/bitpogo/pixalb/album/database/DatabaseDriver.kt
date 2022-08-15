@@ -23,7 +23,7 @@ actual class DatabaseDriver {
             )
         )
 
-    actual fun open(schema: SqlDriver.Schema) {
+    actual suspend fun open(schema: SqlDriver.Schema) {
         driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
         schema.create(driver!!)
     }

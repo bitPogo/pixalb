@@ -6,6 +6,7 @@
 
 package io.bitpogo.pixalb.client.serialization
 
+import kotlin.js.JsName
 import kotlin.test.Test
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonBuilder
@@ -14,11 +15,13 @@ import tech.antibytes.util.test.mustBe
 
 class JsonConfiguratorSpec {
     @Test
+    @JsName("fn0")
     fun `It fulfils JsonConfigurator`() {
         JsonConfigurator() fulfils JsonConfiguratorContract::class
     }
 
     @Test
+    @JsName("fn1")
     fun `Given configure is called with a JsonBuilder it returns a JsonBuilder`() {
         // Given
         var builder: JsonBuilder? = null
@@ -32,6 +35,7 @@ class JsonConfiguratorSpec {
     }
 
     @Test
+    @JsName("fn2")
     fun `Given configure is called it configures the resulting Json Serializer`() {
         // Given
         var builder: JsonBuilder? = null

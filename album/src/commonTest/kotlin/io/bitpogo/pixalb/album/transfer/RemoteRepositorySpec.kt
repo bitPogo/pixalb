@@ -18,6 +18,7 @@ import io.bitpogo.pixalb.client.ClientMock
 import io.bitpogo.pixalb.client.error.PixabayClientError
 import io.bitpogo.util.coroutine.result.Failure
 import io.bitpogo.util.coroutine.result.Success
+import kotlin.js.JsName
 import kotlin.test.Test
 import tech.antibytes.kfixture.fixture
 import tech.antibytes.kfixture.kotlinFixture
@@ -56,11 +57,13 @@ class RemoteRepositorySpec {
     )
 
     @Test
+    @JsName("fn1")
     fun `It fulfils RemoteRepository`() {
         RemoteRepository(client) fulfils RepositoryContract.RemoteRepository::class
     }
 
     @Test
+    @JsName("fn2")
     fun `Given fetch is called with a pageId and a query it delegates the query and returns its mapped result`() = runBlockingTestWithTimeout(2000) {
         // Given
         val pageId: UShort = fixture.fixture(1.toUShort(), 10.toUShort())
@@ -97,6 +100,7 @@ class RemoteRepositorySpec {
     }
 
     @Test
+    @JsName("fn3")
     fun `Given fetch is called with a pageId and a query it delegates the query and returns its mapped result with tags`() = runBlockingTestWithTimeout(2000) {
         // Given
         val pageId: UShort = fixture.fixture(1.toUShort(), 10.toUShort())
@@ -134,6 +138,7 @@ class RemoteRepositorySpec {
     }
 
     @Test
+    @JsName("fn4")
     fun `Given fetch is called with a pageId and a query it delegates the query and returns its mapped error`() = runBlockingTestWithTimeout(2000) {
         // Given
         val pageId: UShort = fixture.fixture(1.toUShort(), 10.toUShort())
@@ -155,6 +160,7 @@ class RemoteRepositorySpec {
     }
 
     @Test
+    @JsName("fn5")
     fun `Given fetch is called with a pageId and a query it delegates the query and returns its mapped no connection error`() = runBlockingTestWithTimeout(2000) {
         // Given
         val pageId: UShort = fixture.fixture(1.toUShort(), 10.toUShort())
@@ -175,6 +181,7 @@ class RemoteRepositorySpec {
     }
 
     @Test
+    @JsName("fn6")
     fun `Given fetch is called with a pageId and a query it delegates the query while mapping the pageId`() = runBlockingTestWithTimeout(2000) {
         // Given
         (1..10).forEach { pageId ->

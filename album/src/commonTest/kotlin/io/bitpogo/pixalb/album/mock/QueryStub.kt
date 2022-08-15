@@ -12,18 +12,18 @@ import tech.antibytes.util.test.MockError
 
 class QueryStub<T : Any>(
     mapper: ((SqlCursor) -> T),
-    val execute: (() -> SqlCursor)
+    val _execute: (() -> SqlCursor)
 ) : Query<T>(
     mutableListOf(),
     mapper
 ) {
     override fun execute(): SqlCursor {
-        return execute.invoke()
+        return _execute.invoke()
     }
 }
 
 class SqlCursorStub(
-    var next: (() -> Boolean)? = null
+    var _next: (() -> Boolean)? = null
 ) : SqlCursor {
     override fun close() {
         /* Do nothing */
@@ -46,7 +46,7 @@ class SqlCursorStub(
     }
 
     override fun next(): Boolean {
-        return next?.invoke()
+        return _next?.invoke()
             ?: throw MockError.MissingStub("Missing Sideeffect next")
     }
 }

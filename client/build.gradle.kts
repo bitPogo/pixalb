@@ -30,6 +30,27 @@ kotlin {
 
     jvm()
 
+    js(IR) {
+        compilations {
+            this.forEach {
+                it.compileKotlinTask.kotlinOptions.sourceMap = true
+                it.compileKotlinTask.kotlinOptions.metaInfo = true
+
+                if (it.name == "main") {
+                    it.compileKotlinTask.kotlinOptions.main = "call"
+                }
+            }
+        }
+
+        browser {
+            testTask {
+                useKarma {
+                    useChromeHeadlessNoSandbox()
+                }
+            }
+        }
+    }
+
     sourceSets {
         all {
             languageSettings.apply {
@@ -106,6 +127,21 @@ kotlin {
             dependencies {
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation(Dependency.multiplatform.kotlin.js)
+                implementation(Dependency.js.nodejs)
+                implementation(Dependency.multiplatform.ktor.js.client)
+
+            }
+        }
+
+        val jsTest by getting {
+            dependencies {
+                implementation(Dependency.multiplatform.test.js)
             }
         }
     }

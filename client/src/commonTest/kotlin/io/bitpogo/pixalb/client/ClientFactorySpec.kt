@@ -6,6 +6,7 @@
 
 package io.bitpogo.pixalb.client
 
+import kotlin.js.JsName
 import kotlin.test.Test
 import tech.antibytes.kfixture.fixture
 import tech.antibytes.kfixture.kotlinFixture
@@ -20,11 +21,13 @@ class ClientFactorySpec {
     private val fixture = kotlinFixture()
 
     @Test
+    @JsName("fn0")
     fun `It fulfils ClientFactory`() {
         PixabayClient fulfils ClientContract.ClientFactory::class
     }
 
     @Test
+    @JsName("fn1")
     fun `Given getInstance is called it creates a PixabayClient`() {
         PixabayClient.getInstance(
             fixture.fixture(),

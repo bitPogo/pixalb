@@ -6,10 +6,9 @@
 
 package io.bitpogo.pixalb.album.database
 
-import android.app.Application
-import androidx.test.core.app.ApplicationProvider
-import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
+import com.squareup.sqldelight.drivers.sqljs.initSqlDriver
+import kotlinx.coroutines.await
 import kotlinx.serialization.json.Json
 
 actual class DatabaseDriver {
@@ -26,15 +25,11 @@ actual class DatabaseDriver {
         )
 
     actual suspend fun open(schema: SqlDriver.Schema) {
-        val app = ApplicationProvider.getApplicationContext<Application>()
-        driver = AndroidSqliteDriver(schema, app, testDatabase)
+        driver = initSqlDriver(schema).await()
     }
 
     actual fun close() {
         driver?.close()
         driver = null
-
-        val app = ApplicationProvider.getApplicationContext<Application>()
-        app.deleteDatabase(testDatabase)
     }
 }

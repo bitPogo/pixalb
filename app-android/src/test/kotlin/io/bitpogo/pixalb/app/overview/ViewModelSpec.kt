@@ -440,7 +440,11 @@ class ViewModelSpec {
         val viewModel = OverviewViewModel(store)
 
         CoroutineScope(Dispatchers.Default).launch {
-            viewModel.overview.collect { items -> result.send(items) }
+            viewModel.overview.collect { items ->
+                if (items != State.Initial) {
+                    result.send(items)
+                }
+            }
         }
 
         CoroutineScope(Dispatchers.Default).launch {
@@ -451,8 +455,6 @@ class ViewModelSpec {
 
         // Then
         runBlockingTestWithTimeout {
-            result.receive() mustBe State.Initial
-
             val success = result.receive()
             success fulfils State.Accepted::class
             success.value mustBe expectedValue1
@@ -487,7 +489,11 @@ class ViewModelSpec {
         val viewModel = OverviewViewModel(store)
 
         CoroutineScope(Dispatchers.Default).launch {
-            viewModel.overview.collect { items -> result.send(items) }
+            viewModel.overview.collect { items ->
+                if (items != State.Initial) {
+                    result.send(items)
+                }
+            }
         }
 
         CoroutineScope(Dispatchers.Default).launch {
@@ -498,8 +504,6 @@ class ViewModelSpec {
 
         // Then
         runBlockingTestWithTimeout {
-            result.receive() mustBe State.Initial
-
             val success = result.receive()
             success fulfils State.Accepted::class
             success.value mustBe expectedValue1
@@ -533,7 +537,11 @@ class ViewModelSpec {
         val viewModel = OverviewViewModel(store)
 
         CoroutineScope(Dispatchers.Default).launch {
-            viewModel.overview.collect { items -> result.send(items) }
+            viewModel.overview.collect { items ->
+                if (items != State.Initial) {
+                    result.send(items)
+                }
+            }
         }
 
         CoroutineScope(Dispatchers.Default).launch {
@@ -544,8 +552,6 @@ class ViewModelSpec {
 
         // Then
         runBlockingTestWithTimeout {
-            result.receive() mustBe State.Initial
-
             val success = result.receive()
             success fulfils State.Accepted::class
             success.value mustBe expectedValue1

@@ -17,6 +17,7 @@ import io.ktor.client.engine.mock.respond
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.statement.HttpStatement
 import io.ktor.http.HttpStatusCode
+import kotlin.js.JsName
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import tech.antibytes.kfixture.fixture
@@ -57,6 +58,7 @@ class ClientSpec {
     }
 
     @Test
+    @JsName("fn0")
     fun `It fulfils Client`() {
         PixabayClient(
             fixture.fixture(),
@@ -66,6 +68,7 @@ class ClientSpec {
     }
 
     @Test
+    @JsName("fn1")
     fun `Given fetchImages is called with a query and a page Index it returns an Error if it has no Connection`() = runBlockingTestWithTimeout {
         // Given
         val query: String = fixture.fixture(ascii)
@@ -85,6 +88,7 @@ class ClientSpec {
     }
 
     @Test
+    @JsName("fn2")
     fun `Given fetchImages is called with a query and a page Index it propagates Errors`() = runBlockingTestWithTimeout {
         // Given
         val query: String = fixture.fixture(ascii)
@@ -114,6 +118,7 @@ class ClientSpec {
     }
 
     @Test
+    @JsName("fn3")
     fun `Given fetchImages is called with a page Index it delegates the Call and returns the response`() = runBlockingTestWithTimeout {
         // Given
         val token: String = fixture.fixture()

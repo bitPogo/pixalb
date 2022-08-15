@@ -29,16 +29,27 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
+
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt' # See 'Supported distributions' for available options
           java-version: '11'
+
       - name: Cleanup
         run: ./gradlew clean
+
       - name: Lint
         run: ./gradlew spotlessCheck
+
       - name: Build
         run: ./gradlew build
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: failure()
+        with:
+          report_paths: '**/build/test-results/**/TEST-*.xml'
+
       - name: Run Instrumented Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
