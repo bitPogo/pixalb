@@ -24,10 +24,10 @@ object IconMessage {
     @Composable
     fun IconMessage(
         icon: Painter,
-        message: String
+        message: String,
     ) {
         Column(
-            modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
+            modifier = Modifier.padding(top = 16.dp).fillMaxWidth(),
         ) {
             Image(
                 painter = icon,
@@ -35,14 +35,14 @@ object IconMessage {
                 modifier = Modifier
                     .height(120.dp)
                     .width(120.dp)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.CenterHorizontally),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 message,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
         }
     }

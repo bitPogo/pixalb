@@ -20,27 +20,27 @@ fun OverviewListPreview() {
             id = 1,
             thumbnail = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9ymHYb2GFhrk67z9C--HLdnNSk366hEvBVdytb53SzBgQsfWi6apev5iMXJP0qyHfMs4&usqp=CAU",
             userName = "me",
-            tags = listOf("this", "is", "a")
+            tags = listOf("this", "is", "a"),
         ),
         OverviewItem(
             id = 2,
             thumbnail = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9ymHYb2GFhrk67z9C--HLdnNSk366hEvBVdytb53SzBgQsfWi6apev5iMXJP0qyHfMs4&usqp=CAU",
             userName = "not me",
-            tags = listOf("test")
+            tags = listOf("test"),
         ),
         OverviewItem(
             id = 3,
             thumbnail = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9ymHYb2GFhrk67z9C--HLdnNSk366hEvBVdytb53SzBgQsfWi6apev5iMXJP0qyHfMs4&usqp=CAU",
             userName = "somebody",
-            tags = listOf("other")
-        )
+            tags = listOf("other"),
+        ),
     )
 
     PixabayAlbumTheme {
         OverviewList(
             items = items,
             loadNextItems = { },
-            onClick = { }
+            onClick = { },
         )
     }
 }

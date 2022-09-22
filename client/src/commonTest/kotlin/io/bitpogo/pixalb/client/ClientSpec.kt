@@ -33,7 +33,7 @@ import tech.antibytes.util.test.sameAs
 @MockCommon(
     NetworkingContract.RequestBuilderFactory::class,
     NetworkingContract.RequestBuilder::class,
-    ClientContract.ConnectivityManager::class
+    ClientContract.ConnectivityManager::class,
 )
 class ClientSpec {
     private val ascii = qualifiedBy("ascii")
@@ -41,7 +41,7 @@ class ClientSpec {
         addGenerator(
             String::class,
             StringAlphaGenerator,
-            ascii
+            ascii,
         )
     }
 
@@ -63,7 +63,7 @@ class ClientSpec {
         PixabayClient(
             fixture.fixture(),
             requestBuilderFactory,
-            connectivityManager
+            connectivityManager,
         ) fulfils ClientContract.Client::class
     }
 
@@ -80,7 +80,7 @@ class ClientSpec {
         val response = PixabayClient(
             fixture.fixture(),
             requestBuilderFactory,
-            connectivityManager
+            connectivityManager,
         ).fetchImages(query, page)
 
         // Then
@@ -98,7 +98,7 @@ class ClientSpec {
         val client = KtorMockClientFactory.createSimpleMockClient(
             response = expected,
             error = responseError,
-            status = HttpStatusCode.BadRequest
+            status = HttpStatusCode.BadRequest,
         )
 
         connectivityManager._hasConnection returns true
@@ -110,7 +110,7 @@ class ClientSpec {
         val response = PixabayClient(
             fixture.fixture(),
             requestBuilderFactory,
-            connectivityManager
+            connectivityManager,
         ).fetchImages(query, page)
 
         // Then
@@ -127,7 +127,7 @@ class ClientSpec {
         val expected: PixabayResponse = fixture.pixabayResponseFixture(4)
         val client = KtorMockClientFactory.createObjectMockClient(listOf(expected)) { scope, _ ->
             return@createObjectMockClient scope.respond(
-                content = fixture.fixture<String>()
+                content = fixture.fixture<String>(),
             )
         }
 
@@ -149,8 +149,8 @@ class ClientSpec {
                     "key" to token,
                     "q" to query,
                     "page" to page.toString(),
-                    "per_page" to "200"
-                )
+                    "per_page" to "200",
+                ),
             )
         }
     }

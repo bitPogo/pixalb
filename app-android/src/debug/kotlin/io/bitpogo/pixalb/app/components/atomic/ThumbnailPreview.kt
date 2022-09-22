@@ -20,7 +20,7 @@ fun ThumbnailPreview() {
     Thumbnail(
         url = "https://www.pngmart.com/files/4/Android-PNG-Pic.png",
         contentDescription = "Test Droid",
-        modifier = Modifier.width(75.dp).height(75.dp)
+        modifier = Modifier.width(75.dp).height(75.dp),
     )
 }
 
@@ -30,6 +30,6 @@ fun ThumbnailErrorPreview() {
     Thumbnail(
         url = "https://de.m.wikipedia.org/wiki/Datei:Google_%22G%22_Logo.svg",
         contentDescription = "Test Droid",
-        modifier = Modifier.width(75.dp).height(75.dp)
+        modifier = Modifier.width(75.dp).height(75.dp),
     )
 }

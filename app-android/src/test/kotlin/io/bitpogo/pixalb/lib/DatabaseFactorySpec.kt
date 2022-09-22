@@ -21,7 +21,7 @@ import tech.antibytes.kmock.Mock
 import tech.antibytes.util.test.fulfils
 
 @Mock(
-    SqlDriver.Schema::class
+    SqlDriver.Schema::class,
 )
 class DatabaseFactorySpec {
     private val fixture = kotlinFixture()

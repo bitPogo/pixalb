@@ -12,7 +12,7 @@ import tech.antibytes.kfixture.PublicApi
 import tech.antibytes.kfixture.fixture
 
 fun PublicApi.Fixture.pixabayItemFixture(
-    tagsGenerator: Function0<String>? = null
+    tagsGenerator: Function0<String>? = null,
 ): PixabayItem {
     return PixabayItem(
         id = fixture(),
@@ -22,14 +22,14 @@ fun PublicApi.Fixture.pixabayItemFixture(
         likes = fixture(),
         comments = fixture(),
         preview = fixture(),
-        large = fixture()
+        large = fixture(),
     )
 }
 
 fun PublicApi.Fixture.pixabayItemsFixture(
     total: Int? = null,
     size: Int? = null,
-    tagsGenerator: Function0<String>? = null
+    tagsGenerator: Function0<String>? = null,
 ): PixabayResponse {
     val items: MutableList<PixabayItem> = mutableListOf()
     val amountOfItems: Int = size ?: fixture(1, 10)
@@ -40,6 +40,6 @@ fun PublicApi.Fixture.pixabayItemsFixture(
 
     return PixabayResponse(
         total = total ?: fixture(PublicApi.Sign.POSITIVE),
-        items = items
+        items = items,
     )
 }

@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class DetailviewViewModel @Inject constructor(
-    private val store: Store
+    private val store: Store,
 ) : DetailContract.ViewModel, ViewModel() {
     private val _image: MutableStateFlow<State> = MutableStateFlow(State.NoResult)
     override val details: StateFlow<State> = _image

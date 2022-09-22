@@ -22,13 +22,13 @@ class E2E {
         val client = PixabayClient.getInstance(
             apiToken = TestConfig.apiKey,
             logger = LoggerStub(),
-            connection = { true }
+            connection = { true },
         )
 
         // When
         val response = client.fetchImages(
             query = "yellow flower",
-            page = 1u
+            page = 1u,
         )
 
         // Then

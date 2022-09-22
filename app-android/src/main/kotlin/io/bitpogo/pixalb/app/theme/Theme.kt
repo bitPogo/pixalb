@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 private val LightColorPalette = lightColors(
     primary = Color.White,
     primaryVariant = BrightGray,
-    onPrimary = Color.Black
+    onPrimary = Color.Black,
     /*secondary = Teal200,
     secondaryVariant = Color.Magenta,
     background = Color.White,
@@ -29,12 +29,12 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun PixabayAlbumTheme(
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colors = LightColorPalette,
         typography = Typography,
         shapes = Shapes,
-        content = content
+        content = content,
     )
 }

@@ -16,7 +16,7 @@ fun SingleLineUnderlineEditableTextWithoutError() {
     SingleLineUnderlineEditableText(
         label = "test",
         value = "myTest",
-        {}
+        {},
     )
 }
 
@@ -27,6 +27,6 @@ fun DefaultSingleLineUnderlineEditableTextWithError() {
         label = "test",
         value = "myTest",
         {},
-        blockComponent = SingleLineUnderlineEditableText.BlockComponent.PRIMARY_DESTRUCTIVE
+        blockComponent = SingleLineUnderlineEditableText.BlockComponent.PRIMARY_DESTRUCTIVE,
     )
 }

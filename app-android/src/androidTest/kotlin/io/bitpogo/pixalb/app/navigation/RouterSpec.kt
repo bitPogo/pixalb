@@ -25,7 +25,7 @@ import org.junit.Test
 import tech.antibytes.kmock.Mock
 
 @Mock(
-    OverviewContract.ViewModel::class
+    OverviewContract.ViewModel::class,
 )
 @HiltAndroidTest
 class RouterSpec {

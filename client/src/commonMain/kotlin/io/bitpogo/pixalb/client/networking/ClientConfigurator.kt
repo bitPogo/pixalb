@@ -11,13 +11,13 @@ import io.ktor.client.HttpClientConfig
 internal object ClientConfigurator : NetworkingContract.ClientConfigurator {
     override fun configure(
         httpConfig: HttpClientConfig<*>,
-        installers: Set<NetworkingContract.Plugin<in Any, in Any?>>?
+        installers: Set<NetworkingContract.Plugin<in Any, in Any?>>?,
     ) {
         installers?.forEach { (plugin, configurator, subConfig) ->
             httpConfig.install(plugin) {
                 configurator.configure(
                     this,
-                    subConfig
+                    subConfig,
                 )
             }
         }

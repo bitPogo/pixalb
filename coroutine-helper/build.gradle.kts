@@ -7,6 +7,7 @@
 import tech.antibytes.gradle.dependency.Dependency
 import io.bitpogo.gradle.pixalb.dependency.Dependency as LocalDependency
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import tech.antibytes.gradle.configuration.isIdea
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -77,16 +78,24 @@ kotlin {
                 implementation(LocalDependency.sqldelight.android)
             }
         }
-        val androidAndroidTestRelease by getting
-        val androidTestFixtures by getting
-        val androidTestFixturesDebug by getting
-        val androidTestFixturesRelease by getting
-        val androidTest by getting {
-            dependsOn(androidTestFixtures)
-            dependsOn(androidTestFixturesDebug)
-            dependsOn(androidTestFixturesRelease)
-            dependsOn(androidAndroidTestRelease)
+        if (!isIdea()) {
+            val androidAndroidTestRelease by getting
+            val androidAndroidTest by getting {
+                dependsOn(androidAndroidTestRelease)
+            }
+            val androidTestFixturesDebug by getting
+            val androidTestFixturesRelease by getting
 
+            val androidTestFixtures by getting {
+                dependsOn(androidTestFixturesDebug)
+                dependsOn(androidTestFixturesRelease)
+            }
+
+            val androidTest by getting {
+                dependsOn(androidTestFixtures)
+            }
+        }
+        val androidTest by getting {
             dependencies {
                 implementation(Dependency.multiplatform.test.jvm)
                 implementation(Dependency.multiplatform.test.junit)

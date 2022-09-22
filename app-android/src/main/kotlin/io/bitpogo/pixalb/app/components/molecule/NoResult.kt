@@ -17,7 +17,7 @@ object NoResult {
     fun NoResult() {
         IconMessage(
             icon = painterResource(id = R.mipmap.noresult_foreground),
-            message = stringResource(id = R.string.no_result)
+            message = stringResource(id = R.string.no_result),
         )
     }
 }

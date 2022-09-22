@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.onEach
 
 class SharedFlowWrapper<T : State> private constructor(
     private val flow: SharedFlow<T>,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
 ) : CoroutineWrapperContract.SharedFlowWrapper<T> {
 
     override val wrappedFlow: SharedFlow<T>
@@ -25,11 +25,11 @@ class SharedFlowWrapper<T : State> private constructor(
         get() = wrappedFlow.replayCache
 
     override fun subscribe(
-        onEach: (item: T) -> Unit
+        onEach: (item: T) -> Unit,
     ): Job = subscribeWithSuspendingFunction(onEach)
 
     override fun subscribeWithSuspendingFunction(
-        onEach: suspend (item: T) -> Unit
+        onEach: suspend (item: T) -> Unit,
     ): Job {
         return wrappedFlow
             .onEach(onEach)
@@ -39,11 +39,11 @@ class SharedFlowWrapper<T : State> private constructor(
     companion object : CoroutineWrapperContract.SharedFlowWrapperFactory {
         override fun <T : State> getInstance(
             flow: SharedFlow<T>,
-            dispatcher: CoroutineWrapperContract.CoroutineScopeDispatcher
+            dispatcher: CoroutineWrapperContract.CoroutineScopeDispatcher,
         ): CoroutineWrapperContract.SharedFlowWrapper<T> {
             return SharedFlowWrapper(
                 flow,
-                dispatcher.dispatch()
+                dispatcher.dispatch(),
             )
         }
     }

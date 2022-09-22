@@ -20,32 +20,32 @@ import org.koin.core.KoinApplication
 import org.koin.core.qualifier.named
 
 class AlbumStore internal constructor(
-    koin: KoinApplication
+    koin: KoinApplication,
 ) : AlbumContract.Store {
     private val dispatcher: CoroutineScopeDispatcher by koin.koin.inject(
-        named(AlbumContract.KoinIds.PRODUCER_SCOPE)
+        named(AlbumContract.KoinIds.PRODUCER_SCOPE),
     )
 
     private val localRepository: RepositoryContract.LocalRepository by koin.koin.inject()
     private val remoteRepository: RepositoryContract.RemoteRepository by koin.koin.inject()
 
     override val overview: SharedFlowWrapper<AlbumContract.OverviewStoreState> by koin.koin.inject(
-        named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)
+        named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT),
     )
     private val overviewPropagator: MutableStateFlow<AlbumContract.OverviewStoreState> by koin.koin.inject(
-        named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)
+        named(AlbumContract.KoinIds.OVERVIEW_STORE_IN),
     )
 
     override val detailview: SharedFlowWrapper<AlbumContract.DetailviewStoreState> by koin.koin.inject(
-        named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)
+        named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT),
     )
     private val detailviewPropagator: MutableStateFlow<AlbumContract.DetailviewStoreState> by koin.koin.inject(
-        named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)
+        named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN),
     )
 
     private fun <T> executeEvent(
         propagator: MutableStateFlow<T>,
-        event: suspend () -> T
+        event: suspend () -> T,
     ) {
         dispatcher.dispatch().launch {
             propagator.update { event() }
@@ -58,7 +58,7 @@ class AlbumStore internal constructor(
 
     private suspend fun loadAndStoreMissingEntries(
         query: String,
-        pageId: UShort
+        pageId: UShort,
     ): AlbumContract.OverviewStoreState {
         val imageInfo = remoteRepository.fetch(query, pageId)
 
@@ -68,7 +68,7 @@ class AlbumStore internal constructor(
             localRepository.storeImages(
                 query = query,
                 pageId = pageId,
-                imageInfo = imageInfo.unwrap()
+                imageInfo = imageInfo.unwrap(),
             )
 
             AlbumContract.OverviewStoreState.Accepted(imageInfo.unwrap().overview)
@@ -77,7 +77,7 @@ class AlbumStore internal constructor(
 
     private suspend fun resolveOverview(
         query: String,
-        pageId: UShort
+        pageId: UShort,
     ): AlbumContract.OverviewStoreState {
         val storedOverview = localRepository.fetchOverview(query, pageId)
 
@@ -129,15 +129,15 @@ class AlbumStore internal constructor(
             client: ClientContract.Client,
             database: ImageQueries,
             producerScope: CoroutineScopeDispatcher,
-            consumerScope: CoroutineScopeDispatcher
+            consumerScope: CoroutineScopeDispatcher,
         ): AlbumContract.Store {
             return AlbumStore(
                 initKoin(
                     client = client,
                     database = database,
                     consumerScope = consumerScope,
-                    producerScope = producerScope
-                )
+                    producerScope = producerScope,
+                ),
             )
         }
     }

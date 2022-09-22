@@ -18,7 +18,7 @@ fun SearchBarPreview() {
         SearchBar(
             "A Query",
             {},
-            {}
+            {},
         )
     }
 }
@@ -30,7 +30,7 @@ fun SearchBarPreviewWithPlaceholder() {
         SearchBar(
             "",
             {},
-            {}
+            {},
         )
     }
 }

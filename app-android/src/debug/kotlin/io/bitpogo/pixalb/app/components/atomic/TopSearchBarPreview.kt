@@ -29,7 +29,7 @@ import io.bitpogo.pixalb.app.theme.LightGray
 fun PlainTopSearchBar() {
     TopSearchBar(
         "test",
-        {}
+        {},
     )
 }
 
@@ -43,15 +43,15 @@ fun TopSearchBarWithIconsAndPlaceholder() {
         leadingIcon = @Composable {
             Icon(
                 Icons.Filled.Search,
-                contentDescription = null
+                contentDescription = null,
             )
         },
         trailingIcon = @Composable {
             Icon(
                 Icons.Filled.Cancel,
-                contentDescription = null
+                contentDescription = null,
             )
-        }
+        },
     )
 }
 
@@ -61,7 +61,7 @@ fun TopSearchBarWithBackgroundColor() {
     TopSearchBar(
         "test",
         {},
-        backgroundColour = Color.Red
+        backgroundColour = Color.Red,
     )
 }
 
@@ -81,7 +81,7 @@ fun TopSearchBarWithTextFieldColorAndModifier() {
         unfocusedLabelColor = DeepBlack,
         disabledLabelColor = DeepBlack,
         errorLabelColor = DeepBlack,
-        backgroundColor = Color.Green
+        backgroundColor = Color.Green,
     )
 
     TopSearchBar(
@@ -90,8 +90,8 @@ fun TopSearchBarWithTextFieldColorAndModifier() {
         textFieldColours = colours,
         textFieldModifier = {
             this.border(
-                BorderStroke(5.dp, Color.Black)
+                BorderStroke(5.dp, Color.Black),
             )
-        }
+        },
     )
 }

@@ -44,7 +44,7 @@ import tech.antibytes.util.test.sameAs
 @MockCommon(
     ImageQueries::class,
     Clock::class,
-    TransactionWithReturn::class
+    TransactionWithReturn::class,
 )
 class LocalRepositorySpec {
     private val fixture = kotlinFixture()
@@ -67,7 +67,7 @@ class LocalRepositorySpec {
             likes = fixture(),
             comments = fixture(),
             previewUrl = fixture(),
-            largeUrl = fixture()
+            largeUrl = fixture(),
         )
     }
 
@@ -89,7 +89,7 @@ class LocalRepositorySpec {
         // When
         val result = LocalRepository(queries).fetchOverview(
             fixture.fixture(),
-            fixture.fixture()
+            fixture.fixture(),
         )
 
         // Then
@@ -107,10 +107,10 @@ class LocalRepositorySpec {
                 FetchQueryInfo(
                     fixture.fixture(),
                     fixture.fixture(1, 100),
-                    fixture.fixture(1, 100)
+                    fixture.fixture(1, 100),
                 )
             },
-            _execute = { SqlCursorStub { next.removeFirst() } }
+            _execute = { SqlCursorStub { next.removeFirst() } },
         )
         val error = RuntimeException()
 
@@ -120,7 +120,7 @@ class LocalRepositorySpec {
         // When
         val result = LocalRepository(queries).fetchOverview(
             fixture.fixture(),
-            1.toUShort()
+            1.toUShort(),
         )
 
         // Then
@@ -137,10 +137,10 @@ class LocalRepositorySpec {
                 FetchQueryInfo(
                     fixture.fixture(),
                     fixture.fixture(1, 100),
-                    fixture.fixture(1, 100)
+                    fixture.fixture(1, 100),
                 )
             },
-            _execute = { SqlCursorStub { false } }
+            _execute = { SqlCursorStub { false } },
         )
 
         queries._fetchQueryInfoWithStringInstant returns infoQuery
@@ -148,7 +148,7 @@ class LocalRepositorySpec {
         // When
         val result = LocalRepository(queries).fetchOverview(
             fixture.fixture(),
-            1.toUShort()
+            1.toUShort(),
         )
 
         // Then
@@ -165,10 +165,10 @@ class LocalRepositorySpec {
                 FetchQueryInfo(
                     fixture.fixture(),
                     fixture.fixture(1, 50),
-                    fixture.fixture(100, 200)
+                    fixture.fixture(100, 200),
                 )
             },
-            _execute = { SqlCursorStub { next.removeFirst() } }
+            _execute = { SqlCursorStub { next.removeFirst() } },
         )
 
         queries._fetchQueryInfoWithStringInstant returns infoQuery
@@ -176,7 +176,7 @@ class LocalRepositorySpec {
         // When
         val result = LocalRepository(queries).fetchOverview(
             fixture.fixture(),
-            2.toUShort()
+            2.toUShort(),
         )
 
         // Then
@@ -194,10 +194,10 @@ class LocalRepositorySpec {
                 FetchQueryInfo(
                     fixture.fixture(),
                     fixture.fixture(1, 50),
-                    total
+                    total,
                 )
             },
-            _execute = { SqlCursorStub { next.removeFirst() } }
+            _execute = { SqlCursorStub { next.removeFirst() } },
         )
 
         queries._fetchQueryInfoWithStringInstant returns infoQuery
@@ -205,7 +205,7 @@ class LocalRepositorySpec {
         // When
         val result = LocalRepository(queries).fetchOverview(
             fixture.fixture(),
-            3.toUShort()
+            3.toUShort(),
         )
 
         // Then
@@ -229,14 +229,14 @@ class LocalRepositorySpec {
                 FetchQueryInfo(
                     inquiry,
                     500,
-                    500
+                    500,
                 )
             },
-            _execute = { SqlCursorStub { next1.removeFirst() } }
+            _execute = { SqlCursorStub { next1.removeFirst() } },
         )
         val overview: QueryStub<Image> = QueryStub(
             mapper = { overviewItem },
-            _execute = { SqlCursorStub { next2.removeFirst() } }
+            _execute = { SqlCursorStub { next2.removeFirst() } },
         )
 
         queries._fetchQueryInfoWithStringInstant returns infoQuery
@@ -252,18 +252,18 @@ class LocalRepositorySpec {
                 id = overviewItem.imageId,
                 thumbnail = overviewItem.previewUrl,
                 userName = overviewItem.user,
-                tags = overviewItem.tags
-            )
+                tags = overviewItem.tags,
+            ),
         )
 
         assertProxy {
             queries._fetchQueryInfoWithStringInstant.hasBeenStrictlyCalledWith(
                 query,
-                Instant.DISTANT_FUTURE
+                Instant.DISTANT_FUTURE,
             )
             queries._fetchImagesWithStringLong.hasBeenStrictlyCalledWith(
                 inquiry,
-                (pageId.toLong() - 1) * 50
+                (pageId.toLong() - 1) * 50,
             )
         }
     }
@@ -278,7 +278,7 @@ class LocalRepositorySpec {
 
         // When
         val result = LocalRepository(queries).fetchDetailedView(
-            fixture.fixture()
+            fixture.fixture(),
         )
 
         // Then
@@ -295,14 +295,14 @@ class LocalRepositorySpec {
         val next = mutableListOf(true, false)
         val query: Query<Image> = QueryStub(
             mapper = { image },
-            _execute = { SqlCursorStub { next.removeFirst() } }
+            _execute = { SqlCursorStub { next.removeFirst() } },
         )
 
         queries._fetchImageWithLong returns query
 
         // When
         val result = LocalRepository(queries).fetchDetailedView(
-            fixture.fixture()
+            fixture.fixture(),
         )
 
         // Then
@@ -312,7 +312,7 @@ class LocalRepositorySpec {
             tags = image.tags,
             likes = image.likes.toUInt(),
             comments = image.comments.toUInt(),
-            downloads = image.downloads.toUInt()
+            downloads = image.downloads.toUInt(),
         )
     }
 
@@ -321,7 +321,7 @@ class LocalRepositorySpec {
     fun `Given storeImage is called it maps any occuring errors from addQuery`() {
         // Given
         val transaction: TransactionWithReturnMock<Any?> = kmock(
-            templateType = TransactionWithReturn::class
+            templateType = TransactionWithReturn::class,
         )
         val error = RuntimeException()
         val image = fixture.imageFixture()
@@ -331,13 +331,13 @@ class LocalRepositorySpec {
             tags = image.tags,
             likes = image.likes.toUInt(),
             comments = image.comments.toUInt(),
-            downloads = image.downloads.toUInt()
+            downloads = image.downloads.toUInt(),
         )
         val overviewItem = OverviewItem(
             id = image.imageId,
             thumbnail = image.previewUrl,
             userName = image.user,
-            tags = image.tags
+            tags = image.tags,
         )
 
         queries._addQuery throws error
@@ -352,8 +352,8 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 overview = listOf(overviewItem),
                 detailedView = listOf(detailViewItem),
-                totalAmountOfItems = fixture.fixture()
-            )
+                totalAmountOfItems = fixture.fixture(),
+            ),
         )
 
         // Then
@@ -366,7 +366,7 @@ class LocalRepositorySpec {
     fun `Given storeImage is called it maps any occuring errors from updatePageIndex`() {
         // Given
         val transaction: TransactionWithReturnMock<Any?> = kmock(
-            templateType = TransactionWithReturn::class
+            templateType = TransactionWithReturn::class,
         )
         val error = RuntimeException()
         val image = fixture.imageFixture()
@@ -376,13 +376,13 @@ class LocalRepositorySpec {
             tags = image.tags,
             likes = image.likes.toUInt(),
             comments = image.comments.toUInt(),
-            downloads = image.downloads.toUInt()
+            downloads = image.downloads.toUInt(),
         )
         val overviewItem = OverviewItem(
             id = image.imageId,
             thumbnail = image.previewUrl,
             userName = image.user,
-            tags = image.tags
+            tags = image.tags,
         )
 
         queries._updatePageIndex throws error
@@ -397,8 +397,8 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 overview = listOf(overviewItem),
                 detailedView = listOf(detailViewItem),
-                totalAmountOfItems = fixture.fixture()
-            )
+                totalAmountOfItems = fixture.fixture(),
+            ),
         )
 
         // Then
@@ -411,7 +411,7 @@ class LocalRepositorySpec {
     fun `Given storeImage is called it maps any occuring errors from addImageQuery`() {
         // Given
         val transaction: TransactionWithReturnMock<Any?> = kmock(
-            templateType = TransactionWithReturn::class
+            templateType = TransactionWithReturn::class,
         )
         val error = RuntimeException()
         val image = fixture.imageFixture()
@@ -421,13 +421,13 @@ class LocalRepositorySpec {
             tags = image.tags,
             likes = image.likes.toUInt(),
             comments = image.comments.toUInt(),
-            downloads = image.downloads.toUInt()
+            downloads = image.downloads.toUInt(),
         )
         val overviewItem = OverviewItem(
             id = image.imageId,
             thumbnail = image.previewUrl,
             userName = image.user,
-            tags = image.tags
+            tags = image.tags,
         )
 
         queries._addImageQuery throws error
@@ -442,8 +442,8 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 overview = listOf(overviewItem),
                 detailedView = listOf(detailViewItem),
-                totalAmountOfItems = fixture.fixture()
-            )
+                totalAmountOfItems = fixture.fixture(),
+            ),
         )
 
         // Then
@@ -456,7 +456,7 @@ class LocalRepositorySpec {
     fun `Given storeImage is called it maps any occuring errors from addImage`() {
         // Given
         val transaction: TransactionWithReturnMock<Any?> = kmock(
-            templateType = TransactionWithReturn::class
+            templateType = TransactionWithReturn::class,
         )
         val error = RuntimeException()
         val image = fixture.imageFixture()
@@ -466,13 +466,13 @@ class LocalRepositorySpec {
             tags = image.tags,
             likes = image.likes.toUInt(),
             comments = image.comments.toUInt(),
-            downloads = image.downloads.toUInt()
+            downloads = image.downloads.toUInt(),
         )
         val overviewItem = OverviewItem(
             id = image.imageId,
             thumbnail = image.previewUrl,
             userName = image.user,
-            tags = image.tags
+            tags = image.tags,
         )
 
         queries._addImage throws error
@@ -487,8 +487,8 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 overview = listOf(overviewItem),
                 detailedView = listOf(detailViewItem),
-                totalAmountOfItems = fixture.fixture()
-            )
+                totalAmountOfItems = fixture.fixture(),
+            ),
         )
 
         // Then
@@ -503,7 +503,7 @@ class LocalRepositorySpec {
     fun `Given storeImage is called it just runs`() {
         // Given
         val transaction: TransactionWithReturnMock<Any?> = kmock(
-            templateType = TransactionWithReturn::class
+            templateType = TransactionWithReturn::class,
         )
 
         val query: String = fixture.fixture()
@@ -520,7 +520,7 @@ class LocalRepositorySpec {
             tags = image1.tags,
             likes = image1.likes.toUInt(),
             comments = image1.comments.toUInt(),
-            downloads = image1.downloads.toUInt()
+            downloads = image1.downloads.toUInt(),
         )
         val detailViewItem2 = DetailViewItem(
             imageUrl = image2.largeUrl,
@@ -528,19 +528,19 @@ class LocalRepositorySpec {
             tags = image2.tags,
             likes = image2.likes.toUInt(),
             comments = image2.comments.toUInt(),
-            downloads = image2.downloads.toUInt()
+            downloads = image2.downloads.toUInt(),
         )
         val overviewItem1 = OverviewItem(
             id = image1.imageId,
             thumbnail = image1.previewUrl,
             userName = image1.user,
-            tags = image1.tags
+            tags = image1.tags,
         )
         val overviewItem2 = OverviewItem(
             id = image2.imageId,
             thumbnail = image2.previewUrl,
             userName = image2.user,
-            tags = image2.tags
+            tags = image2.tags,
         )
 
         queries._transactionWithResult run { _, action ->
@@ -557,8 +557,8 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 overview = listOf(overviewItem1, overviewItem2),
                 detailedView = listOf(detailViewItem1, detailViewItem2),
-                totalAmountOfItems = total
-            )
+                totalAmountOfItems = total,
+            ),
         )
 
         // Then
@@ -568,7 +568,7 @@ class LocalRepositorySpec {
                 query,
                 200,
                 total,
-                Instant.fromEpochMilliseconds(tomorrow)
+                Instant.fromEpochMilliseconds(tomorrow),
             )
             queries._addImageQuery.hasBeenStrictlyCalledWith(query, image1.imageId)
             queries._addImage.hasBeenStrictlyCalledWith(
@@ -579,7 +579,7 @@ class LocalRepositorySpec {
                 image1.likes, // likes
                 image1.comments, // comments
                 image1.previewUrl, // previewUrl
-                image1.largeUrl // large
+                image1.largeUrl, // large
             )
 
             queries._addImageQuery.hasBeenStrictlyCalledWith(query, image2.imageId)
@@ -591,7 +591,7 @@ class LocalRepositorySpec {
                 image2.likes, // likes
                 image2.comments, // comments
                 image2.previewUrl, // previewUrl
-                image2.largeUrl // large
+                image2.largeUrl, // large
             )
         }
     }
@@ -604,7 +604,7 @@ class LocalRepositorySpec {
         // Given
         repeat(4) { pageId ->
             val transaction: TransactionWithReturnMock<Any?> = kmock(
-                templateType = TransactionWithReturn::class
+                templateType = TransactionWithReturn::class,
             )
 
             val query: String = fixture.fixture()
@@ -620,7 +620,7 @@ class LocalRepositorySpec {
                 tags = image1.tags,
                 likes = image1.likes.toUInt(),
                 comments = image1.comments.toUInt(),
-                downloads = image1.downloads.toUInt()
+                downloads = image1.downloads.toUInt(),
             )
             val detailViewItem2 = DetailViewItem(
                 imageUrl = image2.largeUrl,
@@ -628,19 +628,19 @@ class LocalRepositorySpec {
                 tags = image2.tags,
                 likes = image2.likes.toUInt(),
                 comments = image2.comments.toUInt(),
-                downloads = image2.downloads.toUInt()
+                downloads = image2.downloads.toUInt(),
             )
             val overviewItem1 = OverviewItem(
                 id = image1.imageId,
                 thumbnail = image1.previewUrl,
                 userName = image1.user,
-                tags = image1.tags
+                tags = image1.tags,
             )
             val overviewItem2 = OverviewItem(
                 id = image2.imageId,
                 thumbnail = image2.previewUrl,
                 userName = image2.user,
-                tags = image2.tags
+                tags = image2.tags,
             )
 
             queries._transactionWithResult run { _, action ->
@@ -657,8 +657,8 @@ class LocalRepositorySpec {
                 imageInfo = RepositoryContract.RemoteRepositoryResponse(
                     overview = listOf(overviewItem1, overviewItem2),
                     detailedView = listOf(detailViewItem1, detailViewItem2),
-                    totalAmountOfItems = total
-                )
+                    totalAmountOfItems = total,
+                ),
             )
 
             // Then
@@ -667,7 +667,7 @@ class LocalRepositorySpec {
                     query,
                     200,
                     total,
-                    Instant.fromEpochMilliseconds(tomorrow)
+                    Instant.fromEpochMilliseconds(tomorrow),
                 )
             }
 
@@ -681,7 +681,7 @@ class LocalRepositorySpec {
         // Given
         repeat(4) { pageId ->
             val transaction: TransactionWithReturnMock<Any?> = kmock(
-                templateType = TransactionWithReturn::class
+                templateType = TransactionWithReturn::class,
             )
 
             val query: String = fixture.fixture()
@@ -696,7 +696,7 @@ class LocalRepositorySpec {
                 tags = image1.tags,
                 likes = image1.likes.toUInt(),
                 comments = image1.comments.toUInt(),
-                downloads = image1.downloads.toUInt()
+                downloads = image1.downloads.toUInt(),
             )
             val detailViewItem2 = DetailViewItem(
                 imageUrl = image2.largeUrl,
@@ -704,19 +704,19 @@ class LocalRepositorySpec {
                 tags = image2.tags,
                 likes = image2.likes.toUInt(),
                 comments = image2.comments.toUInt(),
-                downloads = image2.downloads.toUInt()
+                downloads = image2.downloads.toUInt(),
             )
             val overviewItem1 = OverviewItem(
                 id = image1.imageId,
                 thumbnail = image1.previewUrl,
                 userName = image1.user,
-                tags = image1.tags
+                tags = image1.tags,
             )
             val overviewItem2 = OverviewItem(
                 id = image2.imageId,
                 thumbnail = image2.previewUrl,
                 userName = image2.user,
-                tags = image2.tags
+                tags = image2.tags,
             )
 
             queries._transactionWithResult run { _, action ->
@@ -733,8 +733,8 @@ class LocalRepositorySpec {
                 imageInfo = RepositoryContract.RemoteRepositoryResponse(
                     overview = listOf(overviewItem1, overviewItem2),
                     detailedView = listOf(detailViewItem1, detailViewItem2),
-                    totalAmountOfItems = total
-                )
+                    totalAmountOfItems = total,
+                ),
             )
 
             // Then
@@ -752,7 +752,7 @@ class LocalRepositorySpec {
         // Given
         repeat(2) { pageId ->
             val transaction: TransactionWithReturnMock<Any?> = kmock(
-                templateType = TransactionWithReturn::class
+                templateType = TransactionWithReturn::class,
             )
 
             val query: String = fixture.fixture()
@@ -767,7 +767,7 @@ class LocalRepositorySpec {
                 tags = image1.tags,
                 likes = image1.likes.toUInt(),
                 comments = image1.comments.toUInt(),
-                downloads = image1.downloads.toUInt()
+                downloads = image1.downloads.toUInt(),
             )
             val detailViewItem2 = DetailViewItem(
                 imageUrl = image2.largeUrl,
@@ -775,19 +775,19 @@ class LocalRepositorySpec {
                 tags = image2.tags,
                 likes = image2.likes.toUInt(),
                 comments = image2.comments.toUInt(),
-                downloads = image2.downloads.toUInt()
+                downloads = image2.downloads.toUInt(),
             )
             val overviewItem1 = OverviewItem(
                 id = image1.imageId,
                 thumbnail = image1.previewUrl,
                 userName = image1.user,
-                tags = image1.tags
+                tags = image1.tags,
             )
             val overviewItem2 = OverviewItem(
                 id = image2.imageId,
                 thumbnail = image2.previewUrl,
                 userName = image2.user,
-                tags = image2.tags
+                tags = image2.tags,
             )
 
             queries._transactionWithResult run { _, action ->
@@ -804,8 +804,8 @@ class LocalRepositorySpec {
                 imageInfo = RepositoryContract.RemoteRepositoryResponse(
                     overview = listOf(overviewItem1, overviewItem2),
                     detailedView = listOf(detailViewItem1, detailViewItem2),
-                    totalAmountOfItems = total
-                )
+                    totalAmountOfItems = total,
+                ),
             )
 
             // Then
@@ -822,7 +822,7 @@ class LocalRepositorySpec {
     fun `Given storeImage it just runs while just updating the Queries it does not exceed the actual total`() {
         // Given
         val transaction: TransactionWithReturnMock<Any?> = kmock(
-            templateType = TransactionWithReturn::class
+            templateType = TransactionWithReturn::class,
         )
 
         val query: String = fixture.fixture()
@@ -837,7 +837,7 @@ class LocalRepositorySpec {
             tags = image1.tags,
             likes = image1.likes.toUInt(),
             comments = image1.comments.toUInt(),
-            downloads = image1.downloads.toUInt()
+            downloads = image1.downloads.toUInt(),
         )
         val detailViewItem2 = DetailViewItem(
             imageUrl = image2.largeUrl,
@@ -845,19 +845,19 @@ class LocalRepositorySpec {
             tags = image2.tags,
             likes = image2.likes.toUInt(),
             comments = image2.comments.toUInt(),
-            downloads = image2.downloads.toUInt()
+            downloads = image2.downloads.toUInt(),
         )
         val overviewItem1 = OverviewItem(
             id = image1.imageId,
             thumbnail = image1.previewUrl,
             userName = image1.user,
-            tags = image1.tags
+            tags = image1.tags,
         )
         val overviewItem2 = OverviewItem(
             id = image2.imageId,
             thumbnail = image2.previewUrl,
             userName = image2.user,
-            tags = image2.tags
+            tags = image2.tags,
         )
 
         queries._transactionWithResult run { _, action ->
@@ -874,8 +874,8 @@ class LocalRepositorySpec {
             imageInfo = RepositoryContract.RemoteRepositoryResponse(
                 overview = listOf(overviewItem1, overviewItem2),
                 detailedView = listOf(detailViewItem1, detailViewItem2),
-                totalAmountOfItems = total
-            )
+                totalAmountOfItems = total,
+            ),
         )
 
         // Then

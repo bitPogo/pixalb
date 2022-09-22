@@ -51,7 +51,7 @@ class SchemaSpec {
                 query,
                 pixabayItems.total,
                 pixabayItems.total,
-                tomorrow
+                tomorrow,
             )
 
             pixabayItems.items.forEach { item ->
@@ -64,12 +64,12 @@ class SchemaSpec {
                         likes = item.likes.toInt(),
                         comments = item.comments.toInt(),
                         previewUrl = item.preview,
-                        largeUrl = item.large
+                        largeUrl = item.large,
                     )
 
                     dbQueries.addImageQuery(
                         inquery = query,
-                        imageId = item.id
+                        imageId = item.id,
                     )
                 }
             }
@@ -124,7 +124,7 @@ class SchemaSpec {
                     query,
                     pixabayItems.total,
                     pixabayItems.total,
-                    tomorrow
+                    tomorrow,
                 )
 
                 pixabayItems.items.forEach { item ->
@@ -137,12 +137,12 @@ class SchemaSpec {
                             likes = item.likes.toInt(),
                             comments = item.comments.toInt(),
                             previewUrl = item.preview,
-                            largeUrl = item.large
+                            largeUrl = item.large,
                         )
 
                         dbQueries.addImageQuery(
                             inquery = query,
-                            imageId = item.id
+                            imageId = item.id,
                         )
                     }
                 }
@@ -197,7 +197,7 @@ class SchemaSpec {
                 query,
                 pixabayItems.total,
                 pixabayItems.total,
-                tomorrow
+                tomorrow,
             )
 
             pixabayItems.items.forEach { item ->
@@ -210,12 +210,12 @@ class SchemaSpec {
                         likes = item.likes.toInt(),
                         comments = item.comments.toInt(),
                         previewUrl = item.preview,
-                        largeUrl = item.large
+                        largeUrl = item.large,
                     )
 
                     dbQueries.addImageQuery(
                         inquery = query,
-                        imageId = item.id
+                        imageId = item.id,
                     )
                 }
             }
@@ -269,7 +269,7 @@ class SchemaSpec {
                 query,
                 pixabayItems.total,
                 pixabayItems.total,
-                tomorrow
+                tomorrow,
             )
 
             pixabayItems.items.forEach { item ->
@@ -282,12 +282,12 @@ class SchemaSpec {
                         likes = item.likes.toInt(),
                         comments = item.comments.toInt(),
                         previewUrl = item.preview,
-                        largeUrl = item.large
+                        largeUrl = item.large,
                     )
 
                     dbQueries.addImageQuery(
                         inquery = query,
-                        imageId = item.id
+                        imageId = item.id,
                     )
                 }
             }
@@ -330,7 +330,7 @@ class SchemaSpec {
                 query,
                 100,
                 100,
-                now
+                now,
             )
 
             val queryInfo = dbQueries.fetchQueryInfo(query, tomorrow).executeAsOneOrNull()
@@ -365,12 +365,12 @@ class SchemaSpec {
                 query,
                 50,
                 100,
-                tomorrow
+                tomorrow,
             )
 
             dbQueries.updatePageIndex(
                 pages,
-                query
+                query,
             )
 
             val queryInfo = dbQueries.fetchQueryInfo(query, now).executeAsOne().storedPages

@@ -18,12 +18,12 @@ fun PublicApi.Fixture.detailviewItemFixture(): DetailViewItem {
         downloads = fixture(),
         likes = fixture(),
         comments = fixture(),
-        imageUrl = fixture()
+        imageUrl = fixture(),
     )
 }
 
 fun PublicApi.Fixture.detailviewItemsFixture(
-    size: Int? = null
+    size: Int? = null,
 ): List<DetailViewItem> {
     val items: MutableList<DetailViewItem> = mutableListOf()
     val amountOfItems: Int = size ?: fixture(1, 10)

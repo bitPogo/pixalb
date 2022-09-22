@@ -8,7 +8,7 @@ data class PixabayResponse(
     @SerialName("totalHits")
     val total: Int,
     @SerialName("hits")
-    val items: List<PixabayItem>
+    val items: List<PixabayItem>,
 )
 
 @Serializable
@@ -22,5 +22,5 @@ data class PixabayItem(
     @SerialName("previewURL")
     val preview: String,
     @SerialName("webformatURL")
-    val large: String
+    val large: String,
 )

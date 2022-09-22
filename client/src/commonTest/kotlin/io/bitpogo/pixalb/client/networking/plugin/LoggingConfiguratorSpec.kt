@@ -19,7 +19,7 @@ import tech.antibytes.util.test.mustBe
 import tech.antibytes.util.test.sameAs
 
 @MockCommon(
-    ClientContract.Logger::class
+    ClientContract.Logger::class,
 )
 class LoggingConfiguratorSpec {
     @Test

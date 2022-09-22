@@ -130,7 +130,7 @@ dependencies {
     // Test
     testImplementation(Dependency.android.test.junit)
     testImplementation(Dependency.android.test.junit4)
-    testImplementation(Dependency.jvm.test.mockk)
+    testImplementation(Dependency.jvm.test.mockk.unit)
     testImplementation(Dependency.android.test.ktx)
     testImplementation(Dependency.android.test.composeJunit4)
     testImplementation(Dependency.android.test.robolectric)
@@ -138,6 +138,7 @@ dependencies {
     testImplementation(LocalDependency.antibytes.test.android.kmock)
     testImplementation(LocalDependency.antibytes.test.android.coroutine)
     testImplementation(LocalDependency.antibytes.test.android.fixture)
+    testImplementation(Dependency.multiplatform.test.coroutines)
 
     testImplementation(LocalDependency.google.hilt.test)
     kaptTest(LocalDependency.google.hilt.compiler)

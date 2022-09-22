@@ -20,12 +20,12 @@ fun PublicApi.Fixture.pixabayItemFixture(): PixabayItem {
         likes = fixture(),
         comments = fixture(),
         preview = fixture(),
-        large = fixture()
+        large = fixture(),
     )
 }
 
 fun PublicApi.Fixture.pixabayResponseFixture(
-    size: Int? = null
+    size: Int? = null,
 ): PixabayResponse {
     val items: MutableList<PixabayItem> = mutableListOf()
     val amountOfItems: Int = size ?: fixture(1, 10)
@@ -36,6 +36,6 @@ fun PublicApi.Fixture.pixabayResponseFixture(
 
     return PixabayResponse(
         total = fixture(PublicApi.Sign.POSITIVE),
-        items = items
+        items = items,
     )
 }

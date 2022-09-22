@@ -12,5 +12,5 @@ data class DetailViewItem(
     val tags: List<String>,
     val likes: UInt,
     val downloads: UInt,
-    val comments: UInt
+    val comments: UInt,
 )

@@ -22,13 +22,13 @@ internal object NetworkingContract {
     data class Plugin<PluginConfiguration : Any, SubConfiguration>(
         val feature: HttpClientPlugin<*, *>,
         val pluginConfigurator: PluginConfigurator<PluginConfiguration, SubConfiguration>,
-        val subConfiguration: SubConfiguration
+        val subConfiguration: SubConfiguration,
     )
 
     interface ClientConfigurator {
         fun configure(
             httpConfig: HttpClientConfig<*>,
-            installers: Set<Plugin<in Any, in Any?>>? = null
+            installers: Set<Plugin<in Any, in Any?>>? = null,
         )
     }
 
@@ -37,7 +37,7 @@ internal object NetworkingContract {
         DELETE("delete"),
         GET("get"),
         POST("post"),
-        PUT("put")
+        PUT("put"),
     }
 
     interface RequestBuilder {
@@ -47,7 +47,7 @@ internal object NetworkingContract {
 
         fun prepare(
             method: Method = Method.GET,
-            path: Path = listOf("")
+            path: Path = listOf(""),
         ): HttpStatement
 
         companion object {

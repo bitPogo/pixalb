@@ -19,7 +19,7 @@ import tech.antibytes.util.test.fulfils
 @MockCommon(
     ClientContract.Client::class,
     CoroutineWrapperContract.CoroutineScopeDispatcher::class,
-    PixabayDataBase::class
+    PixabayDataBase::class,
 )
 class AlbumStoreFactorySpec {
     @Test

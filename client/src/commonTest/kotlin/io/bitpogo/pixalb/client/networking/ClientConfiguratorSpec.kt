@@ -27,7 +27,7 @@ import tech.antibytes.util.test.mustBe
 
 @MockCommon(
     NetworkingContract.PluginConfigurator::class,
-    HttpClientPlugin::class
+    HttpClientPlugin::class,
 )
 class ClientConfiguratorSpec {
     private val fixture = kotlinFixture()
@@ -50,7 +50,7 @@ class ClientConfiguratorSpec {
         // Given
         val plugin: HttpClientPluginMock<Any, Any> = kmock(
             templateType = HttpClientPlugin::class,
-            relaxUnitFun = true
+            relaxUnitFun = true,
         )
         val config: Any = fixture.fixture()
 
@@ -61,14 +61,14 @@ class ClientConfiguratorSpec {
 
         val pluginConfigurator: PluginConfiguratorMock<Any, Any?> = kmock(
             relaxUnitFun = true,
-            templateType = NetworkingContract.PluginConfigurator::class
+            templateType = NetworkingContract.PluginConfigurator::class,
         )
 
         // When
         HttpClient(MockEngine) {
             ClientConfigurator.configure(
                 this,
-                null
+                null,
             )
 
             engine {
@@ -90,7 +90,7 @@ class ClientConfiguratorSpec {
         // Given
         val plugin: HttpClientPluginMock<Any, Any> = kmock(
             templateType = HttpClientPlugin::class,
-            relaxUnitFun = true
+            relaxUnitFun = true,
         )
         val config: Any = fixture.fixture()
 
@@ -102,22 +102,22 @@ class ClientConfiguratorSpec {
         val subConfig: String = fixture.fixture()
         val pluginConfigurator: PluginConfiguratorMock<Any, Any?> = kmock(
             relaxUnitFun = true,
-            templateType = NetworkingContract.PluginConfigurator::class
+            templateType = NetworkingContract.PluginConfigurator::class,
         )
 
         val plugins = setOf(
             NetworkingContract.Plugin(
                 plugin,
                 pluginConfigurator,
-                subConfig
-            )
+                subConfig,
+            ),
         )
 
         // When
         HttpClient(MockEngine) {
             ClientConfigurator.configure(
                 this,
-                plugins
+                plugins,
             )
 
             engine {
@@ -131,7 +131,7 @@ class ClientConfiguratorSpec {
         assertProxy {
             pluginConfigurator._configure.hasBeenCalledWith(
                 config,
-                subConfig
+                subConfig,
             )
         }
     }
@@ -142,11 +142,11 @@ class ClientConfiguratorSpec {
         // Given
         val pluginConfigurator: PluginConfiguratorMock<Any, Any?> = kmock(
             relaxUnitFun = true,
-            templateType = NetworkingContract.PluginConfigurator::class
+            templateType = NetworkingContract.PluginConfigurator::class,
         )
         val plugin: HttpClientPluginMock<Any, Any> = kmock(
             templateType = HttpClientPlugin::class,
-            relaxUnitFun = true
+            relaxUnitFun = true,
         )
         plugin._key returns AttributeKey(fixture.fixture())
         plugin._prepare run { configAction ->
@@ -161,25 +161,25 @@ class ClientConfiguratorSpec {
             NetworkingContract.Plugin(
                 plugin,
                 pluginConfigurator,
-                fixture.fixture<Any>()
+                fixture.fixture<Any>(),
             ),
             NetworkingContract.Plugin(
                 plugin,
                 pluginConfigurator,
-                fixture.fixture<Any>()
+                fixture.fixture<Any>(),
             ),
             NetworkingContract.Plugin(
                 plugin,
                 pluginConfigurator,
-                fixture.fixture<Any>()
-            )
+                fixture.fixture<Any>(),
+            ),
         )
 
         // When
         HttpClient(MockEngine) {
             ClientConfigurator.configure(
                 this,
-                plugins
+                plugins,
             )
 
             engine {

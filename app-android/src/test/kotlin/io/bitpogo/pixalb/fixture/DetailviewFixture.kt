@@ -19,6 +19,6 @@ fun PublicApi.Fixture.detailviewItemFixture(): DetailViewItem {
         downloads = fixture(),
         likes = fixture(),
         comments = fixture(),
-        imageUrl = fixture()
+        imageUrl = fixture(),
     )
 }

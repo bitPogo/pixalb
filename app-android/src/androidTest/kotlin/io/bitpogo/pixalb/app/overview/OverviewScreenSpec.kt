@@ -31,7 +31,7 @@ import tech.antibytes.kmock.verification.verify
 
 @Mock(
     OverviewContract.ViewModel::class,
-    OverviewContract.Navigator::class
+    OverviewContract.Navigator::class,
 )
 class OverviewScreenSpec {
     @get:Rule
@@ -66,7 +66,7 @@ class OverviewScreenSpec {
             PixabayAlbumTheme {
                 OverviewScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }
@@ -87,7 +87,7 @@ class OverviewScreenSpec {
             PixabayAlbumTheme {
                 OverviewScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }
@@ -109,7 +109,7 @@ class OverviewScreenSpec {
             PixabayAlbumTheme {
                 OverviewScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }
@@ -132,7 +132,7 @@ class OverviewScreenSpec {
             PixabayAlbumTheme {
                 OverviewScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }
@@ -157,7 +157,7 @@ class OverviewScreenSpec {
             PixabayAlbumTheme {
                 OverviewScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }
@@ -183,7 +183,7 @@ class OverviewScreenSpec {
             PixabayAlbumTheme {
                 OverviewScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }
@@ -210,7 +210,7 @@ class OverviewScreenSpec {
             PixabayAlbumTheme {
                 OverviewScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }
@@ -250,7 +250,7 @@ class OverviewScreenSpec {
             PixabayAlbumTheme {
                 OverviewScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }

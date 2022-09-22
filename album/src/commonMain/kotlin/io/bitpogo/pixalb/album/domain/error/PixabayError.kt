@@ -8,7 +8,7 @@ package io.bitpogo.pixalb.album.domain.error
 
 sealed class PixabayError(
     message: String? = null,
-    cause: Throwable? = null
+    cause: Throwable? = null,
 ) : RuntimeException(message, cause) {
     object NoConnection : PixabayError()
     class UnsuccessfulRequest(cause: Throwable) : PixabayError(cause = cause)

@@ -12,7 +12,7 @@ import io.bitpogo.pixalb.app.detail.DetailContract
 import io.bitpogo.pixalb.app.overview.OverviewContract
 
 class Navigator(
-    private val router: NavController
+    private val router: NavController,
 ) : DetailContract.Navigator, OverviewContract.Navigator {
     override fun goToOverview() = router.navigate(AppContract.Routes.OVERVIEW.name)
 

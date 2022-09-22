@@ -13,7 +13,6 @@ import io.bitpogo.pixalb.album.fixture.detailviewItemsFixture
 import io.bitpogo.pixalb.album.fixture.overviewItemsFixture
 import io.bitpogo.pixalb.album.kmock
 import io.bitpogo.pixalb.album.testScope1
-import io.bitpogo.pixalb.album.testScope2
 import io.bitpogo.util.coroutine.result.Failure
 import io.bitpogo.util.coroutine.result.Success
 import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract.CoroutineScopeDispatcher
@@ -22,10 +21,14 @@ import io.bitpogo.util.coroutine.wrapper.SharedFlowWrapperMock
 import kotlin.js.JsName
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.test.TestCoroutineScheduler
 import org.koin.core.qualifier.named
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
@@ -43,7 +46,7 @@ import tech.antibytes.util.test.sameAs
     RepositoryContract.RemoteRepository::class,
     RepositoryContract.LocalRepository::class,
     CoroutineScopeDispatcher::class,
-    SharedFlowWrapper::class
+    SharedFlowWrapper::class,
 )
 @IgnoreJs // Works but not when run with other tests on Js
 class AlbumStoreSpec {
@@ -51,13 +54,18 @@ class AlbumStoreSpec {
     private val remoteRepository: RemoteRepositoryMock = kmock()
     private val localRepository: LocalRepositoryMock = kmock()
     private val overviewFlowWrapper: SharedFlowWrapperMock<AlbumContract.OverviewStoreState> = kmock(
-        templateType = SharedFlowWrapper::class
+        templateType = SharedFlowWrapper::class,
     )
+
+    private val scheduler = TestCoroutineScheduler()
+    private lateinit var storeScope: CoroutineScope
 
     @BeforeTest
     fun setup() {
         remoteRepository._clearMock()
         localRepository._clearMock()
+
+        storeScope = CoroutineScope(scheduler)
     }
 
     @Test
@@ -75,9 +83,12 @@ class AlbumStoreSpec {
 
         val expectedOverview = fixture.overviewItemsFixture()
 
-        val result = Channel<AlbumContract.OverviewStoreState>()
+        val result = Channel<AlbumContract.OverviewStoreState>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         val overviewFlow: MutableStateFlow<AlbumContract.OverviewStoreState> = MutableStateFlow(
-            AlbumContract.OverviewStoreState.Initial
+            AlbumContract.OverviewStoreState.Initial,
         )
 
         val koin = koinApplication {
@@ -86,21 +97,18 @@ class AlbumStoreSpec {
                     single(named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)) { overviewFlow }
                     single(named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)) { overviewFlowWrapper }
                     single<RepositoryContract.LocalRepository> { localRepository }
-                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
-                }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { storeScope } }
+                },
             )
         }
 
-        overviewFlow.onEach { state ->
-            if (state != AlbumContract.OverviewStoreState.Pending) {
-                result.send(state)
-            }
-        }.launchIn(testScope2)
+        overviewFlow.onEach { state -> result.send(state) }.launchIn(testScope1)
 
         localRepository._fetchOverview returns Success(expectedOverview)
 
         // When
         val album = AlbumStore(koin)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
@@ -109,9 +117,12 @@ class AlbumStoreSpec {
 
         // When
         album.fetchOverview(query, pageId)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
+            delay(10) // yield
+
             val success = result.receive()
             success fulfils AlbumContract.OverviewStoreState.Accepted::class
             (success as AlbumContract.OverviewStoreState.Accepted).value sameAs expectedOverview
@@ -131,9 +142,12 @@ class AlbumStoreSpec {
 
         val expectedError = PixabayError.EntryCap
 
-        val result = Channel<AlbumContract.OverviewStoreState>()
+        val result = Channel<AlbumContract.OverviewStoreState>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         val overviewFlow: MutableStateFlow<AlbumContract.OverviewStoreState> = MutableStateFlow(
-            AlbumContract.OverviewStoreState.Initial
+            AlbumContract.OverviewStoreState.Initial,
         )
 
         val koin = koinApplication {
@@ -142,32 +156,24 @@ class AlbumStoreSpec {
                     single(named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)) { overviewFlow }
                     single(named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)) { overviewFlowWrapper }
                     single<RepositoryContract.LocalRepository> { localRepository }
-                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
-                }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { storeScope } }
+                },
             )
         }
 
-        overviewFlow.onEach { state ->
-            if (state != AlbumContract.OverviewStoreState.Pending) {
-                result.send(state)
-            }
-        }.launchIn(testScope2)
+        overviewFlow.onEach { state -> result.send(state) }.launchIn(testScope1)
 
         localRepository._fetchOverview returns Failure(expectedError)
 
         // When
         val album = AlbumStore(koin)
-
-        // Then
-        runBlockingTestWithTimeout {
-            result.receive() sameAs AlbumContract.OverviewStoreState.Initial
-        }
-
-        // When
         album.fetchOverview(query, pageId)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
+            delay(10) // yield
+
             val error = result.receive()
             error fulfils AlbumContract.OverviewStoreState.Error::class
             (error as AlbumContract.OverviewStoreState.Error).value sameAs expectedError
@@ -187,9 +193,12 @@ class AlbumStoreSpec {
 
         val expectedError = PixabayError.NoConnection
 
-        val result = Channel<AlbumContract.OverviewStoreState>()
+        val result = Channel<AlbumContract.OverviewStoreState>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         val overviewFlow: MutableStateFlow<AlbumContract.OverviewStoreState> = MutableStateFlow(
-            AlbumContract.OverviewStoreState.Initial
+            AlbumContract.OverviewStoreState.Initial,
         )
 
         val koin = koinApplication {
@@ -199,33 +208,25 @@ class AlbumStoreSpec {
                     single(named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)) { overviewFlowWrapper }
                     single<RepositoryContract.RemoteRepository> { remoteRepository }
                     single<RepositoryContract.LocalRepository> { localRepository }
-                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
-                }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { storeScope } }
+                },
             )
         }
 
-        overviewFlow.onEach { state ->
-            if (state != AlbumContract.OverviewStoreState.Pending) {
-                result.send(state)
-            }
-        }.launchIn(testScope2)
+        overviewFlow.onEach { state -> result.send(state) }.launchIn(testScope1)
 
         localRepository._fetchOverview returns Failure(PixabayError.MissingEntry)
         remoteRepository._fetch returns Failure(expectedError)
 
         // When
         val album = AlbumStore(koin)
-
-        // Then
-        runBlockingTestWithTimeout {
-            result.receive() sameAs AlbumContract.OverviewStoreState.Initial
-        }
-
-        // When
         album.fetchOverview(query, pageId)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
+            delay(10) // yield
+
             val error = result.receive()
             error fulfils AlbumContract.OverviewStoreState.Error::class
             (error as AlbumContract.OverviewStoreState.Error).value sameAs expectedError
@@ -246,9 +247,12 @@ class AlbumStoreSpec {
 
         val expectedError = PixabayError.UnsuccessfulDatabaseAccess(RuntimeException())
 
-        val result = Channel<AlbumContract.OverviewStoreState>()
+        val result = Channel<AlbumContract.OverviewStoreState>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         val overviewFlow: MutableStateFlow<AlbumContract.OverviewStoreState> = MutableStateFlow(
-            AlbumContract.OverviewStoreState.Initial
+            AlbumContract.OverviewStoreState.Initial,
         )
 
         val koin = koinApplication {
@@ -258,40 +262,32 @@ class AlbumStoreSpec {
                     single(named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)) { overviewFlowWrapper }
                     single<RepositoryContract.RemoteRepository> { remoteRepository }
                     single<RepositoryContract.LocalRepository> { localRepository }
-                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
-                }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { storeScope } }
+                },
             )
         }
 
-        overviewFlow.onEach { state ->
-            if (state != AlbumContract.OverviewStoreState.Pending) {
-                result.send(state)
-            }
-        }.launchIn(testScope2)
+        overviewFlow.onEach { state -> result.send(state) }.launchIn(testScope1)
 
         localRepository._fetchOverview returns Failure(PixabayError.MissingEntry)
         remoteRepository._fetch returns Success(
             RepositoryContract.RemoteRepositoryResponse(
                 totalAmountOfItems = fixture.fixture(),
                 overview = fixture.overviewItemsFixture(),
-                detailedView = fixture.detailviewItemsFixture()
-            )
+                detailedView = fixture.detailviewItemsFixture(),
+            ),
         )
         localRepository._storeImages returns Failure(expectedError)
 
         // When
         val album = AlbumStore(koin)
-
-        // Then
-        runBlockingTestWithTimeout {
-            result.receive() sameAs AlbumContract.OverviewStoreState.Initial
-        }
-
-        // When
         album.fetchOverview(query, pageId)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
+            delay(10) // yield
+
             val success = result.receive()
             success fulfils AlbumContract.OverviewStoreState.Accepted::class
 
@@ -313,12 +309,15 @@ class AlbumStoreSpec {
         val expectedBundle = RepositoryContract.RemoteRepositoryResponse(
             totalAmountOfItems = fixture.fixture(),
             overview = fixture.overviewItemsFixture(),
-            detailedView = fixture.detailviewItemsFixture()
+            detailedView = fixture.detailviewItemsFixture(),
         )
 
-        val result = Channel<AlbumContract.OverviewStoreState>()
+        val result = Channel<AlbumContract.OverviewStoreState>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         val overviewFlow: MutableStateFlow<AlbumContract.OverviewStoreState> = MutableStateFlow(
-            AlbumContract.OverviewStoreState.Initial
+            AlbumContract.OverviewStoreState.Initial,
         )
 
         val koin = koinApplication {
@@ -328,16 +327,12 @@ class AlbumStoreSpec {
                     single(named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)) { overviewFlowWrapper }
                     single<RepositoryContract.RemoteRepository> { remoteRepository }
                     single<RepositoryContract.LocalRepository> { localRepository }
-                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
-                }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { storeScope } }
+                },
             )
         }
 
-        overviewFlow.onEach { state ->
-            if (state != AlbumContract.OverviewStoreState.Pending) {
-                result.send(state)
-            }
-        }.launchIn(testScope2)
+        overviewFlow.onEach { state -> result.send(state) }.launchIn(testScope1)
 
         localRepository._fetchOverview returns Failure(PixabayError.MissingEntry)
         localRepository._storeImages returns Success(Unit)
@@ -345,17 +340,13 @@ class AlbumStoreSpec {
 
         // When
         val album = AlbumStore(koin)
-
-        // Then
-        runBlockingTestWithTimeout {
-            result.receive() sameAs AlbumContract.OverviewStoreState.Initial
-        }
-
-        // When
         album.fetchOverview(query, pageId)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
+            delay(10) // yield
+
             val success = result.receive()
             success fulfils AlbumContract.OverviewStoreState.Accepted::class
             (success as AlbumContract.OverviewStoreState.Accepted).value sameAs expectedBundle.overview
@@ -377,9 +368,12 @@ class AlbumStoreSpec {
 
         val expectedError = PixabayError.NoConnection
 
-        val result = Channel<AlbumContract.OverviewStoreState>()
+        val result = Channel<AlbumContract.OverviewStoreState>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         val overviewFlow: MutableStateFlow<AlbumContract.OverviewStoreState> = MutableStateFlow(
-            AlbumContract.OverviewStoreState.Initial
+            AlbumContract.OverviewStoreState.Initial,
         )
 
         val koin = koinApplication {
@@ -389,33 +383,25 @@ class AlbumStoreSpec {
                     single(named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)) { overviewFlowWrapper }
                     single<RepositoryContract.RemoteRepository> { remoteRepository }
                     single<RepositoryContract.LocalRepository> { localRepository }
-                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
-                }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { storeScope } }
+                },
             )
         }
 
-        overviewFlow.onEach { state ->
-            if (state != AlbumContract.OverviewStoreState.Pending) {
-                result.send(state)
-            }
-        }.launchIn(testScope2)
+        overviewFlow.onEach { state -> result.send(state) }.launchIn(testScope1)
 
         localRepository._fetchOverview returns Failure(PixabayError.MissingPage)
         remoteRepository._fetch returns Failure(expectedError)
 
         // When
         val album = AlbumStore(koin)
-
-        // Then
-        runBlockingTestWithTimeout {
-            result.receive() sameAs AlbumContract.OverviewStoreState.Initial
-        }
-
-        // When
         album.fetchOverview(query, pageId)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
+            delay(10) // yield
+
             val error = result.receive()
             error fulfils AlbumContract.OverviewStoreState.Error::class
             (error as AlbumContract.OverviewStoreState.Error).value sameAs expectedError
@@ -436,9 +422,12 @@ class AlbumStoreSpec {
 
         val expectedError = PixabayError.UnsuccessfulDatabaseAccess(RuntimeException())
 
-        val result = Channel<AlbumContract.OverviewStoreState>()
+        val result = Channel<AlbumContract.OverviewStoreState>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         val overviewFlow: MutableStateFlow<AlbumContract.OverviewStoreState> = MutableStateFlow(
-            AlbumContract.OverviewStoreState.Initial
+            AlbumContract.OverviewStoreState.Initial,
         )
 
         val koin = koinApplication {
@@ -448,40 +437,32 @@ class AlbumStoreSpec {
                     single(named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)) { overviewFlowWrapper }
                     single<RepositoryContract.RemoteRepository> { remoteRepository }
                     single<RepositoryContract.LocalRepository> { localRepository }
-                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
-                }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { storeScope } }
+                },
             )
         }
 
-        overviewFlow.onEach { state ->
-            if (state != AlbumContract.OverviewStoreState.Pending) {
-                result.send(state)
-            }
-        }.launchIn(testScope2)
+        overviewFlow.onEach { state -> result.send(state) }.launchIn(testScope1)
 
         localRepository._fetchOverview returns Failure(PixabayError.MissingPage)
         remoteRepository._fetch returns Success(
             RepositoryContract.RemoteRepositoryResponse(
                 totalAmountOfItems = fixture.fixture(),
                 overview = fixture.overviewItemsFixture(),
-                detailedView = fixture.detailviewItemsFixture()
-            )
+                detailedView = fixture.detailviewItemsFixture(),
+            ),
         )
         localRepository._storeImages returns Failure(expectedError)
 
         // When
         val album = AlbumStore(koin)
-
-        // Then
-        runBlockingTestWithTimeout {
-            result.receive() sameAs AlbumContract.OverviewStoreState.Initial
-        }
-
-        // When
         album.fetchOverview(query, pageId)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
+            delay(10) // yield
+
             val success = result.receive()
             success fulfils AlbumContract.OverviewStoreState.Accepted::class
 
@@ -503,12 +484,15 @@ class AlbumStoreSpec {
         val expectedBundle = RepositoryContract.RemoteRepositoryResponse(
             totalAmountOfItems = fixture.fixture(),
             overview = fixture.overviewItemsFixture(),
-            detailedView = fixture.detailviewItemsFixture()
+            detailedView = fixture.detailviewItemsFixture(),
         )
 
-        val result = Channel<AlbumContract.OverviewStoreState>()
+        val result = Channel<AlbumContract.OverviewStoreState>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         val overviewFlow: MutableStateFlow<AlbumContract.OverviewStoreState> = MutableStateFlow(
-            AlbumContract.OverviewStoreState.Initial
+            AlbumContract.OverviewStoreState.Initial,
         )
 
         val koin = koinApplication {
@@ -518,16 +502,12 @@ class AlbumStoreSpec {
                     single(named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)) { overviewFlowWrapper }
                     single<RepositoryContract.RemoteRepository> { remoteRepository }
                     single<RepositoryContract.LocalRepository> { localRepository }
-                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
-                }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { storeScope } }
+                },
             )
         }
 
-        overviewFlow.onEach { state ->
-            if (state != AlbumContract.OverviewStoreState.Pending) {
-                result.send(state)
-            }
-        }.launchIn(testScope2)
+        overviewFlow.onEach { state -> result.send(state) }.launchIn(testScope1)
 
         localRepository._fetchOverview returns Failure(PixabayError.MissingPage)
         localRepository._storeImages returns Success(Unit)
@@ -535,17 +515,13 @@ class AlbumStoreSpec {
 
         // When
         val album = AlbumStore(koin)
-
-        // Then
-        runBlockingTestWithTimeout {
-            result.receive() sameAs AlbumContract.OverviewStoreState.Initial
-        }
-
-        // When
         album.fetchOverview(query, pageId)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
+            delay(10) // yield
+
             val success = result.receive()
             success fulfils AlbumContract.OverviewStoreState.Accepted::class
             (success as AlbumContract.OverviewStoreState.Accepted).value sameAs expectedBundle.overview
@@ -566,9 +542,12 @@ class AlbumStoreSpec {
 
         val expectedError = PixabayError.UnsuccessfulDatabaseAccess(RuntimeException())
 
-        val result = Channel<AlbumContract.DetailviewStoreState>()
+        val result = Channel<AlbumContract.DetailviewStoreState>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         val detailviewFlow: MutableStateFlow<AlbumContract.DetailviewStoreState> = MutableStateFlow(
-            AlbumContract.DetailviewStoreState.Initial
+            AlbumContract.DetailviewStoreState.Initial,
         )
 
         val koin = koinApplication {
@@ -577,32 +556,24 @@ class AlbumStoreSpec {
                     single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) { detailviewFlow }
                     single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)) { overviewFlowWrapper }
                     single<RepositoryContract.LocalRepository> { localRepository }
-                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
-                }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { storeScope } }
+                },
             )
         }
 
-        detailviewFlow.onEach { state ->
-            if (state != AlbumContract.DetailviewStoreState.Pending) {
-                result.send(state)
-            }
-        }.launchIn(testScope2)
+        detailviewFlow.onEach { state -> result.send(state) }.launchIn(testScope1)
 
         localRepository._fetchDetailedView returns Failure(expectedError)
 
         // When
         val album = AlbumStore(koin)
-
-        // Then
-        runBlockingTestWithTimeout {
-            result.receive() sameAs AlbumContract.DetailviewStoreState.Initial
-        }
-
-        // When
         album.fetchDetailView(imageId)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
+            delay(10) // yield
+
             val error = result.receive()
             error fulfils AlbumContract.DetailviewStoreState.Error::class
             (error as AlbumContract.DetailviewStoreState.Error).value sameAs expectedError
@@ -621,9 +592,12 @@ class AlbumStoreSpec {
 
         val detailview = fixture.detailviewItemFixture()
 
-        val result = Channel<AlbumContract.DetailviewStoreState>()
+        val result = Channel<AlbumContract.DetailviewStoreState>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         val detailviewFlow: MutableStateFlow<AlbumContract.DetailviewStoreState> = MutableStateFlow(
-            AlbumContract.DetailviewStoreState.Initial
+            AlbumContract.DetailviewStoreState.Initial,
         )
 
         val koin = koinApplication {
@@ -632,21 +606,18 @@ class AlbumStoreSpec {
                     single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) { detailviewFlow }
                     single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)) { overviewFlowWrapper }
                     single<RepositoryContract.LocalRepository> { localRepository }
-                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { testScope1 } }
-                }
+                    single(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { CoroutineScopeDispatcher { storeScope } }
+                },
             )
         }
 
-        detailviewFlow.onEach { state ->
-            if (state != AlbumContract.DetailviewStoreState.Pending) {
-                result.send(state)
-            }
-        }.launchIn(testScope2)
+        detailviewFlow.onEach { state -> result.send(state) }.launchIn(testScope1)
 
         localRepository._fetchDetailedView returns Success(detailview)
 
         // When
         val album = AlbumStore(koin)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
@@ -655,9 +626,12 @@ class AlbumStoreSpec {
 
         // When
         album.fetchDetailView(imageId)
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
+            delay(10) // yield
+
             val success = result.receive()
             success fulfils AlbumContract.DetailviewStoreState.Accepted::class
             (success as AlbumContract.DetailviewStoreState.Accepted).value sameAs detailview

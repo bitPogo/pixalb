@@ -25,7 +25,7 @@ import tech.antibytes.util.test.sameAs
 @MockCommon(
     ClientContract.Client::class,
     CoroutineScopeDispatcher::class,
-    PixabayDataBase::class
+    PixabayDataBase::class,
 )
 class AlbumStoreKoinSpec {
     @Test
@@ -36,7 +36,7 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            kmock()
+            kmock(),
         )
 
         // Then
@@ -51,7 +51,7 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            kmock()
+            kmock(),
         )
 
         // Then
@@ -66,12 +66,12 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            kmock()
+            kmock(),
         )
 
         // Then
         koin.koin.get<MutableStateFlow<AlbumContract.OverviewStoreState>>(
-            named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)
+            named(AlbumContract.KoinIds.OVERVIEW_STORE_IN),
         ) isNot null
     }
 
@@ -83,16 +83,16 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            { testScope1 }
+            { testScope1 },
         )
 
         // Then
         val flow = koin.koin.get<MutableStateFlow<AlbumContract.OverviewStoreState>>(
-            named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)
+            named(AlbumContract.KoinIds.OVERVIEW_STORE_IN),
         )
 
         val wrapper = koin.koin.get<CoroutineWrapperContract.SharedFlowWrapper<AlbumContract.OverviewStoreState>>(
-            named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)
+            named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT),
         )
 
         wrapper.wrappedFlow sameAs flow
@@ -106,7 +106,7 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            kmock()
+            kmock(),
         )
 
         // Then
@@ -121,16 +121,16 @@ class AlbumStoreKoinSpec {
             kmock(),
             kmock(),
             kmock(),
-            { testScope1 }
+            { testScope1 },
         )
 
         // Then
         val flow = koin.koin.get<MutableStateFlow<AlbumContract.DetailviewStoreState>>(
-            named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)
+            named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN),
         )
 
         val wrapper = koin.koin.get<CoroutineWrapperContract.SharedFlowWrapper<AlbumContract.DetailviewStoreState>>(
-            named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)
+            named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT),
         )
 
         wrapper.wrappedFlow sameAs flow

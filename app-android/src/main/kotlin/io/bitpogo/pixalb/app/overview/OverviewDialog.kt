@@ -20,7 +20,7 @@ object OverviewDialog {
     @Composable
     fun OverviewDialog(
         onDismiss: Function0<Unit>,
-        onAccept: Function0<Unit>
+        onAccept: Function0<Unit>,
     ) {
         AlertDialog(
             modifier = Modifier.width(226.dp),
@@ -37,7 +37,7 @@ object OverviewDialog {
                 Button(onClick = onDismiss) {
                     Text(stringResource(R.string.overview_dialog_dismiss))
                 }
-            }
+            },
         )
     }
 }

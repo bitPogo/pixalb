@@ -16,7 +16,7 @@ fun SingleLineOutlineEditableTextWithoutError() {
     SingleLineOutlineEditableText(
         label = "test",
         value = "myTest",
-        {}
+        {},
     )
 }
 
@@ -27,6 +27,6 @@ fun DefaultSingleLineOutlineEditableTextWithError() {
         label = "test",
         value = "myTest",
         {},
-        blockComponent = SingleLineOutlineEditableText.BlockComponent.PRIMARY_DESTRUCTIVE
+        blockComponent = SingleLineOutlineEditableText.BlockComponent.PRIMARY_DESTRUCTIVE,
     )
 }

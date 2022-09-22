@@ -27,7 +27,7 @@ import tech.antibytes.kmock.verification.assertProxy
 
 @Mock(
     DetailContract.ViewModel::class,
-    DetailContract.Navigator::class
+    DetailContract.Navigator::class,
 )
 class DetailScreenSpec {
     @get:Rule
@@ -57,7 +57,7 @@ class DetailScreenSpec {
             PixabayAlbumTheme {
                 DetailScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }
@@ -79,7 +79,7 @@ class DetailScreenSpec {
             PixabayAlbumTheme {
                 DetailScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }
@@ -116,7 +116,7 @@ class DetailScreenSpec {
             PixabayAlbumTheme {
                 DetailScreen(
                     viewModel,
-                    navigator
+                    navigator,
                 )
             }
         }

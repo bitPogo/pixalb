@@ -10,5 +10,5 @@ data class OverviewItem(
     val id: Long,
     val thumbnail: String,
     val userName: String,
-    val tags: List<String>
+    val tags: List<String>,
 )

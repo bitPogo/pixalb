@@ -36,7 +36,7 @@ object AlbumContract {
 
         fun fetchOverview(
             query: String,
-            pageId: UShort
+            pageId: UShort,
         )
 
         fun fetchDetailView(imageId: Long)
@@ -47,7 +47,7 @@ object AlbumContract {
             client: ClientContract.Client,
             database: ImageQueries,
             producerScope: CoroutineWrapperContract.CoroutineScopeDispatcher,
-            consumerScope: CoroutineWrapperContract.CoroutineScopeDispatcher
+            consumerScope: CoroutineWrapperContract.CoroutineScopeDispatcher,
         ): Store
     }
 

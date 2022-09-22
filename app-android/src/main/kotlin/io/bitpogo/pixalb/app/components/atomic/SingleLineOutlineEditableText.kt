@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 object SingleLineUnderlineEditableText {
     enum class BlockComponent {
         PRIMARY_PROGRESSIVE,
-        PRIMARY_DESTRUCTIVE
+        PRIMARY_DESTRUCTIVE,
     }
 
     @Composable
@@ -28,7 +28,7 @@ object SingleLineUnderlineEditableText {
         onChange: Function1<String, Unit>,
         blockComponent: BlockComponent = BlockComponent.PRIMARY_PROGRESSIVE,
         @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
-        keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+        keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     ) {
         val labelField = @Composable { Text(text = label) }
 
@@ -40,7 +40,7 @@ object SingleLineUnderlineEditableText {
             singleLine = true,
             isError = blockComponent == BlockComponent.PRIMARY_DESTRUCTIVE,
             modifier = modifier.fillMaxWidth(),
-            keyboardOptions = keyboardOptions
+            keyboardOptions = keyboardOptions,
         )
     }
 }

@@ -15,20 +15,20 @@ internal object RepositoryContract {
     data class RemoteRepositoryResponse(
         val totalAmountOfItems: Int,
         val overview: List<OverviewItem>,
-        val detailedView: List<DetailViewItem>
+        val detailedView: List<DetailViewItem>,
     )
 
     interface RemoteRepository {
         suspend fun fetch(
             query: String,
-            pageId: UShort
+            pageId: UShort,
         ): ResultContract<RemoteRepositoryResponse, PixabayError>
     }
 
     interface LocalRepository {
         suspend fun fetchOverview(
             query: String,
-            pageId: UShort
+            pageId: UShort,
         ): ResultContract<List<OverviewItem>, PixabayError>
 
         suspend fun fetchDetailedView(imageId: Long): ResultContract<DetailViewItem, PixabayError>
@@ -36,7 +36,7 @@ internal object RepositoryContract {
         fun storeImages(
             query: String,
             pageId: UShort,
-            imageInfo: RemoteRepositoryResponse
+            imageInfo: RemoteRepositoryResponse,
         ): ResultContract<Unit, PixabayError>
     }
 

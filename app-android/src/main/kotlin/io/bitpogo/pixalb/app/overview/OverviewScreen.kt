@@ -33,17 +33,17 @@ object OverviewScreen {
     private fun TopBar(
         query: String,
         onSearch: Function0<Unit>,
-        onValueChange: Function1<String, Unit>
+        onValueChange: Function1<String, Unit>,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(88.dp)
+                .height(88.dp),
         ) {
             SearchBar(
                 value = query,
                 onValueChange = onValueChange,
-                onSearch = onSearch
+                onSearch = onSearch,
             )
         }
     }
@@ -52,7 +52,7 @@ object OverviewScreen {
     private fun SelectContent(
         contentState: State,
         nextPage: Function0<Unit>,
-        onClick: Function1<Long, Unit>
+        onClick: Function1<Long, Unit>,
     ) {
         when (contentState) {
             is State.Initial -> NoResult()
@@ -62,7 +62,7 @@ object OverviewScreen {
                 OverviewList(
                     items = contentState.value,
                     onClick = onClick,
-                    loadNextItems = nextPage
+                    loadNextItems = nextPage,
                 )
             }
         }
@@ -72,7 +72,7 @@ object OverviewScreen {
     private fun SetOverviewDialog(
         selectImage: Function1<Long, Unit>,
         goTo: MutableState<Long?>,
-        navigator: OverviewContract.Navigator
+        navigator: OverviewContract.Navigator,
     ) {
         if (goTo.value != null) {
             OverviewDialog(
@@ -81,7 +81,7 @@ object OverviewScreen {
                     selectImage(goTo.value!!)
                     goTo.value = null
                     navigator.goToDetailView()
-                }
+                },
             )
         }
     }
@@ -90,7 +90,7 @@ object OverviewScreen {
     @Composable
     fun OverviewScreen(
         overviewViewModel: OverviewContract.ViewModel = hiltViewModel<OverviewViewModel>(),
-        navigator: OverviewContract.Navigator
+        navigator: OverviewContract.Navigator,
     ) {
         val goTo: MutableState<Long?> = remember { mutableStateOf(null) }
         val query = overviewViewModel.query.collectAsState()
@@ -100,7 +100,7 @@ object OverviewScreen {
             TopBar(
                 query = query.value,
                 onSearch = overviewViewModel::search,
-                onValueChange = overviewViewModel::setQuery
+                onValueChange = overviewViewModel::setQuery,
             )
         }
 
@@ -108,13 +108,13 @@ object OverviewScreen {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp)
+                    .padding(top = 8.dp),
             ) {
                 SelectContent(
                     contentState = overview.value,
                     nextPage = {
                         overviewViewModel.nextPage()
-                    }
+                    },
                 ) { imageId ->
                     goTo.value = imageId
                 }
@@ -124,7 +124,7 @@ object OverviewScreen {
         SetOverviewDialog(
             overviewViewModel::fetchImage,
             goTo,
-            navigator
+            navigator,
         )
     }
 }

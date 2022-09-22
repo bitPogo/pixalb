@@ -19,10 +19,10 @@ import io.bitpogo.util.coroutine.result.ResultContract
 import io.bitpogo.util.coroutine.result.Success
 
 internal class RemoteRepository(
-    private val client: ClientContract.Client
+    private val client: ClientContract.Client,
 ) : RepositoryContract.RemoteRepository {
     private fun mapItems(
-        response: PixabayResponse
+        response: PixabayResponse,
     ): RemoteRepositoryResponse {
         val overview: MutableList<OverviewItem> = mutableListOf()
         val details: MutableList<DetailViewItem> = mutableListOf()
@@ -35,8 +35,8 @@ internal class RemoteRepository(
                     id = item.id,
                     userName = item.user,
                     tags = tags,
-                    thumbnail = item.preview
-                )
+                    thumbnail = item.preview,
+                ),
             )
 
             details.add(
@@ -46,20 +46,20 @@ internal class RemoteRepository(
                     tags = tags,
                     likes = item.likes,
                     downloads = item.downloads,
-                    comments = item.comments
-                )
+                    comments = item.comments,
+                ),
             )
         }
 
         return RemoteRepositoryResponse(
             totalAmountOfItems = response.total,
             overview = overview,
-            detailedView = details
+            detailedView = details,
         )
     }
 
     private fun evaluateResponse(
-        response: ResultContract<PixabayResponse, PixabayClientError>
+        response: ResultContract<PixabayResponse, PixabayClientError>,
     ): ResultContract<RemoteRepositoryResponse, PixabayError> {
         return when (response.error) {
             is PixabayClientError.NoConnection -> Failure(PixabayError.NoConnection)
@@ -69,7 +69,7 @@ internal class RemoteRepository(
     }
 
     private fun resolvePageId(
-        pageId: UShort
+        pageId: UShort,
     ): UShort = when {
         pageId <= 4.toUShort() -> 1u
         pageId <= 8.toUShort() -> 2u
@@ -78,11 +78,11 @@ internal class RemoteRepository(
 
     override suspend fun fetch(
         query: String,
-        pageId: UShort
+        pageId: UShort,
     ): ResultContract<RemoteRepositoryResponse, PixabayError> {
         val response = client.fetchImages(
             query = query,
-            page = resolvePageId(pageId)
+            page = resolvePageId(pageId),
         )
 
         return evaluateResponse(response)

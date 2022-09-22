@@ -23,7 +23,7 @@ import tech.antibytes.util.test.coroutine.runBlockingTest
 import tech.antibytes.util.test.fulfils
 
 @MockCommon(
-    KtorPluginsContract.ErrorMapper::class
+    KtorPluginsContract.ErrorMapper::class,
 )
 class ResponseValidatorConfiguratorSpec {
     private val fixture = kotlinFixture()
@@ -53,7 +53,7 @@ class ResponseValidatorConfiguratorSpec {
             install(HttpCallValidator) {
                 ResponseValidatorConfigurator().configure(
                     this,
-                    propagator
+                    propagator,
                 )
             }
         }

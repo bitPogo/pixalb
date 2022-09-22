@@ -38,7 +38,7 @@ class OverviewListSpec {
             PixabayAlbumTheme {
                 OverviewList(
                     items = items,
-                    onClick = onClick
+                    onClick = onClick,
                 ) { }
             }
         }
@@ -52,7 +52,7 @@ class OverviewListSpec {
                     node.config.any { item ->
                         item.value == Role.Button && idx == expectedIdx
                     }
-                }
+                },
             )
             .performClick()
 
@@ -74,7 +74,7 @@ class OverviewListSpec {
                 OverviewList(
                     items = items,
                     onClick = { },
-                    loadNextItems = onEnd
+                    loadNextItems = onEnd,
                 )
             }
         }
@@ -86,7 +86,7 @@ class OverviewListSpec {
                     idx++
                     idx == 2
                 },
-                useUnmergedTree = true
+                useUnmergedTree = true,
             )
             .performScrollToIndex(items.lastIndex)
 
@@ -108,7 +108,7 @@ class OverviewListSpec {
                 OverviewList(
                     items = items,
                     onClick = { },
-                    loadNextItems = onEnd
+                    loadNextItems = onEnd,
                 )
             }
         }
@@ -120,7 +120,7 @@ class OverviewListSpec {
                     idx++
                     idx == 2
                 },
-                useUnmergedTree = true
+                useUnmergedTree = true,
             )
             .performScrollToIndex(items.lastIndex)
 
@@ -142,7 +142,7 @@ class OverviewListSpec {
                 OverviewList(
                     items = items,
                     onClick = { },
-                    loadNextItems = onEnd
+                    loadNextItems = onEnd,
                 )
             }
         }
@@ -154,7 +154,7 @@ class OverviewListSpec {
                     idx++
                     idx == 2
                 },
-                useUnmergedTree = true
+                useUnmergedTree = true,
             )
             .performScrollToIndex(items.lastIndex)
 

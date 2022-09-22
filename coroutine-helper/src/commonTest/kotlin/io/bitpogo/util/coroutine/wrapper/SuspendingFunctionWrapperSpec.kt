@@ -34,7 +34,7 @@ class SuspendingFunctionWrapperSpec {
     fun `Given getInstance is called with a CoroutineScope and a supending Function it returns a SuspendingFunctionWrapper`() {
         SuspendingFunctionWrapper.getInstance(
             suspend { /* Do nothing*/ },
-            { CoroutineScope(Dispatchers.Default) }
+            { CoroutineScope(Dispatchers.Default) },
         ) fulfils CoroutineWrapperContract.SuspendingFunctionWrapper::class
     }
 
@@ -47,7 +47,7 @@ class SuspendingFunctionWrapperSpec {
         // When
         val result = SuspendingFunctionWrapper.getInstance(
             function,
-            { GlobalScope }
+            { GlobalScope },
         ).wrappedFunction
 
         // Then
@@ -63,7 +63,7 @@ class SuspendingFunctionWrapperSpec {
         // When
         val result = SuspendingFunctionWrapper.getInstance(
             function,
-            { GlobalScope }
+            { GlobalScope },
         ).subscribe({}, {})
 
         // Then
@@ -82,14 +82,14 @@ class SuspendingFunctionWrapperSpec {
         // When
         val job = SuspendingFunctionWrapper.getInstance(
             function,
-            { GlobalScope }
+            { GlobalScope },
         ).subscribe(
             { delegatedItem ->
                 CoroutineScope(Dispatchers.Default).launch {
                     capturedItem.send(delegatedItem)
                 }
             },
-            {}
+            {},
         )
 
         // Then
@@ -114,14 +114,14 @@ class SuspendingFunctionWrapperSpec {
         // When
         val job = SuspendingFunctionWrapper.getInstance(
             function,
-            { GlobalScope }
+            { GlobalScope },
         ).subscribe(
             {},
             { error ->
                 CoroutineScope(Dispatchers.Default).launch {
                     capturedError.send(error)
                 }
-            }
+            },
         )
 
         // Then
@@ -144,7 +144,7 @@ class SuspendingFunctionWrapperSpec {
         // When
         val job = SuspendingFunctionWrapper.getInstance(
             function,
-            { scope }
+            { scope },
         ).subscribe({}, {})
 
         // Then

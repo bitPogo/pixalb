@@ -15,7 +15,7 @@ import tech.antibytes.util.test.fulfils
 
 @MockCommon(
     ClientContract.ConnectivityManager::class,
-    ClientContract.Logger::class
+    ClientContract.Logger::class,
 )
 class ClientFactorySpec {
     private val fixture = kotlinFixture()
@@ -32,7 +32,7 @@ class ClientFactorySpec {
         PixabayClient.getInstance(
             fixture.fixture(),
             kmock(),
-            kmock()
+            kmock(),
         ) fulfils ClientContract.Client::class
     }
 }

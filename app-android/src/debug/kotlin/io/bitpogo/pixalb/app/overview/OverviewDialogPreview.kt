@@ -17,7 +17,7 @@ fun OverviewDialogPreview() {
     PixabayAlbumTheme {
         OverviewDialog(
             {},
-            {}
+            {},
         )
     }
 }

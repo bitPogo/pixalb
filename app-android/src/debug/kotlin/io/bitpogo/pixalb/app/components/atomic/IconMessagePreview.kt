@@ -17,6 +17,6 @@ import io.bitpogo.pixalb.app.components.atomic.IconMessage.IconMessage
 fun IconMessagePreview() {
     IconMessage(
         icon = painterResource(id = R.drawable.ic_100tb),
-        message = "Test"
+        message = "Test",
     )
 }

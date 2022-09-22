@@ -23,17 +23,17 @@ object DatabaseFactory : AppContract.DatabaseFactory {
         val driver = AndroidSqliteDriver(
             schema,
             context,
-            DATABASE_NAME
+            DATABASE_NAME,
         )
 
         return PixabayDataBase(
             driver,
             ImageAdapter = Image.Adapter(
-                ListAdapter(Json)
+                ListAdapter(Json),
             ),
             QueryAdapter = Query.Adapter(
-                InstantAdapter()
-            )
+                InstantAdapter(),
+            ),
         )
     }
 }

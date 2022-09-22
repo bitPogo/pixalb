@@ -31,7 +31,7 @@ import tech.antibytes.util.test.fulfils
 import tech.antibytes.util.test.mustBe
 
 @MockCommon(
-    ClientContract.Client::class
+    ClientContract.Client::class,
 )
 class RemoteRepositorySpec {
     private val ascii = qualifiedBy("ascii")
@@ -39,7 +39,7 @@ class RemoteRepositorySpec {
         addGenerator(
             String::class,
             StringAlphaGenerator,
-            ascii
+            ascii,
         )
     }
     private val client: ClientMock = kmock()
@@ -53,7 +53,7 @@ class RemoteRepositorySpec {
         7.toUShort() to 2.toUShort(),
         8.toUShort() to 2.toUShort(),
         9.toUShort() to 3.toUShort(),
-        10.toUShort() to 3.toUShort()
+        10.toUShort() to 3.toUShort(),
     )
 
     @Test
@@ -82,7 +82,7 @@ class RemoteRepositorySpec {
             id = response.items.first().id,
             userName = response.items.first().user,
             thumbnail = response.items.first().preview,
-            tags = listOf(response.items.first().tags)
+            tags = listOf(response.items.first().tags),
         )
         details.size mustBe 1
         details.first() mustBe DetailViewItem(
@@ -91,7 +91,7 @@ class RemoteRepositorySpec {
             tags = listOf(response.items.first().tags),
             likes = response.items.first().likes,
             downloads = response.items.first().downloads,
-            comments = response.items.first().comments
+            comments = response.items.first().comments,
         )
 
         assertProxy {
@@ -120,7 +120,7 @@ class RemoteRepositorySpec {
             id = response.items.first().id,
             userName = response.items.first().user,
             thumbnail = response.items.first().preview,
-            tags = tags
+            tags = tags,
         )
         details.size mustBe 1
         details.first() mustBe DetailViewItem(
@@ -129,7 +129,7 @@ class RemoteRepositorySpec {
             tags = tags,
             likes = response.items.first().likes,
             downloads = response.items.first().downloads,
-            comments = response.items.first().comments
+            comments = response.items.first().comments,
         )
 
         assertProxy {
@@ -200,7 +200,7 @@ class RemoteRepositorySpec {
                 id = response.items.first().id,
                 userName = response.items.first().user,
                 thumbnail = response.items.first().preview,
-                tags = listOf(response.items.first().tags)
+                tags = listOf(response.items.first().tags),
             )
             details.size mustBe 1
             details.first() mustBe DetailViewItem(
@@ -209,7 +209,7 @@ class RemoteRepositorySpec {
                 tags = listOf(response.items.first().tags),
                 likes = response.items.first().likes,
                 downloads = response.items.first().downloads,
-                comments = response.items.first().comments
+                comments = response.items.first().comments,
             )
 
             assertProxy {

@@ -14,7 +14,7 @@ object PropertyDescriptor {
     @Composable
     fun PropertyDescriptor(
         fieldName: String,
-        value: String
+        value: String,
     ) {
         Row {
             Text("$fieldName: ")

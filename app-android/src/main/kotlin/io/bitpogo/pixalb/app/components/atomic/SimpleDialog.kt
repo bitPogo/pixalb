@@ -22,18 +22,18 @@ object SimpleDialog {
     @Composable
     fun SimpleDialog(
         onDismissRequest: Function0<Unit>,
-        content: @Composable Function0<Unit>
+        content: @Composable Function0<Unit>,
     ) {
         Dialog(onDismissRequest = onDismissRequest) {
             Surface(
                 shape = RoundedCornerShape(16.dp),
-                color = Color.White
+                color = Color.White,
             ) {
                 Box(
                     modifier = Modifier
                         .width(280.dp)
                         .defaultMinSize(minHeight = 110.dp)
-                        .padding(start = 28.dp, top = 8.dp, end = 28.dp, bottom = 8.dp)
+                        .padding(start = 28.dp, top = 8.dp, end = 28.dp, bottom = 8.dp),
                 ) {
                     content()
                 }

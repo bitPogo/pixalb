@@ -15,14 +15,18 @@ import io.bitpogo.pixalb.album.domain.model.OverviewItem
 import io.bitpogo.pixalb.app.kmock
 import io.bitpogo.pixalb.app.overview.OverviewContract.State
 import io.bitpogo.pixalb.fixture.overviewItemsFixture
+import io.bitpogo.util.coroutine.wrapper.CoroutineWrapperContract
 import io.bitpogo.util.coroutine.wrapper.SharedFlowWrapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestCoroutineScheduler
 import org.junit.Before
 import org.junit.Test
 import tech.antibytes.kfixture.fixture
@@ -34,14 +38,18 @@ import tech.antibytes.util.test.fulfils
 import tech.antibytes.util.test.mustBe
 
 @Mock(
-    AlbumContract.Store::class
+    AlbumContract.Store::class,
 )
+@OptIn(ExperimentalCoroutinesApi::class)
 class ViewModelSpec {
     private val fixture = kotlinFixture()
     private val store: StoreMock = kmock(relaxUnitFun = true)
 
+    private val scheduler = TestCoroutineScheduler()
+    private lateinit var storeScope: CoroutineScope
+
     private val overviewFlow: MutableStateFlow<OverviewStoreState> = MutableStateFlow(OverviewStoreState.Initial)
-    private val overviewState = SharedFlowWrapper.getInstance(overviewFlow) { CoroutineScope(Dispatchers.Default) }
+    private lateinit var overviewState: CoroutineWrapperContract.SharedFlowWrapper<OverviewStoreState>
 
     @Before
     fun setup() {
@@ -49,6 +57,8 @@ class ViewModelSpec {
 
         store._clearMock()
 
+        storeScope = CoroutineScope(scheduler)
+        overviewState = SharedFlowWrapper.getInstance(overviewFlow) { storeScope }
         store._overview returns overviewState
     }
 
@@ -71,13 +81,18 @@ class ViewModelSpec {
     fun `Given a setQuery is called it emits the new search state`() {
         // Given
         val query: String = fixture.fixture()
-        val result = Channel<String>()
+        val result = Channel<String>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
 
         // When
         val viewModel = OverviewViewModel(store)
         CoroutineScope(Dispatchers.Default).launch {
             viewModel.query.collect { state -> result.send(state) }
         }
+
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
@@ -97,7 +112,10 @@ class ViewModelSpec {
     fun `Given a setQuery is called it ignores the new search state if the char cap is reached`() {
         // Given
         val query: String = fixture.fixture(101)
-        val result = Channel<String>()
+        val result = Channel<String>(
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            capacity = 1,
+        )
         var ignored = false
 
         // When
@@ -105,6 +123,8 @@ class ViewModelSpec {
         CoroutineScope(Dispatchers.Default).launch {
             viewModel.query.collect { state -> result.send(state) }
         }
+
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
@@ -241,6 +261,8 @@ class ViewModelSpec {
             }
         }
 
+        scheduler.advanceUntilIdle()
+
         // Then
         try {
             runBlockingTestWithTimeout {
@@ -271,6 +293,8 @@ class ViewModelSpec {
                 OverviewStoreState.Pending
             }
         }
+
+        scheduler.advanceUntilIdle()
 
         // Then
         try {
@@ -303,6 +327,8 @@ class ViewModelSpec {
             }
         }
 
+        scheduler.advanceUntilIdle()
+
         // Then
         try {
             runBlockingTestWithTimeout {
@@ -334,6 +360,8 @@ class ViewModelSpec {
             }
         }
 
+        scheduler.advanceUntilIdle()
+
         // Then
         runBlockingTestWithTimeout {
             result.receive() mustBe State.Initial
@@ -360,6 +388,8 @@ class ViewModelSpec {
                 OverviewStoreState.Accepted(expectedValue)
             }
         }
+
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
@@ -389,6 +419,8 @@ class ViewModelSpec {
                 OverviewStoreState.Accepted(expectedValue)
             }
         }
+
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
@@ -453,6 +485,8 @@ class ViewModelSpec {
             }
         }
 
+        scheduler.advanceUntilIdle()
+
         // Then
         runBlockingTestWithTimeout {
             val success = result.receive()
@@ -468,6 +502,8 @@ class ViewModelSpec {
                 OverviewStoreState.Accepted(expectedValue2)
             }
         }
+
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
@@ -487,6 +523,7 @@ class ViewModelSpec {
 
         // When
         val viewModel = OverviewViewModel(store)
+        scheduler.runCurrent()
 
         CoroutineScope(Dispatchers.Default).launch {
             viewModel.overview.collect { items ->
@@ -550,6 +587,8 @@ class ViewModelSpec {
             }
         }
 
+        scheduler.advanceUntilIdle()
+
         // Then
         runBlockingTestWithTimeout {
             val success = result.receive()
@@ -565,6 +604,8 @@ class ViewModelSpec {
                 OverviewStoreState.Accepted(expectedValue2)
             }
         }
+
+        scheduler.advanceUntilIdle()
 
         // Then
         runBlockingTestWithTimeout {
