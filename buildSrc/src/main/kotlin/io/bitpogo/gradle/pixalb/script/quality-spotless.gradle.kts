@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
+ *
+ * Use of this source code is governed by Apache v2.0
+ */
+
 package io.bitpogo.gradle.pixalb.script
 
 import tech.antibytes.gradle.dependency.Version
@@ -18,8 +24,10 @@ spotless {
         )
         ktlint(Version.gradle.ktLint).editorConfigOverride(
             mapOf(
-                "disabled_rules" to "no-wildcard-imports",
-                "ij_kotlin_imports_layout" to "*"
+                "ktlint_disabled_rules" to "no-wildcard-imports",
+                "ij_kotlin_imports_layout" to "*",
+                "ij_kotlin_allow_trailing_comma" to "true",
+                "ij_kotlin_allow_trailing_comma_on_call_site" to "true",
             )
         )
         trimTrailingWhitespace()

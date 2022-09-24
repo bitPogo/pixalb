@@ -25,10 +25,10 @@ object Thumbnail {
     fun Thumbnail(
         url: String,
         contentDescription: String?,
-        modifier: Modifier
+        modifier: Modifier,
     ) {
         Box(
-            modifier = modifier
+            modifier = modifier,
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -42,7 +42,7 @@ object Thumbnail {
                 contentDescription = contentDescription,
                 placeholder = painterResource(R.mipmap.placeholder_foreground),
                 contentScale = ContentScale.Crop,
-                modifier = modifier.clip(CircleShape)
+                modifier = modifier.clip(CircleShape),
             )
         }
     }

@@ -18,7 +18,7 @@ import tech.antibytes.util.test.fulfils
 import tech.antibytes.util.test.mustBe
 
 @MockCommon(
-    JsonConfiguratorContract::class
+    JsonConfiguratorContract::class,
 )
 class SerializerConfiguratorSpec {
     @Test

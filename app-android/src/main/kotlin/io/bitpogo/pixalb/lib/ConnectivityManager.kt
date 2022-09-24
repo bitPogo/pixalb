@@ -11,7 +11,7 @@ import android.net.ConnectivityManager
 import io.bitpogo.pixalb.client.ClientContract
 
 class ConnectivityManager(
-    private val context: Context
+    private val context: Context,
 ) : ClientContract.ConnectivityManager {
     override fun hasConnection(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

@@ -42,7 +42,7 @@ object DetailScreen {
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             HeroImage(url)
 
@@ -51,7 +51,7 @@ object DetailScreen {
                 color = BrightGray,
                 modifier = Modifier
                     .padding(top = 16.dp)
-                    .fillMaxWidth(0.85f)
+                    .fillMaxWidth(0.85f),
             )
         }
     }
@@ -62,27 +62,27 @@ object DetailScreen {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 16.dp),
         ) {
             PropertyDescriptor(
                 fieldName = stringResource(id = R.string.detailview_author),
-                value = details.userName
+                value = details.userName,
             )
             PropertyDescriptor(
                 fieldName = stringResource(id = R.string.detailview_tag),
-                value = details.tags.joinToString(", ")
+                value = details.tags.joinToString(", "),
             )
             PropertyDescriptor(
                 fieldName = stringResource(id = R.string.detailview_like),
-                value = details.likes.toString()
+                value = details.likes.toString(),
             )
             PropertyDescriptor(
                 fieldName = stringResource(id = R.string.detailview_comment),
-                value = details.comments.toString()
+                value = details.comments.toString(),
             )
             PropertyDescriptor(
                 fieldName = stringResource(id = R.string.detailview_download),
-                value = details.downloads.toString()
+                value = details.downloads.toString(),
             )
         }
     }
@@ -106,12 +106,12 @@ object DetailScreen {
 
     @Composable
     private fun RenderNavBar(
-        navigator: DetailContract.Navigator
+        navigator: DetailContract.Navigator,
     ) {
         Row {
             BorderLessIconButton(
                 icon = Icons.Outlined.Cancel,
-                contentDescription = stringResource(id = R.string.detailview_cancel)
+                contentDescription = stringResource(id = R.string.detailview_cancel),
             ) { navigator.goToOverview() }
         }
     }
@@ -119,7 +119,7 @@ object DetailScreen {
     @Composable
     fun DetailScreen(
         viewModel: DetailContract.ViewModel = hiltViewModel<DetailviewViewModel>(),
-        navigator: DetailContract.Navigator
+        navigator: DetailContract.Navigator,
     ) {
         val details = viewModel.details.collectAsState()
         val scrollState = rememberScrollState()
@@ -128,7 +128,7 @@ object DetailScreen {
             shape = RoundedCornerShape(5.dp),
             border = BorderStroke(0.dp, Color.Transparent),
             elevation = 8.dp,
-            modifier = Modifier.verticalScroll(scrollState)
+            modifier = Modifier.verticalScroll(scrollState),
         ) {
             SelectContent(details = details)
             RenderNavBar(navigator)

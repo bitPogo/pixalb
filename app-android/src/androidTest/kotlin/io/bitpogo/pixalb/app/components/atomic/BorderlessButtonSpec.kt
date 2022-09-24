@@ -31,7 +31,7 @@ class BorderlessButtonSpec {
             PixabayAlbumTheme {
                 BorderLessIconButton(
                     icon = Icons.Default.CarCrash,
-                    contentDescription = "Test"
+                    contentDescription = "Test",
                 ) { wasClick = true }
             }
         }

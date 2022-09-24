@@ -18,7 +18,7 @@ object ClientContract {
     interface Client {
         suspend fun fetchImages(
             query: String,
-            page: UShort
+            page: UShort,
         ): ResultContract<PixabayResponse, PixabayClientError>
     }
 
@@ -26,7 +26,7 @@ object ClientContract {
         fun getInstance(
             apiToken: String,
             logger: Logger,
-            connection: ConnectivityManager
+            connection: ConnectivityManager,
         ): Client
     }
 

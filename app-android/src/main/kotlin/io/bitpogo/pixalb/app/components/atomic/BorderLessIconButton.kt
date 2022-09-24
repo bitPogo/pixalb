@@ -25,7 +25,7 @@ object BorderLessIconButton {
     fun BorderLessIconButton(
         icon: ImageVector,
         contentDescription: String,
-        onClick: Function0<Unit>
+        onClick: Function0<Unit>,
     ) {
         Button(
             onClick = onClick,
@@ -33,12 +33,12 @@ object BorderLessIconButton {
             border = BorderStroke(0.dp, Color.Transparent),
             modifier = Modifier.border(0.dp, Color.Transparent).background(Color.Transparent),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-            elevation = null
+            elevation = null,
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = contentDescription,
-                modifier = Modifier.background(White, RoundedCornerShape(15.dp))
+                modifier = Modifier.background(White, RoundedCornerShape(15.dp)),
             )
         }
     }

@@ -20,7 +20,7 @@ import io.bitpogo.pixalb.app.overview.OverviewScreen.OverviewScreen
 object Routing {
     @Composable
     fun Routing(
-        start: String = AppContract.Routes.OVERVIEW.name
+        start: String = AppContract.Routes.OVERVIEW.name,
     ) {
         val controller = rememberNavController()
         val router by remember { mutableStateOf(Navigator(controller)) }

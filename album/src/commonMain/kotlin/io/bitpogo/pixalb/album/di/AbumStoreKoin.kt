@@ -23,7 +23,7 @@ import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 
 private fun resolveAlbumStoreParameterModule(
-    producerScope: CoroutineScopeDispatcher
+    producerScope: CoroutineScopeDispatcher,
 ): Module {
     return module {
         factory(named(AlbumContract.KoinIds.PRODUCER_SCOPE)) { producerScope }
@@ -33,7 +33,7 @@ private fun resolveAlbumStoreParameterModule(
 
 private fun resolveRepositories(
     client: ClientContract.Client,
-    database: ImageQueries
+    database: ImageQueries,
 ): Module {
     return module {
         single<RepositoryContract.RemoteRepository> { RemoteRepository(client) }
@@ -42,7 +42,7 @@ private fun resolveRepositories(
 }
 
 internal fun resolveAlbumStoreModule(
-    consumerScope: CoroutineScopeDispatcher
+    consumerScope: CoroutineScopeDispatcher,
 ): Module {
     return module {
         single<MutableStateFlow<AlbumContract.OverviewStoreState>>(named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)) {
@@ -51,21 +51,21 @@ internal fun resolveAlbumStoreModule(
 
         single<MutableStateFlow<AlbumContract.DetailviewStoreState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)) {
             MutableStateFlow(
-                AlbumContract.DetailviewStoreState.Initial
+                AlbumContract.DetailviewStoreState.Initial,
             )
         }
 
         single(named(AlbumContract.KoinIds.OVERVIEW_STORE_OUT)) {
             SharedFlowWrapperFactory.getInstance(
                 get<MutableStateFlow<AlbumContract.OverviewStoreState>>(named(AlbumContract.KoinIds.OVERVIEW_STORE_IN)),
-                consumerScope
+                consumerScope,
             )
         }
 
         single(named(AlbumContract.KoinIds.DETAILVIEW_STORE_OUT)) {
             SharedFlowWrapperFactory.getInstance(
                 get<MutableStateFlow<AlbumContract.DetailviewStoreState>>(named(AlbumContract.KoinIds.DETAILVIEW_STORE_IN)),
-                consumerScope
+                consumerScope,
             )
         }
     }
@@ -75,13 +75,13 @@ internal fun initKoin(
     client: ClientContract.Client,
     database: ImageQueries,
     producerScope: CoroutineScopeDispatcher,
-    consumerScope: CoroutineScopeDispatcher
+    consumerScope: CoroutineScopeDispatcher,
 ): KoinApplication {
     return koinApplication {
         modules(
             resolveRepositories(client, database),
             resolveAlbumStoreModule(consumerScope),
-            resolveAlbumStoreParameterModule(producerScope)
+            resolveAlbumStoreParameterModule(producerScope),
         )
     }
 }

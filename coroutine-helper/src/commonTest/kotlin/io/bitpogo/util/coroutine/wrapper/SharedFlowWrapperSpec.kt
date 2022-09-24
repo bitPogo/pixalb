@@ -36,7 +36,7 @@ class SharedFlowWrapperSpec {
     fun `It fulfils SharedFlowWrapper`() {
         SharedFlowWrapper.getInstance<State>(
             MutableSharedFlow(),
-            { GlobalScope }
+            { GlobalScope },
         ) fulfils CoroutineWrapperContract.SharedFlowWrapper::class
     }
 
@@ -51,7 +51,7 @@ class SharedFlowWrapperSpec {
         // When
         val wrapped = SharedFlowWrapper.getInstance(
             flow,
-            { testScope1 }
+            { testScope1 },
         )
 
         wrapped.subscribe { value: ResultContract<String, RuntimeException> ->
@@ -85,7 +85,7 @@ class SharedFlowWrapperSpec {
         // When
         val wrapped = SharedFlowWrapper.getInstance(
             flow,
-            { testScope1 }
+            { testScope1 },
         )
 
         wrapped.subscribeWithSuspendingFunction { result ->
@@ -114,7 +114,7 @@ class SharedFlowWrapperSpec {
         // When
         val wrapped = SharedFlowWrapper.getInstance(
             flow,
-            { testScope1 }
+            { testScope1 },
         )
 
         wrapped.subscribe { }

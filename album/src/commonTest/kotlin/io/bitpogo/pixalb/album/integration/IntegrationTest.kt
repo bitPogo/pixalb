@@ -34,7 +34,7 @@ import tech.antibytes.util.test.coroutine.runBlockingTestWithTimeout
 import tech.antibytes.util.test.mustBe
 
 @MockCommon(
-    ClientContract.Client::class
+    ClientContract.Client::class,
 )
 @RobolectricConfig(manifest = "--none")
 @RunWithRobolectricTestRunner(RobolectricTestRunner::class)
@@ -57,7 +57,7 @@ class IntegrationTest {
                 id = item.id,
                 thumbnail = item.preview,
                 userName = item.user,
-                tags = item.tags.split(", ")
+                tags = item.tags.split(", "),
             )
         }
 
@@ -72,7 +72,7 @@ class IntegrationTest {
                 client,
                 db.dataBase.imageQueries,
                 { testScope2 },
-                { testScope1 }
+                { testScope1 },
             )
 
             store.overview.subscribeWithSuspendingFunction { state ->
@@ -110,7 +110,7 @@ class IntegrationTest {
                 id = item.id,
                 thumbnail = item.preview,
                 userName = item.user,
-                tags = item.tags.split(", ")
+                tags = item.tags.split(", "),
             )
         }
 
@@ -133,7 +133,7 @@ class IntegrationTest {
                 client,
                 db.dataBase.imageQueries,
                 { testScope2 },
-                { testScope1 }
+                { testScope1 },
             )
 
             store.overview.subscribeWithSuspendingFunction { state ->

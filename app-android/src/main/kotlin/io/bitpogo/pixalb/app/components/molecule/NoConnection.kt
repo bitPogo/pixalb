@@ -17,7 +17,7 @@ object NoConnection {
     fun NoConnection() {
         IconMessage(
             icon = painterResource(id = R.mipmap.noconnection_foreground),
-            message = stringResource(id = R.string.no_connection)
+            message = stringResource(id = R.string.no_connection),
         )
     }
 }

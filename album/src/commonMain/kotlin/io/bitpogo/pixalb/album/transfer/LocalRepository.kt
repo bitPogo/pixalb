@@ -35,10 +35,10 @@ import kotlinx.datetime.plus
 
 internal class LocalRepository(
     private val sqlService: ImageQueries,
-    private val clock: Clock = Clock.System
+    private val clock: Clock = Clock.System,
 ) : RepositoryContract.LocalRepository {
     private suspend fun <T> guardSqlAccess(
-        action: suspend () -> ResultContract<T, PixabayError>
+        action: suspend () -> ResultContract<T, PixabayError>,
     ): ResultContract<T, PixabayError> {
         return try {
             action()
@@ -55,7 +55,7 @@ internal class LocalRepository(
                 id = image.imageId,
                 thumbnail = image.previewUrl,
                 userName = image.user,
-                tags = image.tags
+                tags = image.tags,
             )
         }
 
@@ -64,11 +64,11 @@ internal class LocalRepository(
 
     private suspend fun resolveOverview(
         query: FetchQueryInfo,
-        offset: Long
+        offset: Long,
     ): ResultContract<List<OverviewItem>, PixabayError> {
         return sqlService.fetchImages(
             query = query.inquiry,
-            offset = offset
+            offset = offset,
         ).asFlow()
             .mapToList()
             .map(::toOverview)
@@ -77,7 +77,7 @@ internal class LocalRepository(
 
     private suspend fun resolveOverview(
         pageId: UShort,
-        query: FetchQueryInfo?
+        query: FetchQueryInfo?,
     ): ResultContract<List<OverviewItem>, PixabayError> {
         val offset = pageId.resolveOffset()
 
@@ -91,7 +91,7 @@ internal class LocalRepository(
 
     override suspend fun fetchOverview(
         query: String,
-        pageId: UShort
+        pageId: UShort,
     ): ResultContract<List<OverviewItem>, PixabayError> = guardSqlAccess {
         val queryInfo = sqlService.fetchQueryInfo(query, clock.now())
             .asFlow()
@@ -100,7 +100,7 @@ internal class LocalRepository(
 
         resolveOverview(
             query = queryInfo,
-            pageId = pageId
+            pageId = pageId,
         )
     }
 
@@ -111,16 +111,16 @@ internal class LocalRepository(
             tags = tags,
             likes = likes.toUInt(),
             comments = comments.toUInt(),
-            downloads = downloads.toUInt()
+            downloads = downloads.toUInt(),
         )
     }
 
     private fun toSuccessfulDetailViewItem(
-        image: Image
+        image: Image,
     ): ResultContract<DetailViewItem, PixabayError> = Success(image.toDetailViewItem())
 
     override suspend fun fetchDetailedView(
-        imageId: Long
+        imageId: Long,
     ): ResultContract<DetailViewItem, PixabayError> = guardSqlAccess {
         sqlService.fetchImage(imageId)
             .asFlow()
@@ -133,12 +133,12 @@ internal class LocalRepository(
         return this.plus(
             1,
             DateTimeUnit.DAY,
-            TimeZone.currentSystemDefault()
+            TimeZone.currentSystemDefault(),
         )
     }
 
     private fun <T> guardSqlTransaction(
-        action: () -> ResultContract<T, PixabayError>
+        action: () -> ResultContract<T, PixabayError>,
     ): ResultContract<T, PixabayError> {
         return try {
             sqlService.transactionWithResult {
@@ -151,7 +151,7 @@ internal class LocalRepository(
 
     private fun storeImageEntries(
         query: String,
-        imageInfo: RepositoryContract.RemoteRepositoryResponse
+        imageInfo: RepositoryContract.RemoteRepositoryResponse,
     ) {
         imageInfo.overview.forEachIndexed { idx, overview ->
             val image = imageInfo.detailedView[idx]
@@ -165,7 +165,7 @@ internal class LocalRepository(
                 previewUrl = overview.thumbnail,
                 comments = image.comments.toInt(),
                 likes = image.likes.toInt(),
-                downloads = image.downloads.toInt()
+                downloads = image.downloads.toInt(),
             )
         }
     }
@@ -175,19 +175,19 @@ internal class LocalRepository(
     private fun storeQuery(
         query: String,
         pageId: UShort,
-        imageInfo: RepositoryContract.RemoteRepositoryResponse
+        imageInfo: RepositoryContract.RemoteRepositoryResponse,
     ) {
         if (useUpdate(pageId)) {
             sqlService.updatePageIndex(
                 query = query,
-                pageIndex = min(imageInfo.totalAmountOfItems, paging.getOrElse(pageId) { ITEM_CAP })
+                pageIndex = min(imageInfo.totalAmountOfItems, paging.getOrElse(pageId) { ITEM_CAP }),
             )
         } else {
             sqlService.addQuery(
                 inquiry = query,
                 storedPages = REMOTE_ITEMS,
                 totalPages = imageInfo.totalAmountOfItems,
-                expiryDate = clock.now().toDayAfter()
+                expiryDate = clock.now().toDayAfter(),
             )
         }
     }
@@ -195,7 +195,7 @@ internal class LocalRepository(
     override fun storeImages(
         query: String,
         pageId: UShort,
-        imageInfo: RepositoryContract.RemoteRepositoryResponse
+        imageInfo: RepositoryContract.RemoteRepositoryResponse,
     ): ResultContract<Unit, PixabayError> = guardSqlTransaction {
         storeQuery(query, pageId, imageInfo)
         storeImageEntries(query, imageInfo)
@@ -208,7 +208,7 @@ internal class LocalRepository(
             5.toUShort() to REMOTE_ITEMS * 2,
             6.toUShort() to REMOTE_ITEMS * 2,
             7.toUShort() to REMOTE_ITEMS * 2,
-            8.toUShort() to REMOTE_ITEMS * 2
+            8.toUShort() to REMOTE_ITEMS * 2,
         )
     }
 }

@@ -25,10 +25,10 @@ fun OverviewScreenWithItemsPreview() {
                         23,
                         "https://www.pngmart.com/files/4/Android-PNG-Pic.png",
                         "me",
-                        listOf("test", "me")
-                    )
-                )
-            )
+                        listOf("test", "me"),
+                    ),
+                ),
+            ),
         )
 
         override fun setQuery(query: String) {
@@ -63,7 +63,7 @@ fun OverviewScreenWithNoResultPreview() {
     val viewModel = object : OverviewContract.ViewModel {
         override val query: StateFlow<String> = MutableStateFlow("")
         override val overview: StateFlow<OverviewContract.State> = MutableStateFlow(
-            OverviewContract.State.NoResult
+            OverviewContract.State.NoResult,
         )
 
         override fun setQuery(query: String) {
@@ -98,7 +98,7 @@ fun OverviewScreenWithNoConnectionPreview() {
     val viewModel = object : OverviewContract.ViewModel {
         override val query: StateFlow<String> = MutableStateFlow("")
         override val overview: StateFlow<OverviewContract.State> = MutableStateFlow(
-            OverviewContract.State.NoConnection
+            OverviewContract.State.NoConnection,
         )
 
         override fun setQuery(query: String) {

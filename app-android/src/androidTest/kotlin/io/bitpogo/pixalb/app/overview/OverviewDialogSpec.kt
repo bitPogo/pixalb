@@ -30,7 +30,7 @@ class OverviewDialogSpec {
             PixabayAlbumTheme {
                 OverviewDialog(
                     onAccept = { accepted = true },
-                    onDismiss = { dismissed = true }
+                    onDismiss = { dismissed = true },
                 )
             }
         }
@@ -55,7 +55,7 @@ class OverviewDialogSpec {
             PixabayAlbumTheme {
                 OverviewDialog(
                     onAccept = { accepted = true },
-                    onDismiss = { dismissed = true }
+                    onDismiss = { dismissed = true },
                 )
             }
         }
@@ -80,7 +80,7 @@ class OverviewDialogSpec {
             PixabayAlbumTheme {
                 OverviewDialog(
                     onAccept = { accepted = true },
-                    onDismiss = { dismissed = true }
+                    onDismiss = { dismissed = true },
                 )
             }
         }

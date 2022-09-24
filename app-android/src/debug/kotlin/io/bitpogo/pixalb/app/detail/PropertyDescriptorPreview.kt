@@ -15,6 +15,6 @@ import io.bitpogo.pixalb.app.detail.PropertyDescriptor.PropertyDescriptor
 fun PropertyDescriptorPreview() {
     PropertyDescriptor(
         "Test",
-        "Value"
+        "Value",
     )
 }

@@ -70,12 +70,12 @@ class NavigatorSpec {
 }
 
 private class Router(
-    var _navigate: Function3<NavDeepLinkRequest, NavOptions?, AndroidNavigator.Extras?, Unit>? = null
+    var _navigate: Function3<NavDeepLinkRequest, NavOptions?, AndroidNavigator.Extras?, Unit>? = null,
 ) : NavController(MockContext) {
     override fun navigate(
         request: NavDeepLinkRequest,
         navOptions: NavOptions?,
-        navigatorExtras: AndroidNavigator.Extras?
+        navigatorExtras: AndroidNavigator.Extras?,
     ) {
         return _navigate?.invoke(request, navOptions, navigatorExtras)
             ?: throw RuntimeException("Missing SideEffect _navigate")

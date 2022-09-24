@@ -45,7 +45,7 @@ object TopSearchBar {
         backgroundColour: Color? = null,
         textFieldColours: TextFieldColors? = null,
         textFieldModifier: Modifier.() -> Modifier = { this },
-        textFieldShape: Shape? = null
+        textFieldShape: Shape? = null,
     ) {
         val searchWidth = if (actions == null) {
             1F
@@ -63,16 +63,16 @@ object TopSearchBar {
                     val colour = backgroundColour ?: MaterialTheme.colors.primarySurface
                     scopedModifier.background(
                         color = colour,
-                        shape = RoundedCornerShape(0.dp)
+                        shape = RoundedCornerShape(0.dp),
                     )
-                }
+                },
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
                     .fillMaxWidth(searchWidth)
-                    .fillMaxHeight()
+                    .fillMaxHeight(),
             ) {
                 TextField(
                     value = value,
@@ -86,18 +86,18 @@ object TopSearchBar {
                     leadingIcon = leadingIcon,
                     trailingIcon = trailingIcon,
                     modifier = textFieldModifier.invoke(
-                        Modifier.fillMaxWidth()
+                        Modifier.fillMaxWidth(),
                     ),
                     colors = textFieldColours ?: TextFieldDefaults.textFieldColors(),
                     shape = textFieldShape ?: MaterialTheme.shapes.small.copy(
                         bottomEnd = ZeroCornerSize,
-                        bottomStart = ZeroCornerSize
+                        bottomStart = ZeroCornerSize,
                     ),
 
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(
-                        onDone = { keyboardController?.hide() }
-                    )
+                        onDone = { keyboardController?.hide() },
+                    ),
                 )
             }
 
@@ -105,7 +105,7 @@ object TopSearchBar {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.End,
-                    modifier = Modifier.fillMaxHeight()
+                    modifier = Modifier.fillMaxHeight(),
                 ) {
                     actions.invoke()
                 }

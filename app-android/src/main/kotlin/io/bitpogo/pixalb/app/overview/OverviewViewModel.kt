@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.update
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
     private val store: AlbumContract.Store,
-    initialQuery: String = ""
+    initialQuery: String = "",
 ) : OverviewContract.ViewModel, ViewModel() {
     private val _query: MutableStateFlow<String> = MutableStateFlow("")
     override val query: StateFlow<String> = _query

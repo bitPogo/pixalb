@@ -17,11 +17,11 @@ actual class DatabaseDriver {
         get() = PixabayDataBase(
             driver!!,
             ImageAdapter = Image.Adapter(
-                ListAdapter(Json)
+                ListAdapter(Json),
             ),
             QueryAdapter = Query.Adapter(
-                InstantAdapter()
-            )
+                InstantAdapter(),
+            ),
         )
 
     actual suspend fun open(schema: SqlDriver.Schema) {

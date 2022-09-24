@@ -11,24 +11,30 @@ object Version {
     const val kotlin = "1.7.10"
 
     val gradle = Gradle
-    val antibytes = Antibytes
 
     object Gradle {
         /**
+         * [Kotlin](https://github.com/JetBrains/kotlin)
+         */
+        const val kotlin = Version.kotlin
+
+        /**
          * [AnitBytes GradlePlugins](https://github.com/bitPogo/gradle-plugins)
          */
-        const val antibytes = "009e2b6"
+        const val antibytes = "9e2ffe9"
 
         /**
          * [Spotless](https://plugins.gradle.org/plugin/com.diffplug.gradle.spotless)
          */
-        const val spotless = "6.9.0"
+        const val spotless = "6.11.0"
     }
 
+    val antibytes = Antibytes
+
     object Antibytes {
-        const val test = "97a7c7a-bump-antibytes-SNAPSHOT"
+        const val test = "9401af5"
         const val kfixture = "0.3.1"
-        const val kmock = "0.3.0-rc02-bump-updates-1.7.10-SNAPSHOT"
+        const val kmock = "0.3.0-rc04"
     }
 
     /**

@@ -16,12 +16,12 @@ fun PublicApi.Fixture.overviewItemFixture(): OverviewItem {
         id = fixture(),
         thumbnail = fixture(),
         userName = fixture(),
-        tags = listFixture()
+        tags = listFixture(),
     )
 }
 
 fun PublicApi.Fixture.overviewItemsFixture(
-    size: Int? = null
+    size: Int? = null,
 ): List<OverviewItem> {
     val items: MutableList<OverviewItem> = mutableListOf()
     val amountOfItems: Int = size ?: fixture(1, 10)

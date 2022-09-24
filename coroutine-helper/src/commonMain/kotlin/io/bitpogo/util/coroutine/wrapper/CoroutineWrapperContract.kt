@@ -21,14 +21,14 @@ interface CoroutineWrapperContract {
 
         fun subscribe(
             onSuccess: (item: T) -> Unit,
-            onError: (error: Throwable) -> Unit
+            onError: (error: Throwable) -> Unit,
         ): Job
     }
 
     interface SuspendingFunctionWrapperFactory {
         fun <T> getInstance(
             function: suspend () -> T,
-            dispatcher: CoroutineScopeDispatcher
+            dispatcher: CoroutineScopeDispatcher,
         ): SuspendingFunctionWrapper<T>
     }
 
@@ -37,18 +37,18 @@ interface CoroutineWrapperContract {
         val replayCache: List<T>
 
         fun subscribe(
-            onEach: (item: T) -> Unit
+            onEach: (item: T) -> Unit,
         ): Job
 
         fun subscribeWithSuspendingFunction(
-            onEach: suspend (item: T) -> Unit
+            onEach: suspend (item: T) -> Unit,
         ): Job
     }
 
     interface SharedFlowWrapperFactory {
         fun <T : State> getInstance(
             flow: SharedFlow<T>,
-            dispatcher: CoroutineScopeDispatcher
+            dispatcher: CoroutineScopeDispatcher,
         ): SharedFlowWrapper<T>
     }
 }

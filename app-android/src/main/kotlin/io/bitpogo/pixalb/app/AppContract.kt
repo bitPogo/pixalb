@@ -23,13 +23,13 @@ object AppContract {
 
     enum class Routes {
         OVERVIEW,
-        DETAILVIEW
+        DETAILVIEW,
     }
 
     enum class LogTag(val value: String) {
         CLIENT_INFO("PIXABAY_CLIENT_INFO"),
         CLIENT_WARN("PIXABAY_CLIENT_WARN"),
         CLIENT_ERROR("PIXABAY_CLIENT_ERROR"),
-        CLIENT_LOG("PIXABAY_CLIENT_LOG")
+        CLIENT_LOG("PIXABAY_CLIENT_LOG"),
     }
 }

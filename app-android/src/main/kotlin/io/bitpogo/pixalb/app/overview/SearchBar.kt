@@ -30,7 +30,7 @@ object SearchBar {
     fun SearchBar(
         value: String,
         onValueChange: (String) -> Unit,
-        onSearch: () -> Unit
+        onSearch: () -> Unit,
     ) {
         val colours = TextFieldDefaults.outlinedTextFieldColors(
             textColor = DeepBlack,
@@ -45,7 +45,7 @@ object SearchBar {
             focusedLabelColor = Color.Transparent,
             unfocusedLabelColor = Color.Transparent,
             disabledLabelColor = Color.Transparent,
-            errorLabelColor = Color.Transparent
+            errorLabelColor = Color.Transparent,
         )
 
         TopSearchBar(
@@ -56,7 +56,7 @@ object SearchBar {
                 IconButton(onClick = onSearch) {
                     Icon(
                         Icons.Default.Search,
-                        stringResource(R.string.overview_search_run)
+                        stringResource(R.string.overview_search_run),
                     )
                 }
             },
@@ -68,13 +68,13 @@ object SearchBar {
                         start = 8.dp,
                         end = 8.dp,
                         top = 8.dp,
-                        bottom = 8.dp
+                        bottom = 8.dp,
                     )
                     .border(
                         1.dp,
-                        LightBrightGray
+                        LightBrightGray,
                     )
-            }
+            },
         )
     }
 }

@@ -24,13 +24,13 @@ import io.bitpogo.pixalb.app.R
 object HeroImage {
     @Composable
     fun HeroImage(
-        url: String
+        url: String,
     ) {
         Row(
             modifier = Modifier
                 .height(240.dp)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -42,7 +42,7 @@ object HeroImage {
                 contentDescription = "",
                 placeholder = painterResource(R.mipmap.placeholder_foreground),
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.height(240.dp)
+                modifier = Modifier.height(240.dp),
             )
         }
     }

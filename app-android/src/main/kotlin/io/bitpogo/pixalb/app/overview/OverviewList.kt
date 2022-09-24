@@ -30,14 +30,14 @@ object OverviewList {
     private fun OverviewListItem(
         item: OverviewItem,
         modifier: Modifier = Modifier,
-        onClick: Function1<Long, Unit>
+        onClick: Function1<Long, Unit>,
     ) {
         Row(
             modifier = Modifier
                 .height(88.dp)
                 .clickable(role = Role.Button, onClick = { onClick(item.id) })
                 .padding(start = 10.dp, top = 20.dp, bottom = 10.dp)
-                .then(modifier)
+                .then(modifier),
         ) {
             Column {
                 Thumbnail.Thumbnail(
@@ -45,14 +45,14 @@ object OverviewList {
                     contentDescription = "",
                     modifier = Modifier
                         .height(48.dp)
-                        .width(48.dp)
+                        .width(48.dp),
                 )
             }
 
             Column(
                 modifier = Modifier
                     .height(64.dp)
-                    .padding(start = 16.dp, top = 4.dp, end = 8.dp)
+                    .padding(start = 16.dp, top = 4.dp, end = 8.dp),
             ) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     UserIndicator.UserIndicator(item.userName)
@@ -69,7 +69,7 @@ object OverviewList {
     fun OverviewList(
         items: List<OverviewItem>,
         onClick: Function1<Long, Unit>,
-        loadNextItems: Function0<Unit>
+        loadNextItems: Function0<Unit>,
     ) {
         LazyColumn {
             itemsIndexed(items) { idx, item: OverviewItem ->
@@ -79,7 +79,7 @@ object OverviewList {
 
                 OverviewListItem(
                     item = item,
-                    onClick = onClick
+                    onClick = onClick,
                 )
             }
         }

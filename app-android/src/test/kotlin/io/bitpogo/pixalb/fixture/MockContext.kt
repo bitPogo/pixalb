@@ -180,7 +180,7 @@ object MockContext : Context() {
         p0: String?,
         p1: Int,
         p2: SQLiteDatabase.CursorFactory?,
-        p3: DatabaseErrorHandler?
+        p3: DatabaseErrorHandler?,
     ): SQLiteDatabase {
         TODO("Not yet implemented")
     }
@@ -272,7 +272,7 @@ object MockContext : Context() {
         p3: Handler?,
         p4: Int,
         p5: String?,
-        p6: Bundle?
+        p6: Bundle?,
     ) {
         TODO("Not yet implemented")
     }
@@ -293,7 +293,7 @@ object MockContext : Context() {
         p4: Handler?,
         p5: Int,
         p6: String?,
-        p7: Bundle?
+        p7: Bundle?,
     ) {
         TODO("Not yet implemented")
     }
@@ -308,7 +308,7 @@ object MockContext : Context() {
         p2: Handler?,
         p3: Int,
         p4: String?,
-        p5: Bundle?
+        p5: Bundle?,
     ) {
         TODO("Not yet implemented")
     }
@@ -328,7 +328,7 @@ object MockContext : Context() {
         p3: Handler?,
         p4: Int,
         p5: String?,
-        p6: Bundle?
+        p6: Bundle?,
     ) {
         TODO("Not yet implemented")
     }
@@ -349,7 +349,7 @@ object MockContext : Context() {
         p0: BroadcastReceiver?,
         p1: IntentFilter?,
         p2: String?,
-        p3: Handler?
+        p3: Handler?,
     ): Intent? {
         TODO("Not yet implemented")
     }
@@ -359,7 +359,7 @@ object MockContext : Context() {
         p1: IntentFilter?,
         p2: String?,
         p3: Handler?,
-        p4: Int
+        p4: Int,
     ): Intent? {
         TODO("Not yet implemented")
     }
@@ -467,7 +467,7 @@ object MockContext : Context() {
         p3: Int,
         p4: Int,
         p5: Int,
-        p6: String?
+        p6: String?,
     ) {
         TODO("Not yet implemented")
     }

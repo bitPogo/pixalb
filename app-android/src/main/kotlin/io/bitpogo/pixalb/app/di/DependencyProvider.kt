@@ -41,18 +41,18 @@ object DependencyProvider {
     @Singleton
     @Provides
     fun provideDatabase(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): PixabayDataBase {
         return DatabaseFactory.create(
             PixabayDataBase.Schema,
-            context
+            context,
         )
     }
 
     @Singleton
     @Provides
     fun provideConnectivityManager(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): ClientContract.ConnectivityManager = ConnectivityManager(context)
 
     @Singleton
@@ -62,28 +62,28 @@ object DependencyProvider {
             override fun info(message: String) {
                 Log.d(
                     AppContract.LogTag.CLIENT_INFO.value,
-                    message
+                    message,
                 )
             }
 
             override fun warn(message: String) {
                 Log.d(
                     AppContract.LogTag.CLIENT_WARN.value,
-                    message
+                    message,
                 )
             }
 
             override fun error(exception: Throwable, message: String?) {
                 Log.d(
                     AppContract.LogTag.CLIENT_ERROR.value,
-                    message ?: exception.toString()
+                    message ?: exception.toString(),
                 )
             }
 
             override fun log(message: String) {
                 Log.d(
                     AppContract.LogTag.CLIENT_LOG.value,
-                    message
+                    message,
                 )
             }
         }
@@ -107,12 +107,12 @@ object DependencyProvider {
     @Provides
     fun provideClient(
         logger: ClientContract.Logger,
-        connectivityManager: ClientContract.ConnectivityManager
+        connectivityManager: ClientContract.ConnectivityManager,
     ): ClientContract.Client {
         return PixabayClient.getInstance(
             apiToken = BuildConfig.API_KEY,
             logger = logger,
-            connection = connectivityManager
+            connection = connectivityManager,
         )
     }
 
@@ -122,13 +122,13 @@ object DependencyProvider {
         client: ClientContract.Client,
         dataBase: PixabayDataBase,
         @IODispatcher ioDispatcher: CoroutineScopeDispatcher,
-        @FlowDispatcher flowDispatcher: CoroutineScopeDispatcher
+        @FlowDispatcher flowDispatcher: CoroutineScopeDispatcher,
     ): AlbumContract.Store {
         return AlbumStore.getInstance(
             client = client,
             database = dataBase.imageQueries,
             producerScope = ioDispatcher,
-            consumerScope = flowDispatcher
+            consumerScope = flowDispatcher,
         )
     }
 

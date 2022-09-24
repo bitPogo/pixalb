@@ -26,6 +26,14 @@ allprojects {
     }
 
     ensureKotlinVersion(Version.kotlin.language)
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "org.jetbrains.kotlinx" && requested.name.startsWith("kotlinx-serialization")) {
+                useVersion(Version.kotlin.serialization)
+                because("Avoid resolution conflicts")
+            }
+        }
+    }
 }
 
 tasks.named<Wrapper>("wrapper") {

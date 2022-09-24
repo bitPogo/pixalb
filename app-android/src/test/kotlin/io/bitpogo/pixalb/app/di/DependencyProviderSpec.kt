@@ -25,7 +25,7 @@ import tech.antibytes.util.test.mustBe
     ClientContract.Client::class,
     PixabayDataBase::class,
     CoroutineScopeDispatcher::class,
-    ImageQueries::class
+    ImageQueries::class,
 )
 class DependencyProviderSpec {
 

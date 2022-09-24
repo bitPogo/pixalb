@@ -40,7 +40,7 @@ class SearchBarSpec {
                 SearchBar(
                     value = oldValue,
                     onValueChange = onValueChange,
-                    onSearch = {}
+                    onSearch = {},
                 )
             }
         }
@@ -66,7 +66,7 @@ class SearchBarSpec {
                 SearchBar(
                     value = fixture.fixture(),
                     onValueChange = {},
-                    onSearch = onSearch
+                    onSearch = onSearch,
                 )
             }
         }

@@ -12,10 +12,10 @@ import tech.antibytes.util.test.MockError
 
 class QueryStub<T : Any>(
     mapper: ((SqlCursor) -> T),
-    val _execute: (() -> SqlCursor)
+    val _execute: (() -> SqlCursor),
 ) : Query<T>(
     mutableListOf(),
-    mapper
+    mapper,
 ) {
     override fun execute(): SqlCursor {
         return _execute.invoke()
@@ -23,7 +23,7 @@ class QueryStub<T : Any>(
 }
 
 class SqlCursorStub(
-    var _next: (() -> Boolean)? = null
+    var _next: (() -> Boolean)? = null,
 ) : SqlCursor {
     override fun close() {
         /* Do nothing */

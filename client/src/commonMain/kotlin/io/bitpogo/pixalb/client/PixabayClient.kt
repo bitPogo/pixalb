@@ -32,10 +32,10 @@ import kotlinx.serialization.json.Json
 class PixabayClient internal constructor(
     private val token: String,
     private val requestBuilder: NetworkingContract.RequestBuilderFactory,
-    private val connectivityManager: ClientContract.ConnectivityManager
+    private val connectivityManager: ClientContract.ConnectivityManager,
 ) : ClientContract.Client {
     private suspend fun guardTransaction(
-        action: suspend () -> ResultContract<PixabayResponse, PixabayClientError>
+        action: suspend () -> ResultContract<PixabayResponse, PixabayClientError>,
     ): ResultContract<PixabayResponse, PixabayClientError> {
         return if (!connectivityManager.hasConnection()) {
             Failure(PixabayClientError.NoConnection())
@@ -46,7 +46,7 @@ class PixabayClient internal constructor(
 
     private suspend fun fetchImagesFromApi(
         query: String,
-        page: UShort
+        page: UShort,
     ): PixabayResponse {
         return requestBuilder
             .create()
@@ -55,16 +55,16 @@ class PixabayClient internal constructor(
                     "key" to token,
                     "q" to query,
                     "page" to page.toString(),
-                    "per_page" to ITEMS_PER_PAGE
-                )
+                    "per_page" to ITEMS_PER_PAGE,
+                ),
             ).prepare(
-                path = ENDPOINT
+                path = ENDPOINT,
             ).receive()
     }
 
     override suspend fun fetchImages(
         query: String,
-        page: UShort
+        page: UShort,
     ): ResultContract<PixabayResponse, PixabayClientError> = guardTransaction {
         try {
             Success(fetchImagesFromApi(query, page))
@@ -75,7 +75,7 @@ class PixabayClient internal constructor(
 
     companion object : ClientContract.ClientFactory {
         private fun initPlugins(
-            logger: ClientContract.Logger
+            logger: ClientContract.Logger,
         ): Set<NetworkingContract.Plugin<in Any, in Any?>> {
             val jsonConfig = JsonConfigurator()
             Json { jsonConfig.configure(this) }
@@ -85,44 +85,44 @@ class PixabayClient internal constructor(
                 NetworkingContract.Plugin(
                     ContentNegotiation,
                     SerializerConfigurator(),
-                    jsonConfig
+                    jsonConfig,
                 ) as NetworkingContract.Plugin<in Any, in Any?>,
                 NetworkingContract.Plugin(
                     Logging,
                     LoggingConfigurator(),
-                    logger
+                    logger,
                 ) as NetworkingContract.Plugin<in Any, in Any?>,
                 NetworkingContract.Plugin(
                     HttpCallValidator,
                     ResponseValidatorConfigurator(),
-                    HttpErrorMapper()
-                ) as NetworkingContract.Plugin<in Any, in Any?>
+                    HttpErrorMapper(),
+                ) as NetworkingContract.Plugin<in Any, in Any?>,
             )
         }
 
         private fun initRequestBuilder(
-            logger: ClientContract.Logger
+            logger: ClientContract.Logger,
         ): NetworkingContract.RequestBuilderFactory {
             return RequestBuilder.Factory(
                 client = HttpClient().config {
                     ClientConfigurator.configure(
                         this,
-                        initPlugins(logger)
+                        initPlugins(logger),
                     )
                 },
-                host = HOST
+                host = HOST,
             )
         }
 
         override fun getInstance(
             apiToken: String,
             logger: ClientContract.Logger,
-            connection: ClientContract.ConnectivityManager
+            connection: ClientContract.ConnectivityManager,
         ): ClientContract.Client {
             return PixabayClient(
                 token = apiToken,
                 requestBuilder = initRequestBuilder(logger),
-                connectivityManager = connection
+                connectivityManager = connection,
             )
         }
     }

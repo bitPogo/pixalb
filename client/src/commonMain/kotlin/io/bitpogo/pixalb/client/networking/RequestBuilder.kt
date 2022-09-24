@@ -24,7 +24,7 @@ internal class RequestBuilder private constructor(
     private val client: HttpClient,
     private val host: String,
     private val protocol: URLProtocol = URLProtocol.HTTPS,
-    private val port: Int? = null
+    private val port: Int? = null,
 ) : NetworkingContract.RequestBuilder {
     private var headers: Header = emptyMap()
     private var parameter: Parameter = emptyMap()
@@ -46,13 +46,13 @@ internal class RequestBuilder private constructor(
         if (body != null) {
             if (BODYLESS_METHODS.contains(method)) {
                 throw PixabayClientError.RequestValidationFailure(
-                    "${method.name.uppercase()} cannot be combined with a RequestBody."
+                    "${method.name.uppercase()} cannot be combined with a RequestBody.",
                 )
             }
         } else {
             if (!BODYLESS_METHODS.contains(method)) {
                 throw PixabayClientError.RequestValidationFailure(
-                    "${method.name.uppercase()} must be combined with a RequestBody."
+                    "${method.name.uppercase()} must be combined with a RequestBody.",
                 )
             }
         }
@@ -75,7 +75,7 @@ internal class RequestBuilder private constructor(
     private fun setMandatoryFields(
         builder: HttpRequestBuilder,
         method: NetworkingContract.Method,
-        path: Path
+        path: Path,
     ) {
         validateBodyAgainstMethod(method)
 
@@ -107,7 +107,7 @@ internal class RequestBuilder private constructor(
     private fun buildQuery(
         builder: HttpRequestBuilder,
         method: NetworkingContract.Method,
-        path: Path
+        path: Path,
     ): HttpRequestBuilder {
         setMandatoryFields(builder, method, path)
         setPort(builder)
@@ -118,15 +118,15 @@ internal class RequestBuilder private constructor(
 
     override fun prepare(
         method: NetworkingContract.Method,
-        path: Path
+        path: Path,
     ): HttpStatement {
         return HttpStatement(
             buildQuery(
                 HttpRequestBuilder(),
                 method,
-                path
+                path,
             ),
-            client
+            client,
         )
     }
 
@@ -134,14 +134,14 @@ internal class RequestBuilder private constructor(
         private val client: HttpClient,
         private val host: String,
         private val protocol: URLProtocol = URLProtocol.HTTPS,
-        private val port: Int? = null
+        private val port: Int? = null,
     ) : NetworkingContract.RequestBuilderFactory {
         override fun create(): NetworkingContract.RequestBuilder {
             return RequestBuilder(
                 client,
                 host,
                 protocol,
-                port
+                port,
             )
         }
     }

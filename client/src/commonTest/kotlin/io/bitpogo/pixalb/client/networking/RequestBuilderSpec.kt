@@ -40,7 +40,7 @@ class RequestBuilderSpec {
         addGenerator(
             String::class,
             StringAlphaGenerator,
-            ascii
+            ascii,
         )
     }
     private val host: String = fixture.fixture()
@@ -54,9 +54,9 @@ class RequestBuilderSpec {
                         fixture.fixture<String>(ascii),
                         headers = headersOf(
                             "Content-Type" to listOf(
-                                ContentType.Text.Plain.toString()
-                            )
-                        )
+                                ContentType.Text.Plain.toString(),
+                            ),
+                        ),
                     )
                 }
             }
@@ -72,7 +72,7 @@ class RequestBuilderSpec {
         // When
         val builder: Any = RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         )
 
         // Then
@@ -88,7 +88,7 @@ class RequestBuilderSpec {
         // When
         val builder: Any = RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         ).create()
 
         // Then
@@ -107,7 +107,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         ).create().prepare().execute()
     }
 
@@ -124,7 +124,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            host
+            host,
         ).create().prepare().execute()
     }
 
@@ -140,7 +140,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         ).create().prepare().execute()
     }
 
@@ -158,7 +158,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         ).create().prepare(path = path).execute()
     }
 
@@ -174,7 +174,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         ).create().prepare().execute()
     }
 
@@ -191,7 +191,7 @@ class RequestBuilderSpec {
         RequestBuilder.Factory(
             client,
             host,
-            protocol = URLProtocol.HTTP
+            protocol = URLProtocol.HTTP,
         ).create().prepare().execute()
     }
 
@@ -207,7 +207,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         ).create().prepare().execute()
     }
 
@@ -227,7 +227,7 @@ class RequestBuilderSpec {
         RequestBuilder.Factory(
             client,
             host,
-            port = port
+            port = port,
         ).create().prepare().execute()
     }
 
@@ -239,14 +239,14 @@ class RequestBuilderSpec {
             // Then
             request.headers.toMap() mustBe mapOf(
                 "Accept-Charset" to listOf("UTF-8"),
-                "Accept" to listOf("*/*")
+                "Accept" to listOf("*/*"),
             )
         }
 
         // When
         RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         ).create().prepare().execute()
     }
 
@@ -256,7 +256,7 @@ class RequestBuilderSpec {
         // Given
         val headers = mapOf<String, String>(
             fixture.pairFixture(ascii, ascii),
-            fixture.pairFixture(ascii, ascii)
+            fixture.pairFixture(ascii, ascii),
         )
 
         val keys = headers.keys.toList()
@@ -267,14 +267,14 @@ class RequestBuilderSpec {
                 "Accept-Charset" to listOf("UTF-8"),
                 "Accept" to listOf("*/*"),
                 keys[0] to listOf(headers[keys[0]]),
-                keys[1] to listOf(headers[keys[1]])
+                keys[1] to listOf(headers[keys[1]]),
             )
         }
 
         // When
         RequestBuilder.Factory(
             client,
-            host
+            host,
         ).create().setHeaders(headers).prepare().execute()
     }
 
@@ -290,7 +290,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         ).create().prepare().execute()
     }
 
@@ -300,7 +300,7 @@ class RequestBuilderSpec {
         // Given
         val parameter = mapOf<String, String>(
             fixture.pairFixture(ascii, ascii),
-            fixture.pairFixture(ascii, ascii)
+            fixture.pairFixture(ascii, ascii),
         )
 
         val keys = parameter.keys.toList()
@@ -310,14 +310,14 @@ class RequestBuilderSpec {
             // Then
             request.url.parameters.toMap() mustBe mapOf(
                 keys[0] to listOf(parameter[keys[0]]),
-                keys[1] to listOf(parameter[keys[1]])
+                keys[1] to listOf(parameter[keys[1]]),
             )
         }
 
         // When
         RequestBuilder.Factory(
             client,
-            host
+            host,
         ).create().setParameter(parameter).prepare().execute()
     }
 
@@ -333,7 +333,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         ).create().prepare().execute()
     }
 
@@ -348,7 +348,7 @@ class RequestBuilderSpec {
             // When
             RequestBuilder.Factory(
                 client,
-                host
+                host,
             ).create().setBody(fixture.fixture<String>(ascii)).prepare(NetworkingContract.Method.GET)
         }
 
@@ -367,7 +367,7 @@ class RequestBuilderSpec {
             // When
             RequestBuilder.Factory(
                 client,
-                host
+                host,
             ).create().setBody(fixture.fixture<String>(ascii)).prepare(NetworkingContract.Method.HEAD)
         }
 
@@ -386,7 +386,7 @@ class RequestBuilderSpec {
             // When
             RequestBuilder.Factory(
                 client,
-                host
+                host,
             ).create().prepare(NetworkingContract.Method.POST)
         }
 
@@ -405,7 +405,7 @@ class RequestBuilderSpec {
             // When
             RequestBuilder.Factory(
                 client,
-                host
+                host,
             ).create().prepare(NetworkingContract.Method.PUT)
         }
 
@@ -424,7 +424,7 @@ class RequestBuilderSpec {
             // When
             RequestBuilder.Factory(
                 client,
-                host
+                host,
             ).create().prepare(NetworkingContract.Method.DELETE)
         }
 
@@ -444,7 +444,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            fixture.fixture(ascii)
+            fixture.fixture(ascii),
         ).create().prepare(NetworkingContract.Method.HEAD).execute()
     }
 
@@ -462,7 +462,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            host
+            host,
         ).create().setBody(payload).prepare(NetworkingContract.Method.POST).execute()
     }
 
@@ -485,7 +485,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            host
+            host,
         ).create().setBody(payload).prepare(NetworkingContract.Method.POST).execute()
     }
 
@@ -503,7 +503,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            host
+            host,
         ).create().setBody(payload).prepare(NetworkingContract.Method.PUT).execute()
     }
 
@@ -526,7 +526,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            host
+            host,
         ).create().setBody(payload).prepare(NetworkingContract.Method.PUT).execute()
     }
 
@@ -544,7 +544,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            host
+            host,
         ).create().setBody(payload).prepare(NetworkingContract.Method.DELETE).execute()
     }
 
@@ -568,7 +568,7 @@ class RequestBuilderSpec {
         // When
         RequestBuilder.Factory(
             client,
-            host
+            host,
         ).create().setBody(payload).prepare(NetworkingContract.Method.DELETE).execute()
     }
 }

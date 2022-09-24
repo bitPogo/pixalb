@@ -17,6 +17,6 @@ import io.bitpogo.pixalb.app.components.atomic.BorderLessIconButton.BorderLessIc
 fun BorderLessIconButtonPreview() {
     BorderLessIconButton(
         icon = Icons.Filled.CarCrash,
-        contentDescription = "Car Crash"
+        contentDescription = "Car Crash",
     ) { }
 }

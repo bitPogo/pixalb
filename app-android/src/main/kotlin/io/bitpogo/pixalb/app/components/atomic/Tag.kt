@@ -26,14 +26,14 @@ object Tag {
             Row {
                 Icon(
                     imageVector = Icons.Outlined.LocalOffer,
-                    contentDescription = null
+                    contentDescription = null,
                 )
                 Text(
                     value,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .padding(start = 5.dp)
-                        .height(22.dp)
+                        .height(22.dp),
                 )
             }
         }

@@ -11,7 +11,7 @@ import io.ktor.client.plugins.HttpCallValidator
 internal class ResponseValidatorConfigurator : KtorPluginsContract.ResponseValidatorConfigurator {
     override fun configure(
         pluginConfiguration: HttpCallValidator.Config,
-        subConfiguration: KtorPluginsContract.ErrorMapper
+        subConfiguration: KtorPluginsContract.ErrorMapper,
     ) {
         pluginConfiguration.handleResponseExceptionWithRequest { error, _ ->
             subConfiguration.mapAndThrow(error)

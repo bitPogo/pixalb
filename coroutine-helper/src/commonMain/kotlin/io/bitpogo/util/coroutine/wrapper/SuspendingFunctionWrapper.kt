@@ -12,12 +12,12 @@ import kotlinx.coroutines.launch
 
 class SuspendingFunctionWrapper<T> private constructor(
     override val wrappedFunction: suspend () -> T,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
 ) : CoroutineWrapperContract.SuspendingFunctionWrapper<T> {
 
     override fun subscribe(
         onSuccess: (item: T) -> Unit,
-        onError: (error: Throwable) -> Unit
+        onError: (error: Throwable) -> Unit,
     ): Job {
         return scope.launch {
             try {
@@ -32,11 +32,11 @@ class SuspendingFunctionWrapper<T> private constructor(
     companion object Factory : CoroutineWrapperContract.SuspendingFunctionWrapperFactory {
         override fun <T> getInstance(
             function: suspend () -> T,
-            dispatcher: CoroutineWrapperContract.CoroutineScopeDispatcher
+            dispatcher: CoroutineWrapperContract.CoroutineScopeDispatcher,
         ): SuspendingFunctionWrapper<T> {
             return SuspendingFunctionWrapper(
                 function,
-                dispatcher.dispatch()
+                dispatcher.dispatch(),
             )
         }
     }

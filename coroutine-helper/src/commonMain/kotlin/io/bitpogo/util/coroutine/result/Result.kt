@@ -7,7 +7,7 @@
 package io.bitpogo.util.coroutine.result
 
 data class Success<Succ, Err : Throwable>(
-    override val value: Succ
+    override val value: Succ,
 ) : ResultContract<Succ, Err> {
     override val error: Err? = null
 
@@ -19,7 +19,7 @@ data class Success<Succ, Err : Throwable>(
 }
 
 data class Failure<Succ, Err : Throwable>(
-    override val error: Err
+    override val error: Err,
 ) : ResultContract<Succ, Err> {
     override val value: Succ? = null
 
